@@ -1,4 +1,4 @@
-# Recipe for voice privacy challenge 2020
+# Recipe for Voice Privacy Challenge 2020
 
 ## First steps
 
