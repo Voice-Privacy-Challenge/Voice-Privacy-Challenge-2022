@@ -1,0 +1,5 @@
+Cython==0.29.14
+kaldi-io==0.9.1
+kaldiio==2.15.1
+numpy==1.16.5
+scipy==1.2.2
