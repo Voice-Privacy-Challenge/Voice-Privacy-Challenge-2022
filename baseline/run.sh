@@ -15,6 +15,7 @@ nj=20
 stage=-1
 
 librispeech_corpus=/DIRECORY_FOR/LibriSpeech
+libritts_corpus=/DIRECORY_FOR/LibriTTS # LibriTTS train-other-500 corpus should be present here
 
 anoni_pool="libritts_train_other_500" # change this to the data you want to use for anonymization pool
 data_netcdf=/DIRECTORY_FOR/am_nsf_data # change this to dir where VC features data will be stored
@@ -55,7 +56,7 @@ fi
 # Extract xvectors from anonymization pool
 if [ $stage -le 0 ]; then
   # Prepare data for libritts-train-other-500
-
+  local/data_prep_libritts.sh ${libritts_corpus}/train-other-500 data/${anoni_pool}
   printf "${GREEN}\nStage 0: Extracting xvectors for anonymization pool.${NC}\n"
   local/featex/01_extract_xvectors.sh --nj $nj data/${anoni_pool} ${xvec_nnet_dir} \
 	  ${anon_xvec_out_dir}
