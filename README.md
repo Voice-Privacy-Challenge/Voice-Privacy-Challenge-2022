@@ -1,8 +1,9 @@
-# Recipe for voice privacy challenge 2020
+# Recipe for Voice Privacy Challenge 2020
 
 ## First steps
 
-Clone this recipe inside the `egs` directory of you Kaldi installation. Then download the pretrained models from the challenge website and extract them in `v1/exp` directory.
+1. git clone --recurse-submodules https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020.git
+2. download the pretrained models from the challenge website and extract them in `baseline/exp` directory.
 
 ## More details
 
