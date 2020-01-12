@@ -3,9 +3,10 @@
 # input feature directories
 #  here, we use features in ../TESTDATA/vctk_vctk_anonymize for demonstration
 # 
+. path.sh
 . local/vc/am/init.sh
 
-proj_dir=/home/bsrivast/vc_tools/eurecom_nii_paper/project-CURRENNT-scripts/acoustic-modeling/project-DAR-continuous
+proj_dir=${CURRENNT_SCRIPTS}/acoustic-modeling/project-DAR-continuous
 test_data_dir=$1
 
 output_dir=${test_data_dir}/am_out_mel

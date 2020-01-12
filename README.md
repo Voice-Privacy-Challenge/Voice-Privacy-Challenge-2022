@@ -2,8 +2,11 @@
 
 ## First steps
 
-1. git clone --recurse-submodules https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020.git
-2. download the pretrained models from the challenge website and extract them in `baseline/exp` directory.
+1. `git clone --recurse-submodules https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020.git`
+2. Download the pretrained models from the challenge website and extract them in `baseline/exp` directory.
+3. Create Python virtual environment for dependencies using `virtualenv venv && . venv/bin/actvate`. Then install requirements in this `venv` using `pip install -r baseline/requirements.txt`.
+4. Install external dependecies as described below.
+5. Configure appropriate paths in `baseline/path.sh` as described below.
 
 ## More details
 
@@ -26,7 +29,7 @@ Some of these modules are pretrained and must be downloaded and put in appropria
 ## Dataset
 
 - `librispeech_corpus`: change this variable to point at your extracted LibriSpeech corpus.
-- `anoni_pool`: change this variable to the data directory in `data/` folder which will be used as anonymization pool of speakers. Please note that this directiry must be in Kaldi data format.
+- `libritts_corpus`: change this variable to the directory where you have extracted `train-other-500` subset of LibriTTS corpus.
 
 ## Modules
 
@@ -39,6 +42,7 @@ This is a chain ASR model trained using 600 hours (train-clean-100 and train-oth
 - `lang_dir`: Lang directory for chain model
 - `model_dir`: Directory where pretrained chain model is stored
 
+**NOTE**: These variables will be pre-configured if you have downloaded the 4 pre-trained models (`am_model.tar.gz`, `nsf_model.tar.gz`, `asr_ppg_model.tar.gz` and `asr_eval_model.tar.gz`) and extracted in the `exp` directory of your recipe.
 
 ### x-vector extractor
 
@@ -48,6 +52,7 @@ This is a pretrained xvector model trained over VoxCeleb 1 & 2, it can easily do
 - `pseudo_xvec_rand_level`: anonymized x-vectors will be produced at this level, e.g. `spk` or `utt`
 - `cross_gender`: should anonymization be done within same gender or across gender, e.g. `true` or `false`.
 
+**NOTE**: This model will be downloaded and extracted using `step -1` of the recipe.
 
 ## External modules for voice converison
 
@@ -70,8 +75,7 @@ This module will take 3 inputs:
 
 The pretrained model will be provided as part of this baseline. It has been trained over 100 hour subset (train-clean-100) of LibriTTS dataset. Following configs are needed:
 
-  1. Open `local/vc/am/init.sh` and change the variables `TEMP_CURRENNT_PROJECT_PYTOOLS_PATH` and `TEMP_CURRENNT_PROJECT_CURRENNT_PATH` to appropriate paths based on above installation.
-  2. Open `local/vc/am/01_gen.sh` and change `proj_dir` to the directory where `project-DAR-continuous` is present in your installation. Possibly also change `TEMP_ACOUSTIC_MODEL_DIRECTORY` here to the place where your pretrained AM is stored. This directory must contain `trained_network.jsn` which will have parameters for your pretrained acoustic model. This model will be provided during the challenge.
+  1. Open `baseline/path.sh` and change the variables `CURRENT_PUBLIC` and `CURRENNT_SCRIPTS` to directory where you cloned [CURRENNT base code](https://github.com/nii-yamagishilab/project-CURRENNT-public) and [AM and NSF scripts](https://github.com/nii-yamagishilab/project-CURRENNT-scripts) respectively.
 
 ### Neural source-filter model for voice conversion
 
@@ -82,6 +86,6 @@ This module will take 3 inputs:
 
 The pretrained model will be provided as part of this baseline. It has been trained over 100 hour subset (train-clean-100) of LibriTTS dataset. Following configs are needed:
 
-  1. Open `local/vc/nsf/init.sh` and change the variables `TEMP_CURRENNT_PROJECT_PYTOOLS_PATH` and `TEMP_CURRENNT_PROJECT_CURRENNT_PATH` to appropriate paths based on above installation.
-  2. Open `local/vc/nsf/01_gen.sh` and change `proj_dir` to the directory where `project-NSF` is present in your installation. Possibly also change `TEMP_WAVEFORM_MODEL_DIRECTORY` and `TEMP_WAVEFORM_MODEL_NETWORK_PATH` here to the place where your pretrained NSF is stored. Note that `TEMP_WAVEFORM_MODEL_NETWORK_PATH` is a `.jsn` file which will have parameters for your pretrained NSF model. This model will be provided during the challenge.
+**NO changes required if acoustic model setup is done**, otherwise:
 
+  1. Open `baseline/path.sh` and change the variables `CURRENT_PUBLIC` and `CURRENNT_SCRIPTS` to directory where you cloned [CURRENNT base code](https://github.com/nii-yamagishilab/project-CURRENNT-public) and [AM and NSF scripts](https://github.com/nii-yamagishilab/project-CURRENNT-scripts) respectively.

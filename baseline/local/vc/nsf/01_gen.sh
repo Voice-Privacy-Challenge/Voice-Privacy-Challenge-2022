@@ -1,6 +1,7 @@
 #!/bin/sh
 # Copied from init.sh
 
+. path.sh
 . local/vc/nsf/init.sh
 
 # ----- Method 1 
@@ -16,7 +17,7 @@
 
 test_data_dir=$1
 
-proj_dir=/home/bsrivast/vc_tools/eurecom_nii_paper/project-CURRENNT-scripts/waveform-modeling/project-NSF
+proj_dir=${CURRENNT_SCRIPTS}/waveform-modeling/project-NSF
 
 test_mel=${test_data_dir}/am_out_mel
 test_xvector=${test_data_dir}/xvector

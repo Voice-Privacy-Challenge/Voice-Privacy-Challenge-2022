@@ -1,10 +1,12 @@
 #!/bin/sh
 
+. path.sh
+
 # PATH to the pyTools
-export TEMP_CURRENNT_PROJECT_PYTOOLS_PATH=/home/bsrivast/vc_tools/eurecom_nii_paper/project-CURRENNT-public/pyTools
+export TEMP_CURRENNT_PROJECT_PYTOOLS_PATH=${CURRENNT_PUBLIC}/pyTools
 
 # PATH to currennt
-export TEMP_CURRENNT_PROJECT_CURRENNT_PATH=/home/bsrivast/vc_tools/eurecom_nii_paper/project-CURRENNT-public/CURRENNT_codes/build/currennt
+export TEMP_CURRENNT_PROJECT_CURRENNT_PATH=${CURRENNT_PUBLIC}/CURRENNT_codes/build/currennt
 
 # PATH to SOX (http://sox.sourceforge.net/sox.html)
 export TEMP_CURRENNT_PROJECT_SOX_PATH=/usr/bin/sox
