@@ -18,6 +18,8 @@ librispeech_corpus=/DIRECORY_FOR/LibriSpeech
 libritts_corpus=/DIRECORY_FOR/LibriTTS # LibriTTS train-other-500 corpus should be present here
 
 anoni_pool="libritts_train_other_500" # change this to the data you want to use for anonymization pool
+am_nsf_train_data="libritts_train_clean_100"
+
 data_netcdf=/DIRECTORY_FOR/am_nsf_data # change this to dir where VC features data will be stored
 
 # Chain model for PPG extraction
@@ -49,8 +51,31 @@ anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}
 
 # Download pretrained models
 if [ $stage -le -1 ]; then
-  printf "${GREEN}\nDownloading only Voxceleb pretrained model currently.${NC}\n"
+  printf "${GREEN}\nDownloading all the pretrained models.${NC}\n"
   local/download_pretrained.sh
+fi
+
+if [ $stage -le 0 ] && false; then
+  printf "${GREEN}\nPreparing training data for AM and NSF models.${NC}\n"
+  local/data_prep_libritts.sh ${libritts_corpus}/train-clean-100 data/${am_nsf_train_data}
+  
+  local/run_prepfeats_am_nsf.sh --nj $nj \
+	 --ivec-extractor ${ivec_extractor} \
+	 --ivec-data-dir ${ivec_data_dir} --tree-dir ${tree_dir} \
+	 --model-dir ${model_dir} --lang-dir ${lang_dir} --ppg-dir ${ppg_dir} \
+	 --xvec-nnet-dir ${xvec_nnet_dir} \
+	 --plda-dir ${plda_dir} \
+	 ${am_nsf_train_data} ${data_netcdf} || exit 1;
+fi
+
+if [ $stage -le 1 ] && false; then
+  printf "${GREEN}\nTraining AM model.${NC}\n"
+  local/vc/am/00_run.sh ${data_netcdf}
+fi
+
+if [ $stage -le 2 ] && false; then
+  printf "${GREEN}\nTraining NSF model.${NC}\n"
+  local/vc/nsf/00_run.sh ${data_netcdf}
 fi
 
 # Extract xvectors from anonymization pool

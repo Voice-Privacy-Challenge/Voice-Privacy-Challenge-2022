@@ -21,8 +21,10 @@
 ###########################################################################
 
 import os
+from os.path import join
+
 import sys
-prjdir = '/home/bsrivast/vc_tools/eurecom_nii_paper/project-CURRENNT-scripts/waveform-modeling/project-NSF'
+prjdir = join(os.getenv('CURRENNT_SCRIPTS', ''), 'waveform-modeling/project-NSF')
 
 # -------------------------------------------------
 # --------------- Configuration start --------------
@@ -34,7 +36,7 @@ step1 = True
 #  fine control on step1
 #    [generating_data_list, pre_processing_waveforms, generating_time_index,
 #     generating_data_nc, calculate_mean_std_of_acoustic_features]
-step1s = [False, False, True, True, True]
+step1s = [True, True, True, True, True]
 
 # step2: network training
 step2 = True
@@ -47,10 +49,10 @@ step3 = True
 # (abosolute) path of the directories of acoustic features
 #  [path_of_feature_1, path_of_feature_2, ..., path_of_feature_N]
 # Note: please put f0 as the last feature
-tmp_path = '/home/bsrivast/asr_data/LibriTTS/am_nsf_data/libritts'
-path_acous_feats = [tmp_path + os.path.sep + 'train_100/mel',
-                    tmp_path + os.path.sep + 'train_100/xvector',
-                    tmp_path + os.path.sep + 'train_100/f0',]
+tmp_path  = join(os.getenv('AM_NSF_FEAT_OUT', ''), 'am_nsf_train')
+path_acous_feats = [tmp_path + os.path.sep + 'mel',
+                    tmp_path + os.path.sep + 'xvector',
+                    tmp_path + os.path.sep + 'f0',]
 
 # dimension of acoustic features
 #  [dim_of_feature1, dim_of_feature2, ..., dim_of_feature_N]

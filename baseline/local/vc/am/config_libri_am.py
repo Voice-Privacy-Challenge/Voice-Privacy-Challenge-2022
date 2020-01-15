@@ -22,8 +22,11 @@
 ###########################################################################
 
 import os
+from os.path import join
+
 import sys
-prjdir = '/home/bsrivast/vc_tools/eurecom_nii_paper/project-CURRENNT-scripts/acoustic-modeling/project-DAR-continuous'
+
+prjdir = join(os.getenv('CURRENNT_SCRIPTS', ''), 'acoustic-modeling/project-DAR-continuous')
 
 # -------------------------------------------------
 # --------------- Configuration start --------------
@@ -71,7 +74,8 @@ step03WaveFormGen = False
 #  here, we use data in ../DATA/vctk_anonymize/scp/train.lst as train set
 #        we use data in ../DATA/vctk_anonymize/scp/val.lst as validation set
 #tmpDir  = os.path.join(prjdir, '../DATA/vctk_anonymize')
-tmpDir  = '/home/bsrivast/asr_data/LibriTTS/am_nsf_data/libritts/train_100'
+
+tmpDir  = join(os.getenv('AM_NSF_FEAT_OUT', ''), 'am_nsf_train')
 dataLists = [tmpDir + '/scp/train.lst',
              tmpDir + '/scp/dev.lst']
 
