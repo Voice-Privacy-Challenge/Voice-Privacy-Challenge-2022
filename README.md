@@ -15,7 +15,7 @@ To successfully run the recipe, you must configure some variables in the scripts
 Some of the datasets we use are:
 * [LibriSpeech](http://www.openslr.org/12/)
 * [LibriTTS](http://www.openslr.org/60/)
-* [VCTK](https://homepages.inf.ed.ac.uk/jyamagis/page3/page58/page58.html)
+* [VCTK](https://datashare.is.ed.ac.uk/handle/10283/3443)
 * [VoxCeleb 1 & 2](http://www.robots.ox.ac.uk/~vgg/data/voxceleb/)
 
 The architecture of VPC is composed of several independent modules:
