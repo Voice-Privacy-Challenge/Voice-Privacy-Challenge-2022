@@ -108,42 +108,8 @@ if [ $stage -le 3 ]; then
   local/asv_eval.sh ${eval2_enroll}${anon_data_suffix} ${eval2_trial}${anon_data_suffix} || exit 1;
 fi
 
-if [ $stage -le 4 ]; then
-  printf "${GREEN}\nStage 4: Anonymizing adaptation data to adapt speaker verification PLDA.${NC}\n"
-  local/data_prep_adv.sh ${librispeech_corpus}/dev-other data/dev_other
-  
-  local/anon/anonymize_data_dir.sh --nj $nj --anoni-pool ${anoni_pool} \
-	 --data-netcdf ${data_netcdf} --ivec-extractor ${ivec_extractor} \
-	 --ivec-data-dir ${ivec_data_dir} --tree-dir ${tree_dir} \
-	 --model-dir ${model_dir} --lang-dir ${lang_dir} --ppg-dir ${ppg_dir} \
-	 --xvec-nnet-dir ${xvec_nnet_dir} \
-	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
-	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
-	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
-	 dev_other || exit 1;
-  
-  adapt_data=dev_other${anon_data_suffix}
-  local/featex/01_extract_xvectors.sh --nj $nj data/${adapt_data} ${xvec_nnet_dir} \
-	  ${anon_xvec_out_dir}
-
-  printf "${RED}Adapting the VoxCeleb model to ${adapt_data}...${NC}\n"
-  $train_cmd ${anon_xvec_out_dir}/xvectors_${adapt_data}/log/plda_adapt.log \
-    ivector-adapt-plda --within-covar-scale=0.75 --between-covar-scale=0.25 \
-    $plda_dir/plda \
-    "ark:ivector-subtract-global-mean scp:${anon_xvec_out_dir}/xvectors_${adapt_data}/xvector.scp ark:- | transform-vec ${plda_dir}/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
-    ${anon_xvec_out_dir}/xvectors_${adapt_data}/plda || exit 1;
-fi
-
-if [ $stage -le 5 ]; then
-  printf "${GREEN}\nStage 5: Evaluate the dataset using ADAPTED speaker verification.${NC}\n"
-  printf "${RED}**Exp 6: Eval 2, enroll - anonymized, trial - anonymized**${NC}\n"
-  local/asv_eval.sh --nnet-dir ${xvec_nnet_dir} \
-	--plda-dir ${anon_xvec_out_dir}/xvectors_${adapt_data} \
-	${eval2_enroll}${anon_data_suffix} ${eval2_trial}${anon_data_suffix} || exit 1;
-fi
-
 # Not anonymizing train-clean-360 here since it takes enormous amount of time and memory
-if [ $stage -le 6 ] && false; then
+if [ $stage -le 4 ] && false; then
   printf "${GREEN}\nStage 6: Anonymizing train data for Informed xvector model.${NC}\n"
   local/data_prep_adv.sh ${librispeech_corpus}/train-clean-360 data/train_clean_360
   
@@ -160,7 +126,7 @@ if [ $stage -le 6 ] && false; then
   axvec_train_data=train_clean_360${anon_data_suffix}
 fi
 
-if [ $stage -le 7 ]; then
+if [ $stage -le 5 ]; then
   printf "${GREEN}\nStage 7: Anonymizing dev-clean data for intelligibility assessment.${NC}\n"
   local/data_prep_adv.sh ${librispeech_corpus}/dev-clean data/dev_clean
   
@@ -175,7 +141,7 @@ if [ $stage -le 7 ]; then
 	 dev_clean || exit 1;
 fi
 
-if [ $stage -le 8 ]; then
+if [ $stage -le 6 ]; then
   asr_eval_data=dev_clean${anon_data_suffix}
   printf "${GREEN}\nStage 8: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}.${NC}\n"
   local/asr_eval.sh --nj $nj ${asr_eval_data} exp/asr_eval_model
