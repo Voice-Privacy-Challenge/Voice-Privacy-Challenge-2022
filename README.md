@@ -89,3 +89,27 @@ The pretrained model will be provided as part of this baseline. It has been trai
 **NO changes required if acoustic model setup is done**, otherwise:
 
   1. Open `baseline/path.sh` and change the variables `CURRENT_PUBLIC` and `CURRENNT_SCRIPTS` to directory where you cloned [CURRENNT base code](https://github.com/nii-yamagishilab/project-CURRENNT-public) and [AM and NSF scripts](https://github.com/nii-yamagishilab/project-CURRENNT-scripts) respectively.
+
+
+## License
+
+Copyright (C) 2020  INRIA France
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Author  : Brij Mohan Lal Srivastava
+Date    : 2020
+Contact : brij.srivastava at inria.fr
+
+---------------------------------------------------------------------------
