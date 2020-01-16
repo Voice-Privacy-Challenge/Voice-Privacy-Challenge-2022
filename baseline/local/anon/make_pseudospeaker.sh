@@ -5,6 +5,7 @@
 rand_level="spk"
 cross_gender="false"
 distance="cosine"
+proximity="farthest"
 
 stage=0
 
@@ -58,6 +59,6 @@ if [ $stage -le 1 ]; then
 # Filter the scores based on gender and then sort them based on affinity. 
 # Select the xvectors of 100 farthest speakers and average them to get pseudospeaker.
   python local/anon/gen_pseudo_xvecs.py ${src_data} ${pool_data} ${affinity_scores_dir} \
-	  ${xvec_out_dir} ${pseudo_xvecs_dir} ${rand_level} ${cross_gender} || exit 1;
+	  ${xvec_out_dir} ${pseudo_xvecs_dir} ${rand_level} ${cross_gender} ${proximity} || exit 1;
 fi
 

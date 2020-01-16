@@ -11,6 +11,7 @@ xvector_file = args[2]
 out_dir = args[3]
 
 dataname = basename(data_dir)
+yaap_pitch_dir = join(data_dir, 'yaapt_pitch')
 xvec_out_dir = join(out_dir, "xvector")
 pitch_out_dir = join(out_dir, "f0")
 
@@ -19,7 +20,11 @@ pitch_file = join(data_dir, 'pitch.scp')
 pitch2shape = {}
 for key, mat in kaldi_io.read_mat_scp(pitch_file):
     pitch2shape[key] = mat.shape
-    readwrite.write_raw_mat(mat[:, 1], join(pitch_out_dir, key+'.f0'))
+    kaldi_f0 = mat[:, 1].squeeze()
+    f0 = np.zeros(kaldi_f0.shape)
+    yaapt_f0 = readwrite.read_raw_mat(join(yaap_pitch_dir, key+'.f0'), 1)
+    f0[:yaapt_f0.shape[0]] = yaapt_f0
+    readwrite.write_raw_mat(f0, join(pitch_out_dir, key+'.f0'))
 
 
 # Write xvector features

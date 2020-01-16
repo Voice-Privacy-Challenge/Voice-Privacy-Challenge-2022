@@ -3,6 +3,23 @@
 #
 # First make sure that path.sh contains correct paths for
 # pyTools written by NII, and a compiled netcdf binary
+#
+# Copyright (C) 2020  <Brij Mohan Lal Srivastava>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
 
 . path.sh
 . cmd.sh
@@ -41,6 +58,7 @@ plda_dir=${xvec_nnet_dir}/xvectors_train
 pseudo_xvec_rand_level=spk  # spk (all utterances will have same xvector) or utt (each utterance will have randomly selected xvector)
 cross_gender="false"        # true, same gender xvectors will be selected; false, other gender xvectors
 distance="plda"           # cosine or plda
+proximity="farthest"      # nearest or farthest speaker to be selected for anonymization
 
 eval2_enroll=eval2_enroll
 eval2_trial=eval2_trial
@@ -118,6 +136,7 @@ if [ $stage -le 5 ]; then
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
+	 --proximity ${proximity} \
 	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
 	 ${name} || exit 1;
   done
@@ -145,6 +164,7 @@ if [ $stage -le 7 ] && false; then
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
+	 --proximity ${proximity} \
 	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
 	 train_clean_360 || exit 1;
   
@@ -162,6 +182,7 @@ if [ $stage -le 8 ]; then
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
+	 --proximity ${proximity} \
 	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
 	 dev_clean || exit 1;
 fi
