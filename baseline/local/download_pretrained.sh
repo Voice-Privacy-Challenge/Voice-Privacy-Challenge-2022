@@ -1,19 +1,19 @@
 #!/bin/bash
 
-# voxceleb_model_tar="0007_voxceleb_v2_1a.tar.gz"
-# voxceleb_model_url="http://kaldi-asr.org/models/7"
+voxceleb_model_tar="0007_voxceleb_v2_1a.tar.gz"
+voxceleb_model_url="http://kaldi-asr.org/models/7"
 
 # Download Voxceleb model
 mkdir -p exp data
 pushd ./exp 
 
-# wget --no-check-certificate ${voxceleb_model_url}/${voxceleb_model_tar}
-# tar -zxvf ${voxceleb_model_tar}
+wget --no-check-certificate ${voxceleb_model_url}/${voxceleb_model_tar}
+tar -zxvf ${voxceleb_model_tar}
 
 # Install expect for downloading files using sftp
 sudo apt install expect
 
-
+# Download LibriSpeech chain model - not available currently
 PASSWD="" # Enter your sftp password here
 expect -c 'spawn sftp -P 28500 voiceprivacy@gitlia.univ-avignon.fr; 
 expect "*password: ";

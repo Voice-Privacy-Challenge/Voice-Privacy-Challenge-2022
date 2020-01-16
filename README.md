@@ -1,4 +1,4 @@
-# Recipe for VoicePrivacy Challenge 2020
+# Recipe for Voice Privacy Challenge 2020
 
 ## First steps
 
@@ -19,12 +19,12 @@ Some of the datasets we use are:
 * [VoxCeleb 1 & 2](http://www.robots.ox.ac.uk/~vgg/data/voxceleb/)
 
 The architecture of VPC is composed of several independent modules:
-* Bottleneck feature extractor
+* Phonetic posteriorgram (PPG) extractor
 * x-vector extractor
 * Voice conversion using acoustic and neural source filter models
 * Anonymization using PLDA distance
 
-Some of these modules are pretrained and can be downloaded (optionally) and put in appropriate directories for the recipe to work successfully.
+Some of these modules are pretrained and must be downloaded and put in appropriate directories for the recipe to work successfully.
 
 ## Dataset
 
@@ -33,7 +33,7 @@ Some of these modules are pretrained and can be downloaded (optionally) and put 
 
 ## Modules
 
-### PPG extractor (optionally instead of BN)
+### PPG extractor
 
 This is a chain ASR model trained using 600 hours (train-clean-100 and train-other-500) of LibriSpeech. It produces 346 dimentional PPGs. This must include:
 
@@ -42,21 +42,11 @@ This is a chain ASR model trained using 600 hours (train-clean-100 and train-oth
 - `lang_dir`: Lang directory for chain model
 - `model_dir`: Directory where pretrained chain model is stored
 
-
-
-### BN extractor
-
-This is a chain ASR model trained using 600 hours (train-clean-100 and train-other-500) of LibriSpeech. It produces 346 dimentional PPGs. This must include:
-
-- `ivec_extractor`: i-vector extractor trained during training the chain model.
-- `model_dir`: Directory where pretrained chain model is stored
-
-
 **NOTE**: These variables will be pre-configured if you have downloaded the 4 pre-trained models (`am_model.tar.gz`, `nsf_model.tar.gz`, `asr_ppg_model.tar.gz` and `asr_eval_model.tar.gz`) and extracted in the `exp` directory of your recipe.
 
 ### x-vector extractor
 
-This is a pretrained xvector model trained over VoxCeleb 1 & 2 (pretrained model: ............). It should be extracted in the `exp` directory of this recipe.
+This is a pretrained xvector model trained over VoxCeleb 1 & 2, it can easily downloaded using the following [link](http://kaldi-asr.org/models/7/0007_voxceleb_v2_1a.tar.gz). It should be extracted in the `exp` directory of this recipe.
 
 - `xvec_nnet_dir`: Directory where trained xvector network is stored
 - `pseudo_xvec_rand_level`: anonymized x-vectors will be produced at this level, e.g. `spk` or `utt`
@@ -79,8 +69,8 @@ Install these two based on the instructions at their respective github READMEs. 
 ### Acoustic model for voice conversion
 
 This module will take 3 inputs: 
-- BN
-- x-vector
+- PPGs
+- x-vectors
 - F0
 
 The pretrained model will be provided as part of this baseline. It has been trained over 100 hour subset (train-clean-100) of LibriTTS dataset. Following configs are needed:
@@ -91,7 +81,7 @@ The pretrained model will be provided as part of this baseline. It has been trai
 
 This module will take 3 inputs: 
 - Mel filterbanks extracted by AM
-- x-vector
+- x-vectors
 - F0
 
 The pretrained model will be provided as part of this baseline. It has been trained over 100 hour subset (train-clean-100) of LibriTTS dataset. Following configs are needed:
@@ -99,3 +89,29 @@ The pretrained model will be provided as part of this baseline. It has been trai
 **NO changes required if acoustic model setup is done**, otherwise:
 
   1. Open `baseline/path.sh` and change the variables `CURRENT_PUBLIC` and `CURRENNT_SCRIPTS` to directory where you cloned [CURRENNT base code](https://github.com/nii-yamagishilab/project-CURRENNT-public) and [AM and NSF scripts](https://github.com/nii-yamagishilab/project-CURRENNT-scripts) respectively.
+
+
+## License
+
+Copyright (C) 2020  Multispeech, INRIA France
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Author  : Brij Mohan Lal Srivastava  (INRIA France)
+
+Date    : 2020
+
+Contact : brij.srivastava at inria.fr
+
+---------------------------------------------------------------------------
