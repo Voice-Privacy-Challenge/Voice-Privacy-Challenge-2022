@@ -1,5 +1,14 @@
+backports.functools-lru-cache==1.6.1
+cycler==0.10.0
 Cython==0.29.14
 kaldi-io==0.9.1
 kaldiio==2.15.1
+kiwisolver==1.1.0
+matplotlib==2.2.4
 numpy==1.16.5
+pyparsing==2.4.6
+python-dateutil==2.8.1
+pytz==2019.3
 scipy==1.2.2
+six==1.13.0
+subprocess32==3.5.4
