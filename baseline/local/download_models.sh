@@ -1,11 +1,12 @@
 #!/bin/bash
 
+#   TO CORECT
 
 # Install expect for downloading files using sftp
-# sudo apt install expect
+sudo apt install expect
 
 
-PASSWD="getdata" # Enter your sftp password here
+PASSWD="..." # Enter your sftp password here
 expect -c 'spawn sftp getdata@voiceprivacychallenge.univ-avignon.fr; 
 
 expect "*password: ";
