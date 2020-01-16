@@ -16,6 +16,7 @@ xvec_out_dir = args[4]
 pseudo_xvecs_dir = args[5]
 rand_level = args[6]
 cross_gender = args[7] == "true"
+proximity = args[8]
 
 if cross_gender:
     print("**Opposite gender speakers will be selected.**")
@@ -23,6 +24,7 @@ else:
     print("**Same gender speakers will be selected.**")
 
 print("Randomization level: " + rand_level)
+print("Proximity: " + proximity)
 # Core logic of anonymization by randomization
 def select_random_xvec(top500, pool_xvectors):
     # number of random xvectors to select out of pool
@@ -96,7 +98,12 @@ for spk, gender in src_spk2gender.items():
                 affinity_pool[pool_spk] = af_score
 
     # Sort the filtered affinity pool by scores
-    sorted_aff = sorted(affinity_pool.items(), key=operator.itemgetter(1))
+    if proximity == "farthest":
+        sorted_aff = sorted(affinity_pool.items(), key=operator.itemgetter(1))
+    elif proximity == "nearest":
+        sorted_aff = sorted(affinity_pool.items(), key=operator.itemgetter(1),
+                           reverse=True)
+
 
     # Select 500 least affinity speakers and then randomly select 100 out of
     # them

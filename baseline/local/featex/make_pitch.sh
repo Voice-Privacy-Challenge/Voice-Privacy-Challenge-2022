@@ -60,6 +60,9 @@ pitch_dir=`perl -e '($dir,$pwd)= @ARGV; if($dir!~m:^/:) { $dir = "$pwd/$dir"; } 
 # use "name" as part of name of the archive.
 name=`basename $data`
 
+yaapt_pitch_dir=$data/yaapt_pitch
+mkdir -p $yaapt_pitch_dir || exit 1;
+
 mkdir -p $pitch_dir || exit 1;
 mkdir -p $logdir || exit 1;
 
@@ -155,8 +158,22 @@ else
       scp:$logdir/wav_${name}.JOB.scp \
       ark,scp:$pitch_dir/raw_pitch_$name.JOB.ark,$pitch_dir/raw_pitch_$name.JOB.scp \
       || exit 1;
+
+  #$cmd JOB=1:$nj $logdir/make_pitch_${name}.JOB.log \
+  #  process-kaldi-pitch-feats $postprocess_config_opt \
+  #    scp:$pitch_dir/raw_pitch_${name}.JOB.scp \
+  #    ark,scp:$pitch_dir/processed_pitch_$name.JOB.ark,$pitch_dir/processed_pitch_$name.JOB.scp \
+  #    || exit 1;
+
+  # making yaapt pitch
+  echo "time for yaapt"
+  $cmd JOB=1:$nj $logdir/make_pitch_yaapt_${name}.JOB.log \
+    local/featex/make_pitch_yaapt.sh $logdir/wav_${name}.JOB.scp \
+      ${yaapt_pitch_dir} $logdir/tmpwav_${name}.JOB.wav \
+      || exit 1;
 fi
 
+rm $logdir/tmpwav_${name}.*.wav
 
 if [ -f $logdir/.error.$name ]; then
   echo "$0: Error producing pitch features for $name:"
@@ -168,6 +185,10 @@ fi
 for n in $(seq $nj); do
   cat $pitch_dir/raw_pitch_$name.$n.scp || exit 1
 done > $data/pitch.scp || exit 1
+
+for n in $(seq $nj); do
+  cat $pitch_dir/processed_pitch_$name.$n.scp || exit 1
+done > $data/processed_pitch.scp || exit 1
 
 if $write_utt2num_frames; then
   for n in $(seq $nj); do
@@ -201,4 +222,4 @@ if (( nf < nu - nu/20 )); then
   exit 1
 fi
 
-echo "$0: Succeeded creating filterbank and pitch features for $name"
+echo "$0: Succeeded creating pitch and POV features for $name"

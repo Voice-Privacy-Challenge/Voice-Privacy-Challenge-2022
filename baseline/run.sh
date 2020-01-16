@@ -58,6 +58,7 @@ plda_dir=${xvec_nnet_dir}/xvectors_train
 pseudo_xvec_rand_level=spk  # spk (all utterances will have same xvector) or utt (each utterance will have randomly selected xvector)
 cross_gender="false"        # true, same gender xvectors will be selected; false, other gender xvectors
 distance="plda"           # cosine or plda
+proximity="farthest"      # nearest or farthest speaker to be selected for anonymization
 
 eval2_enroll=eval2_enroll
 eval2_trial=eval2_trial
@@ -135,6 +136,7 @@ if [ $stage -le 5 ]; then
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
+	 --proximity ${proximity} \
 	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
 	 ${name} || exit 1;
   done
@@ -162,6 +164,7 @@ if [ $stage -le 7 ] && false; then
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
+	 --proximity ${proximity} \
 	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
 	 train_clean_360 || exit 1;
   
@@ -179,6 +182,7 @@ if [ $stage -le 8 ]; then
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
+	 --proximity ${proximity} \
 	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
 	 dev_clean || exit 1;
 fi
