@@ -121,7 +121,10 @@ The pretrained model will be provided as part of this baseline. It has been trai
 
 ## License
 
-Copyright (C) 2020  Multispeech, INRIA France
+Copyright (C) 2020
+Multispeech, INRIA France
+LIA, University of Avignon, France
+NII, Japan
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -130,16 +133,16 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
+along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-Author  : Brij Mohan Lal Srivastava  (INRIA France)
+Authors : Brij Mohan Lal Srivastava (INRIA France), Natalia Tomashenko (LIA, France), Xin Wang (NII Japan), ...
 
-Date    : 2020
+Date : 2020
 
-Contact : brij.srivastava at inria.fr
+Contacts : voice.privacy.challenge@gmail.com, brij.srivastava at inria.fr
 
 ---------------------------------------------------------------------------
