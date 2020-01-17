@@ -122,9 +122,12 @@ The pretrained model will be provided as part of this baseline. It has been trai
 ## License
 
 Copyright (C) 2020
-Multispeech, INRIA France
-LIA, University of Avignon, France
-NII, Japan
+
+Multispeech, INRIA France; 
+
+LIA, University of Avignon, France;
+
+NII, Japan.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
