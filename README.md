@@ -33,7 +33,15 @@ Some of these modules are pretrained and must be downloaded and put in appropria
 
 ## Modules
 
-### PPG extractor
+### BN extractor
+
+This is a chain ASR model trained using 600 hours (train-clean-100 and train-other-500) of LibriSpeech for BN feature extraction
+
+- `ivec_extractor`: i-vector extractor trained during training the chain model.
+- `model_dir`: Directory where pretrained chain model is stored
+
+
+### PPG extractor (optional or will be removed later)
 
 This is a chain ASR model trained using 600 hours (train-clean-100 and train-other-500) of LibriSpeech. It produces 346 dimentional PPGs. This must include:
 
