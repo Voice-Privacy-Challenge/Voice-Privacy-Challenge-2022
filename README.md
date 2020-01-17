@@ -1,5 +1,7 @@
 # Recipe for VoicePrivacy Challenge 2020
 
+Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for more information about the Challenge.
+
 
 ## First steps
 
@@ -11,33 +13,45 @@
 
 ## More details
 
-To successfully run the recipe, you must configure some variables in the scripts, particularly in the main script: `run.sh`. VPC uses several datasets and modules to evaluate generalized anonymization techniques. Visit the [challenge website](https://www.voiceprivacychallenge.org/) for detailed information.
+To successfully run the recipe, you must configure some variables in the scripts, particularly in the main script: `run.sh`. VPC uses several datasets and modules to evaluate generalized anonymization techniques. 
 
-Some of the datasets we use are:
+
+### Datasets
+
+The datasets for traing/development/evaluation consists of subsets from the following corpora:
 * [LibriSpeech](http://www.openslr.org/12/)
 * [LibriTTS](http://www.openslr.org/60/)
 * [VCTK](https://datashare.is.ed.ac.uk/handle/10283/3443)
 * [VoxCeleb 1 & 2](http://www.robots.ox.ac.uk/~vgg/data/voxceleb/)
 
-The baseline system uses several independent models:
-1. ASR acoustic model to extract BN features
-2. X-vector extractor
-3. Speech synthesis (SS) acoustic model
-4. Neural source filter (NSF) model 
+- `librispeech_corpus`: change this variable to point at your extracted LibriSpeech corpus.
+- `libritts_corpus`: change this variable to the directory where you have extracted `train-other-500` subset of LibriTTS corpus.
 
-    * TO CORRECT // Anonymization using PLDA distance
+### Models
+
+The baseline system uses several independent models:
+1. ASR acoustic model to extract BN features (1_asr_am)
+
+
+2. X-vector extractor (2_xvect_extr)
+3. Speech synthesis (SS) acoustic model (3_ss_am)
+4. Neural source filter (NSF) model (4_nsf)
 
 These models optionally:
 * can be trained with the provided scripts;
 or
-* downloaded and put in appropriate directories.
+* downloaded ... and put in appropriate directories.
+
+
+
+
+
+=========================================================
+
+    * TO CORRECT // Anonymization using PLDA distance
 
 **NOTE**: These variables will be pre-configured if you have downloaded the 4 pre-trained models (`am_model.tar.gz`, `nsf_model.tar.gz`, `asr_ppg_model.tar.gz` and `asr_eval_model.tar.gz`) and extracted in the `exp` directory of your recipe.
 
-## Dataset
-
-- `librispeech_corpus`: change this variable to point at your extracted LibriSpeech corpus.
-- `libritts_corpus`: change this variable to the directory where you have extracted `train-other-500` subset of LibriTTS corpus.
 
 ## Modules
 
