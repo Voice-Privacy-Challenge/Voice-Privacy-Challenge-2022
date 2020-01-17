@@ -1,4 +1,5 @@
-# Recipe for Voice Privacy Challenge 2020
+# Recipe for VoicePrivacy Challenge 2020
+
 
 ## First steps
 
@@ -18,13 +19,20 @@ Some of the datasets we use are:
 * [VCTK](https://datashare.is.ed.ac.uk/handle/10283/3443)
 * [VoxCeleb 1 & 2](http://www.robots.ox.ac.uk/~vgg/data/voxceleb/)
 
-The architecture of VPC is composed of several independent modules:
-* Phonetic posteriorgram (PPG) extractor
-* x-vector extractor
-* Voice conversion using acoustic and neural source filter models
-* Anonymization using PLDA distance
+The baseline system uses several independent models:
+1. ASR acoustic model to extract BN features
+2. X-vector extractor
+3. Speech synthesis (SS) acoustic model
+4. Neural source filter (NSF) model 
 
-Some of these modules are pretrained and must be downloaded and put in appropriate directories for the recipe to work successfully.
+    * TO CORRECT // Anonymization using PLDA distance
+
+These models optionally:
+* can be trained with the provided scripts;
+or
+* downloaded and put in appropriate directories.
+
+**NOTE**: These variables will be pre-configured if you have downloaded the 4 pre-trained models (`am_model.tar.gz`, `nsf_model.tar.gz`, `asr_ppg_model.tar.gz` and `asr_eval_model.tar.gz`) and extracted in the `exp` directory of your recipe.
 
 ## Dataset
 
@@ -41,7 +49,7 @@ This is a chain ASR model trained using 600 hours (train-clean-100 and train-oth
 - `model_dir`: Directory where pretrained chain model is stored
 
 
-### PPG extractor (optional or will be removed later)
+### PPG extractor (optional or will be removed later) 
 
 This is a chain ASR model trained using 600 hours (train-clean-100 and train-other-500) of LibriSpeech. It produces 346 dimentional PPGs. This must include:
 
@@ -50,11 +58,9 @@ This is a chain ASR model trained using 600 hours (train-clean-100 and train-oth
 - `lang_dir`: Lang directory for chain model
 - `model_dir`: Directory where pretrained chain model is stored
 
-**NOTE**: These variables will be pre-configured if you have downloaded the 4 pre-trained models (`am_model.tar.gz`, `nsf_model.tar.gz`, `asr_ppg_model.tar.gz` and `asr_eval_model.tar.gz`) and extracted in the `exp` directory of your recipe.
-
 ### x-vector extractor
 
-This is a pretrained xvector model trained over VoxCeleb 1 & 2, it can easily downloaded using the following [link](http://kaldi-asr.org/models/7/0007_voxceleb_v2_1a.tar.gz). It should be extracted in the `exp` directory of this recipe.
+This is a pretrained xvector model trained over VoxCeleb 1 & 2. It should be extracted in the `exp` directory of this recipe.
 
 - `xvec_nnet_dir`: Directory where trained xvector network is stored
 - `pseudo_xvec_rand_level`: anonymized x-vectors will be produced at this level, e.g. `spk` or `utt`
@@ -77,8 +83,8 @@ Install these two based on the instructions at their respective github READMEs. 
 ### Acoustic model for voice conversion
 
 This module will take 3 inputs: 
-- PPGs
-- x-vectors
+- BN
+- x-vector
 - F0
 
 The pretrained model will be provided as part of this baseline. It has been trained over 100 hour subset (train-clean-100) of LibriTTS dataset. Following configs are needed:
@@ -88,8 +94,8 @@ The pretrained model will be provided as part of this baseline. It has been trai
 ### Neural source-filter model for voice conversion
 
 This module will take 3 inputs: 
-- Mel filterbanks extracted by AM
-- x-vectors
+- Mel filterbanks extracted by SS AM
+- x-vector
 - F0
 
 The pretrained model will be provided as part of this baseline. It has been trained over 100 hour subset (train-clean-100) of LibriTTS dataset. Following configs are needed:
