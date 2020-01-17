@@ -146,6 +146,6 @@ Authors : Brij Mohan Lal Srivastava (INRIA France), Natalia Tomashenko (LIA, Fra
 
 Date : 2020
 
-Contacts : voice.privacy.challenge@gmail.com, brij.srivastava at inria.fr
+Contact : voice.privacy.challenge@gmail.com
 
 ---------------------------------------------------------------------------
