@@ -31,14 +31,12 @@ The datasets for traing/development/evaluation consists of subsets from the foll
 
 The baseline system uses several independent models:
 1. ASR acoustic model to extract BN features (1_asr_am)
-
-
 2. X-vector extractor (2_xvect_extr)
 3. Speech synthesis (SS) acoustic model (3_ss_am)
 4. Neural source filter (NSF) model (4_nsf)
 
-These models optionally:
-* can be trained with the provided scripts;
+These models optionally can be:
+*  trained with the provided scripts;
 or
 * downloaded ... and put in appropriate directories.
 
