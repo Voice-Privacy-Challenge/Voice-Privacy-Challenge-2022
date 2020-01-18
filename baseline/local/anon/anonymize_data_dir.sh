@@ -14,20 +14,16 @@ nj=20
 stage=0
 
 anoni_pool="libritts_train_other_500" # change this to the data you want to use for anonymization pool
-data_netcdf=/home/bsrivast/asr_data/LibriTTS/am_nsf_data # change this to dir where VC features data will be stored
+data_netcdf= # change this to dir where VC features data will be stored
 
 # Chain model for PPG extraction
-ivec_extractor=exp/nnet3_cleaned/extractor # change this to the ivector extractor trained by chain models
-ivec_data_dir=exp/nnet3_cleaned # change this to the directory where ivectors will stored for your data
-
-tree_dir=exp/chain_cleaned/tree_sp # change this to tree dir of your chain model
-model_dir=exp/chain_cleaned/tdnn_1d_sp # change this to your pretrained chain model
-lang_dir=data/lang_chain # change this to the land dir of your chain model
+ppg_model=
+ppg_type=
 
 ppg_dir=exp/nnet3_cleaned # change this to the dir where PPGs will be stored
 
 # x-vector extraction
-xvec_nnet_dir=exp/0007_voxceleb_v2_1a/exp/xvector_nnet_1a # change this to pretrained xvector model downloaded from Kaldi website
+xvec_nnet_dir= # change this to pretrained xvector model downloaded from Kaldi website
 anon_xvec_out_dir=${xvec_nnet_dir}/anon
 
 plda_dir=${xvec_nnet_dir}/xvectors_train
@@ -79,9 +75,9 @@ fi
 # Extract PPGs for source data
 if [ $stage -le 3 ]; then
   printf "${RED}\nStage a.3: PPG extraction for ${data_dir}.${NC}\n"
-  local/featex/extract_ppg.sh --nj $nj --stage 0 ${data_dir} \
-	  ${ivec_extractor} ${ivec_data_dir}/ivectors_${data_dir} \
-	  ${tree_dir} ${model_dir} ${lang_dir} ${ppg_dir}/ppg_${data_dir} || exit 1;
+  local/featex/extract_ppg.sh --nj $nj --stage 0 \
+	  --ppg-type ${ppg_type} \
+	  ${data_dir} ${ppg_model} ${ppg_dir}/ppg_${data_dir} || exit 1;
 fi
 
 # Create netcdf data for voice conversion
@@ -94,7 +90,7 @@ fi
 
 if [ $stage -le 5 ]; then
   printf "${RED}\nStage a.5: Extract melspec from acoustic model for ${data_dir}.${NC}\n"
-  local/vc/am/01_gen.sh ${data_netcdf}/${data_dir} || exit 1;
+  local/vc/am/01_gen.sh ${data_netcdf}/${data_dir} ${ppg_type} || exit 1;
 fi
 
 if [ $stage -le 6 ]; then

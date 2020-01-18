@@ -40,17 +40,15 @@ am_nsf_train_data="libritts_train_clean_100"
 data_netcdf=/DIRECTORY_FOR/am_nsf_data # change this to dir where VC features data will be stored
 
 # Chain model for PPG extraction
-ivec_extractor=exp/asr_ppg_model/nnet3_cleaned/extractor # change this to the ivector extractor trained by chain models
-ivec_data_dir=exp/asr_ppg_model/nnet3_cleaned # change this to the directory where ivectors will stored for your data
+ppg_model=exp/DIRECTORY_FOR/asr_ppg_model
+ppg_dir=${ppg_model}/nnet3_cleaned # change this to the dir where PPGs will be stored
+ppg_type="256"  # It can be either 256-dim bottleneck features or 346-dim WPD features
 
-tree_dir=exp/asr_ppg_model/chain_cleaned/tree_sp # change this to tree dir of your chain model
-model_dir=exp/asr_ppg_model/chain_cleaned/tdnn_1d_sp # change this to your pretrained chain model
-lang_dir=exp/asr_ppg_model/lang_chain # change this to the land dir of your chain model
-
-ppg_dir=exp/asr_ppg_model/nnet3_cleaned # change this to the dir where PPGs will be stored
+# Chain model for ASR evaluation
+asr_eval_model=exp/DIRECTORY_FOR/asr_eval_model
 
 # x-vector extraction
-xvec_nnet_dir=exp/0007_voxceleb_v2_1a/exp/xvector_nnet_1a # change this to pretrained xvector model downloaded from Kaldi website
+xvec_nnet_dir=exp/DIRECTORY_FOR/xvector_extractor/xvector_nnet_1a # change this to pretrained xvector model downloaded from Kaldi website
 anon_xvec_out_dir=${xvec_nnet_dir}/anon
 
 plda_dir=${xvec_nnet_dir}/xvectors_train
@@ -63,7 +61,7 @@ proximity="farthest"      # nearest or farthest speaker to be selected for anony
 eval2_enroll=eval2_enroll
 eval2_trial=eval2_trial
 
-anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}
+anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}_${proximity}
 
 #=========== end config ===========
 
@@ -130,9 +128,8 @@ if [ $stage -le 5 ]; then
   printf "${GREEN}\nStage 5: Anonymizing eval2 data.${NC}\n"
   for name in $eval2_enroll $eval2_trial; do
     local/anon/anonymize_data_dir.sh --nj $nj --anoni-pool ${anoni_pool} \
-	 --data-netcdf ${data_netcdf} --ivec-extractor ${ivec_extractor} \
-	 --ivec-data-dir ${ivec_data_dir} --tree-dir ${tree_dir} \
-	 --model-dir ${model_dir} --lang-dir ${lang_dir} --ppg-dir ${ppg_dir} \
+	 --data-netcdf ${data_netcdf} \
+	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} --ppg-type ${ppg_type} \
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
@@ -157,10 +154,9 @@ if [ $stage -le 7 ] && false; then
   printf "${GREEN}\nStage 7: Anonymizing train data for Informed xvector model.${NC}\n"
   local/data_prep_adv.sh ${librispeech_corpus}/train-clean-360 data/train_clean_360
   
-  local/anon/anonymize_data_dir.sh --nj $nj --stage 4 --anoni-pool ${anoni_pool} \
-	 --data-netcdf ${data_netcdf} --ivec-extractor ${ivec_extractor} \
-	 --ivec-data-dir ${ivec_data_dir} --tree-dir ${tree_dir} \
-	 --model-dir ${model_dir} --lang-dir ${lang_dir} --ppg-dir ${ppg_dir} \
+  local/anon/anonymize_data_dir.sh --nj $nj --stage 0 --anoni-pool ${anoni_pool} \
+	 --data-netcdf ${data_netcdf} \
+	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} --ppg-type ${ppg_type} \
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
@@ -176,9 +172,8 @@ if [ $stage -le 8 ]; then
   local/data_prep_adv.sh ${librispeech_corpus}/dev-clean data/dev_clean
   
   local/anon/anonymize_data_dir.sh --nj $nj --anoni-pool ${anoni_pool} \
-	 --data-netcdf ${data_netcdf} --ivec-extractor ${ivec_extractor} \
-	 --ivec-data-dir ${ivec_data_dir} --tree-dir ${tree_dir} \
-	 --model-dir ${model_dir} --lang-dir ${lang_dir} --ppg-dir ${ppg_dir} \
+	 --data-netcdf ${data_netcdf} \
+	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} --ppg-type ${ppg_type} \
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
@@ -190,5 +185,5 @@ fi
 if [ $stage -le 9 ]; then
   asr_eval_data=dev_clean${anon_data_suffix}
   printf "${GREEN}\nStage 9: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}.${NC}\n"
-  local/asr_eval.sh --nj $nj ${asr_eval_data} exp/asr_eval_model
+  local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model}
 fi

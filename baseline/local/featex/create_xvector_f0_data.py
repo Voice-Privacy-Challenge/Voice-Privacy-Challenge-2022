@@ -19,10 +19,13 @@ pitch_out_dir = join(out_dir, "f0")
 pitch_file = join(data_dir, 'pitch.scp')
 pitch2shape = {}
 for key, mat in kaldi_io.read_mat_scp(pitch_file):
-    pitch2shape[key] = mat.shape
-    kaldi_f0 = mat[:, 1].squeeze()
-    f0 = np.zeros(kaldi_f0.shape)
+    pitch2shape[key] = mat.shape[0]
+    kaldi_f0 = mat[:, 1].squeeze().copy()
     yaapt_f0 = readwrite.read_raw_mat(join(yaap_pitch_dir, key+'.f0'), 1)
+    #unvoiced = np.where(yaapt_f0 == 0)[0]
+    #kaldi_f0[unvoiced] = 0
+    #readwrite.write_raw_mat(kaldi_f0, join(pitch_out_dir, key+'.f0'))
+    f0 = np.zeros(kaldi_f0.shape)
     f0[:yaapt_f0.shape[0]] = yaapt_f0
     readwrite.write_raw_mat(f0, join(pitch_out_dir, key+'.f0'))
 
@@ -31,7 +34,7 @@ for key, mat in kaldi_io.read_mat_scp(pitch_file):
 with open(xvector_file) as f:
     for key, mat in kaldi_io.read_vec_flt_scp(f):
         #print key, mat.shape
-        plen = pitch2shape[key][0]
+        plen = pitch2shape[key]
         mat = mat[np.newaxis]
         xvec = np.repeat(mat, plen, axis=0)
         readwrite.write_raw_mat(xvec, join(xvec_out_dir, key+'.xvector'))

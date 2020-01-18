@@ -2,37 +2,41 @@
 
 #
 # Extract PPGs using chain model
-# This script extract word position dependent phonemes (346) posteriors
+# This script extract word position dependent phonemes (346) posteriors and 256-bottleneck PPGs based on ppg-type  option.
 #
 . path.sh
 . cmd.sh
 
 nj=32
 stage=0
+ppg_type="256"
 
 . utils/parse_options.sh
 
-if [ $# != 7 ]; then
+if [ $# != 3 ]; then
   echo "Usage: "
-  echo "  $0 [options] <srcdir> <ivec-extractor> <ivec-datadir> <tree-dir> <model-dir> <lang-dir> <ppg-destdir>"
+  echo "  $0 [options] <srcdir> <model-dir> <ppg-destdir>"
   echo "Options"
-  echo "   --nj=40     # Number of CPUs to use for feature extraction"
-  echo "   --stage=0     # Extraction stage"
+  echo "   --nj=40             # Number of CPUs to use for feature extraction"
+  echo "   --stage=0           # Extraction stage"
+  echo "   --ppg-type=256/346  # Two types of PPGs can be extracted  "
   exit 1;
 fi
 
 data=$1
+ppg_model=$2
+ppg_dir=$3
+
 original_data_dir=data/${data}
-
 data_dir=data/${data}_hires
-ivec_extractor=$2
-ivec_data_dir=$3
 
-tree_dir=$4
-model_dir=$5
-lang_dir=$6
+ivec_extractor=${ppg_model}/nnet3_cleaned/extractor
+ivec_data_dir=${ppg_model}/nnet3_cleaned/ivectors_${data}_hires
 
-ppg_dir=$7
+tree_dir=${ppg_model}/chain_cleaned/tree_sp
+model_dir=${ppg_model}/chain_cleaned/tdnn_1d_sp
+lang_dir=${ppg_model}/lang_chain
+
 
 
 export LC_ALL=C
@@ -46,7 +50,14 @@ if [ $stage -le 0 ]; then
 fi
 
 if [ $stage -le 1 ]; then
-  steps/nnet3/chain/get_phone_post.sh --cmd "$train_cmd" --nj $nj \
+  if [ "$ppg_type" = "346" ]; then
+    steps/nnet3/chain/get_phone_post.sh --cmd "$train_cmd" --nj $nj \
        	--remove-word-position-dependency false --online-ivector-dir ${ivec_data_dir} \
-	${tree_dir} ${model_dir} ${lang_dir} ${data_dir} ${ppg_dir}
+	${tree_dir} ${model_dir} ${lang_dir} ${data_dir} ${ppg_dir} || exit 1;
+  elif [ "$ppg_type" = "256" ]; then
+    # Keeping nj to 1 due to GPU memory issues
+    local/featex/extract_ppg_256.sh --cmd "$train_cmd" --nj 1 \
+	--iv-root ${ivec_data_dir} --model-dir ${model_dir} \
+       	${data} ${ppg_dir} || exit 1;
+  fi
 fi
