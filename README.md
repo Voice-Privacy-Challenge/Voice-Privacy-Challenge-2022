@@ -7,7 +7,7 @@ Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for
 
 1. `git clone --recurse-submodules https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020.git`
 2. Download the pretrained models from the challenge website and extract them in `baseline/exp` directory.
-3. Install Kaldi (see kaldi/INSTALL)
+3. Install Kaldi (follow kaldi/INSTALL)
 4. Create Python virtual environment for dependencies using `virtualenv venv && . venv/bin/activate`. Then install requirements in this `venv` using `pip install -r baseline/requirements.txt`.
 5. Install external dependecies as described below.
 6. Configure appropriate paths in `baseline/path.sh` as described below.

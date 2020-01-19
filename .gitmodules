@@ -1,3 +1,6 @@
 [submodule "kaldi"]
 	path = kaldi
 	url = https://github.com/kaldi-asr/kaldi.git
+[submodule "nii"]
+	path = nii
+	url = https://github.com/nii-yamagishilab/project-CURRENNT-public
