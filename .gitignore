@@ -1,2 +1,6 @@
 /venv/
 *.pyc
+*.tar.gz
+netcdf*/
+/.done-*
+/boost_*/
