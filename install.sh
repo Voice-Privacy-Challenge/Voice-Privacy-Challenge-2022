@@ -27,6 +27,7 @@ if [ ! -f $mark ]; then
   pip install -r baseline/requirements.txt || exit 1
   touch $mark
 fi
+echo ". $venv_dir/bin/activate" > env.sh
 
 mark=.done-kaldi-tools
 if [ ! -f $mark ]; then
@@ -68,7 +69,10 @@ if [ ! -f $mark ]; then
   cd $home
   touch $mark
 fi
+netcdf_bin=$netcdf_dir/build/bin
 netcdf_lib=$netcdf_dir/build/lib
+echo "export PATH=$netcdf_bin:\$PATH" >> env.sh
+echo "export LD_LIBRARY_PATH=$netcdf_bin:\$LD_LIBRARY_PATH" >> env.sh
 
 mark=.done-boost
 if [ ! -f $mark ]; then
@@ -88,6 +92,7 @@ if [ ! -f $mark ]; then
   touch $mark
 fi
 boost_root=$boost_dir
+echo "export LD_LIBRARY_PATH=$boost_root/stage/lib:\$LD_LIBRARY_PATH" >> env.sh
 
 mark=.done-nii
 if [ ! -f $mark ]; then
@@ -105,5 +110,7 @@ if [ ! -f $mark ]; then
   cd $home
   touch $mark
 fi
+echo "export PATH=$nii_dir/build:\$PATH" >> env.sh
+echo "export PYTHONPATH=$nii_dir:$nii_dir/pyTools:$PWD/nii_scripts:\$PYTHONPATH" >> env.sh
 
 echo Done

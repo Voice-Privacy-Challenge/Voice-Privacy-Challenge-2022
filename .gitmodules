@@ -4,3 +4,6 @@
 [submodule "nii"]
 	path = nii
 	url = https://github.com/nii-yamagishilab/project-CURRENNT-public
+[submodule "nii_scripts"]
+	path = nii_scripts
+	url = https://github.com/nii-yamagishilab/project-CURRENNT-scripts

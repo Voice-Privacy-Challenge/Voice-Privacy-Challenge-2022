@@ -4,13 +4,7 @@ export PATH=$PWD/utils/:$KALDI_ROOT/tools/openfst/bin:$KALDI_ROOT/tools/sph2pipe
 . $KALDI_ROOT/tools/config/common_path.sh
 export LC_ALL=C
 
-NETCDF_BIN=/home/bsrivast/ssw_paper/netcdf-c-4.3.3.1/build/bin
-CURRENNT_PUBLIC=/PATH_TO/project-CURRENNT-public
-CURRENNT_SCRIPTS=/PATH_TO/project-CURRENNT-scripts
-
-PYTOOLS_PATH=${CURRENNT_PUBLIC}/pyTools
-export PYTHONPATH=$PYTHONPATH:$PYTOOLS_PATH
-export PATH=$PATH:$NETCDF_BIN
+. ../env.sh
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
