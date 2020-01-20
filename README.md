@@ -6,16 +6,12 @@ Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for
 ## Install
 
 1. `git clone --recurse-submodules https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020.git`
-2. Download the pretrained models from the challenge website and extract them in `baseline/exp` directory.
-3. Install Kaldi (follow kaldi/INSTALL)
-4. Create Python virtual environment for dependencies using `virtualenv venv && . venv/bin/activate`. Then install requirements in this `venv` using `pip install -r baseline/requirements.txt`.
-5. Install external dependecies as described below.
-6. Configure appropriate paths in `baseline/path.sh` as described below.
+2. cd Voice-Privacy-Challenge-2020
+3. ./install.sh
+4. ./download_models.sh
 
-## More details
 
-To successfully run the recipe, you must configure some variables in the scripts, particularly in the main script: `run.sh`. VPC uses several datasets and modules to evaluate generalized anonymization techniques. 
-
+## General information
 
 ### Datasets
 
@@ -39,7 +35,14 @@ The baseline system uses several independent models:
 These models optionally can be:
 *  trained with the provided scripts;
 or
-* downloaded ... and put in appropriate directories.
+* downloaded (done by ./download_models.sh)
+
+
+
+
+
+
+
 
 
 
@@ -85,13 +88,6 @@ This is a pretrained xvector model trained over VoxCeleb 1 & 2. It should be ext
 
 For voice conversion we utilize the Neural source-filter model provided by NII, Japan. You must clone and install it at your desired location. These locations will be needed to configure the recipe.
 
-### Installation
-
-NII provides two repositories:
-- [CURRENNT base code](https://github.com/nii-yamagishilab/project-CURRENNT-public)
-- [AM and NSF scripts](https://github.com/nii-yamagishilab/project-CURRENNT-scripts)
-
-Install these two based on the instructions at their respective github READMEs. After installation follow below instructions for configuring the recipe.
 
 ### Acoustic model for voice conversion
 
@@ -102,7 +98,7 @@ This module will take 3 inputs:
 
 The pretrained model will be provided as part of this baseline. It has been trained over 100 hour subset (train-clean-100) of LibriTTS dataset. Following configs are needed:
 
-  1. Open `baseline/path.sh` and change the variables `CURRENT_PUBLIC` and `CURRENNT_SCRIPTS` to directory where you cloned [CURRENNT base code](https://github.com/nii-yamagishilab/project-CURRENNT-public) and [AM and NSF scripts](https://github.com/nii-yamagishilab/project-CURRENNT-scripts) respectively.
+ 
 
 ### Neural source-filter model for voice conversion
 
@@ -113,10 +109,8 @@ This module will take 3 inputs:
 
 The pretrained model will be provided as part of this baseline. It has been trained over 100 hour subset (train-clean-100) of LibriTTS dataset. Following configs are needed:
 
-**NO changes required if acoustic model setup is done**, otherwise:
 
-  1. Open `baseline/path.sh` and change the variables `CURRENT_PUBLIC` and `CURRENNT_SCRIPTS` to directory where you cloned [CURRENNT base code](https://github.com/nii-yamagishilab/project-CURRENNT-public) and [AM and NSF scripts](https://github.com/nii-yamagishilab/project-CURRENNT-scripts) respectively.
-
+ 
 
 ## License
 
