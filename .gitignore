@@ -5,3 +5,4 @@ netcdf*/
 /.done-*
 /boost_*/
 /env.sh
+/baseline/exp/
