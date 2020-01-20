@@ -4,3 +4,4 @@
 netcdf*/
 /.done-*
 /boost_*/
+/env.sh
