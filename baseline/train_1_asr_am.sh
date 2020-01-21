@@ -1,5 +1,6 @@
 #!/bin/bash
-
+#NT 
+# Training ASR AM to extract BN features (see the trained model in /baseline/exp/models/1_asr_am/) on LibriSpeech-train-clean-100 + LibriSpeech-train-other-500
 set -e
 
 #TO CORRECT
@@ -12,30 +13,51 @@ stage=1
 
 nj=40
 
+# Set this to somewhere where you want to put your data, or where
+# someone else has already put it.  You'll want to change this
+# if you're not on the CLSP grid.
+data=$PWD/LibriSpeech
+
+mkdir -p $data
+
+# base url for downloads.
+data_url=www.openslr.org/resources/12
+lm_url=www.openslr.org/resources/11
+mfccdir=mfcc
+
+stage=4 #TO CORRECT
+
+nj=40
+
 . parse_options.sh
 
 
+#ln -s ../../../../kaldi/egs/librispeech/s5/local local_librispeech
 
 if [ $stage -le 1 ]; then
   # download the data.  Note: we're using the 100 hour setup for
   # now; later in the script we'll download more and use it to train neural
   # nets.
-  for part in dev-clean test-clean train-clean-100 train-clean-500; do
-    local/download_and_untar.sh $data $data_url $part
+  for part in dev-clean test-clean train-clean-100 train-other-500; do
+    local_librispeech/download_and_untar.sh $data $data_url $part
   done
 
 
   # download the LM resources
-  local/download_lm.sh $lm_url data/local/lm
+  local_librispeech/download_lm.sh $lm_url data/local_librispeech/lm
 fi
 
 if [ $stage -le 2 ]; then
   # format the data as Kaldi data directories
-  for part in dev-clean test-clean train-clean-100 train-clean-500; do
+  for part in dev-clean test-clean train-clean-100 train-other-500; do
     # use underscore-separated names in data directories.
-    local/data_prep.sh $data/LibriSpeech/$part data/$(echo $part | sed s/-/_/g)
+    local_librispeech/data_prep.sh $data/LibriSpeech/$part data/$(echo $part | sed s/-/_/g)
   done
 fi
+
+
+exit 1
+
 
 ## Optional text corpus normalization and LM training
 ## These scripts are here primarily as a documentation of the process that has been
@@ -43,44 +65,39 @@ fi
 ## this step. The pre-built language models and the pronunciation lexicon, as
 ## well as some intermediate data(e.g. the normalized text used for LM training),
 ## are available for download at http://www.openslr.org/11/
-#local/lm/train_lm.sh $LM_CORPUS_ROOT \
-#  data/local/lm/norm/tmp data/local/lm/norm/norm_texts data/local/lm
+#local_librispeech/lm/train_lm.sh $LM_CORPUS_ROOT \
+#  data/local_librispeech/lm/norm/tmp data/local_librispeech/lm/norm/norm_texts data/local_librispeech/lm
 
 ## Optional G2P training scripts.
 ## As the LM training scripts above, this script is intended primarily to
 ## document our G2P model creation process
-#local/g2p/train_g2p.sh data/local/dict/cmudict data/local/lm
+#local_librispeech/g2p/train_g2p.sh data/local_librispeech/dict/cmudict data/local_librispeech/lm
 
 if [ $stage -le 3 ]; then
   # when the "--stage 3" option is used below we skip the G2P steps, and use the
   # lexicon we have already downloaded from openslr.org/11/
-  local/prepare_dict.sh --stage 3 --nj $nj --cmd "$train_cmd" \
-   data/local/lm data/local/lm data/local/dict_nosp
+  local_librispeech/prepare_dict.sh --stage 3 --nj $nj --cmd "$train_cmd" \
+   data/local_librispeech/lm data/local_librispeech/lm data/local_librispeech/dict_nosp
 
-  utils/prepare_lang.sh data/local/dict_nosp \
-   "<UNK>" data/local/lang_tmp_nosp data/lang_nosp
+  utils/prepare_lang.sh data/local_librispeech/dict_nosp \
+   "<UNK>" data/local_librispeech/lang_tmp_nosp data/lang_nosp
 
-  local/format_lms.sh --src-dir data/lang_nosp data/local/lm
+  local_librispeech/format_lms.sh --src-dir data/lang_nosp data/local_librispeech/lm
 fi
 
 if [ $stage -le 4 ]; then
   # Create ConstArpaLm format language model for full 3-gram and 4-gram LMs
-  utils/build_const_arpa_lm.sh data/local/lm/lm_tglarge.arpa.gz \
+  utils/build_const_arpa_lm.sh data/local_librispeech/lm/lm_tglarge.arpa.gz \
     data/lang_nosp data/lang_nosp_test_tglarge
-  utils/build_const_arpa_lm.sh data/local/lm/lm_fglarge.arpa.gz \
-    data/lang_nosp data/lang_nosp_test_fglarge
+  #utils/build_const_arpa_lm.sh data/local_librispeech/lm/lm_fglarge.arpa.gz \
+  #  data/lang_nosp data/lang_nosp_test_fglarge
 fi
 
-#if [ $stage -le 5 ]; then
-#  # spread the mfccs over various machines, as this data-set is quite large.
-#  if [[  $(hostname -f) ==  *.clsp.jhu.edu ]]; then
-#    mfcc=$(basename mfccdir) # in case was absolute pathname (unlikely), get basename.
-#    utils/create_split_dir.pl /export/b{02,11,12,13}/$USER/kaldi-data/egs/librispeech/s5/$mfcc/storage \
-#     $mfccdir/storage
-#  fi
-#fi
+#combine train_100 and train_500
+if [ $stage -le 5 ]; then
+  utils/data/combine_data.sh train_600 train_100 train_500 || exit 1
+fi
 
-#merge train_100 and train_500 ....
 
 if [ $stage -le 6 ]; then
   for part in dev_clean test_clean train_600; do
@@ -125,11 +142,11 @@ if [ $stage -le 9 ]; then
     for test in test_clean dev_clean; do
       steps/decode.sh --nj $nj --cmd "$decode_cmd" exp/tri1/graph_nosp_tgsmall \
                       data/$test exp/tri1/decode_nosp_tgsmall_$test
-      steps/lmrescore.sh --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tgmed} \
-                         data/$test exp/tri1/decode_nosp_{tgsmall,tgmed}_$test
-      steps/lmrescore_const_arpa.sh \
-        --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tglarge} \
-        data/$test exp/tri1/decode_nosp_{tgsmall,tglarge}_$test
+#      steps/lmrescore.sh --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tgmed} \
+#                         data/$test exp/tri1/decode_nosp_{tgsmall,tgmed}_$test
+#      steps/lmrescore_const_arpa.sh \
+#        --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tglarge} \
+#        data/$test exp/tri1/decode_nosp_{tgsmall,tglarge}_$test
     done
   )&
 fi
@@ -146,11 +163,11 @@ if [ $stage -le 10 ]; then
     for test in test_clean dev_clean; do
       steps/decode.sh --nj $nj --cmd "$decode_cmd" exp/tri2b/graph_nosp_tgsmall \
                       data/$test exp/tri2b/decode_nosp_tgsmall_$test
-      steps/lmrescore.sh --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tgmed} \
-                         data/$test exp/tri2b/decode_nosp_{tgsmall,tgmed}_$test
-      steps/lmrescore_const_arpa.sh \
-        --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tglarge} \
-        data/$test exp/tri2b/decode_nosp_{tgsmall,tglarge}_$test
+#      steps/lmrescore.sh --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tgmed} \
+#                         data/$test exp/tri2b/decode_nosp_{tgsmall,tgmed}_$test
+#      steps/lmrescore_const_arpa.sh \
+#        --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tglarge} \
+#        data/$test exp/tri2b/decode_nosp_{tgsmall,tglarge}_$test
     done
   )&
 fi
@@ -167,11 +184,11 @@ if [ $stage -le 11 ]; then
       steps/decode_fmllr.sh --nj $nj --cmd "$decode_cmd" \
                             exp/tri3b/graph_nosp_tgsmall data/$test \
                             exp/tri3b/decode_nosp_tgsmall_$test
-      steps/lmrescore.sh --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tgmed} \
-                         data/$test exp/tri3b/decode_nosp_{tgsmall,tgmed}_$test
-      steps/lmrescore_const_arpa.sh \
-        --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tglarge} \
-        data/$test exp/tri3b/decode_nosp_{tgsmall,tglarge}_$test
+#      steps/lmrescore.sh --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tgmed} \
+#                         data/$test exp/tri3b/decode_nosp_{tgsmall,tgmed}_$test
+#      steps/lmrescore_const_arpa.sh \
+#        --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tglarge} \
+#        data/$test exp/tri3b/decode_nosp_{tgsmall,tglarge}_$test
     done
   )&
 fi
@@ -179,23 +196,23 @@ fi
 if [ $stage -le 19 ]; then
   # this does some data-cleaning. The cleaned data should be useful when we add
   # the neural net and chain systems.  (although actually it was pretty clean already.)
-  local/run_cleanup_segmentation.sh
+  local_librispeech/run_cleanup_segmentation.sh
 fi
 
 if [ $stage -le 20 ]; then
   # train and test nnet3 tdnn models on the entire data with data-cleaning.
-  # set "--stage 11" if you have already run local/nnet3/run_tdnn.sh
-  local/chain/run_tdnn.sh \
+  # set "--stage 11" if you have already run local_librispeech/nnet3/run_tdnn.sh
+  local_librispeech/chain/run_tdnn.sh \
     --stage 3 \
 	--train_stage -10
 fi
 
 # The nnet3 TDNN recipe:
-# local/nnet3/run_tdnn.sh # set "--stage 11" if you have already run local/chain/run_tdnn.sh
+# local_librispeech/nnet3/run_tdnn.sh # set "--stage 11" if you have already run local_librispeech/chain/run_tdnn.sh
 
 # # train models on cleaned-up data
-# # we've found that this isn't helpful-- see the comments in local/run_data_cleaning.sh
-# local/run_data_cleaning.sh
+# # we've found that this isn't helpful-- see the comments in local_librispeech/run_data_cleaning.sh
+# local_librispeech/run_data_cleaning.sh
 
 # Wait for decodings in the background
 wait

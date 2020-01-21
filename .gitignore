@@ -6,3 +6,5 @@ netcdf*/
 /boost_*/
 /env.sh
 /baseline/exp/
+/baseline/LibriSpeech/
+/baseline/data/

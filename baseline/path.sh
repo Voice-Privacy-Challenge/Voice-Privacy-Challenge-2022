@@ -6,6 +6,10 @@ export LC_ALL=C
 
 . ../env.sh
 
+# TO CORRECT
+bin=~/work/Challenge/Baseline-N/bin/flac
+export PATH=$bin:$PATH
+
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
