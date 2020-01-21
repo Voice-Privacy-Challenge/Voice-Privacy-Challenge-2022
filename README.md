@@ -6,9 +6,8 @@ Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for
 ## Install
 
 1. `git clone --recurse-submodules https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020.git`
-2. cd Voice-Privacy-Challenge-2020
-3. ./install.sh
-4. ./download_models.sh
+2. ./install.sh
+3. ./download_models.sh
 
 
 ## General information
