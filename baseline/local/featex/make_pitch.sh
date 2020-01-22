@@ -186,9 +186,9 @@ for n in $(seq $nj); do
   cat $pitch_dir/raw_pitch_$name.$n.scp || exit 1
 done > $data/pitch.scp || exit 1
 
-for n in $(seq $nj); do
-  cat $pitch_dir/processed_pitch_$name.$n.scp || exit 1
-done > $data/processed_pitch.scp || exit 1
+#for n in $(seq $nj); do
+#  cat $pitch_dir/processed_pitch_$name.$n.scp || exit 1
+#done > $data/processed_pitch.scp || exit 1
 
 if $write_utt2num_frames; then
   for n in $(seq $nj); do

@@ -103,6 +103,7 @@ val_list = tmp_path + '/train_100/scp/dev.lst'
 #  train_utts = -1: all utterances as training set, no validation set
 train_utts = 1000
 
+trim_generated_waveform = upsampling_rate * 2
 
 # ----- Network training configuration
 # directory of model

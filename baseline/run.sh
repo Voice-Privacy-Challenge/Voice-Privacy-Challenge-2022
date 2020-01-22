@@ -31,18 +31,18 @@ export LC_ALL=C
 nj=20
 stage=-1
 
-librispeech_corpus=/DIRECORY_FOR/LibriSpeech
-libritts_corpus=/DIRECORY_FOR/LibriTTS # LibriTTS train-other-500 corpus should be present here
+librispeech_corpus=/DIRECORY_FOR/LibriSpeech # LibriSpeech corpus
+libritts_corpus=/DIRECORY_FOR/LibriTTS       # LibriTTS train-other-500 corpus should be present here
 
-anoni_pool="libritts_train_other_500" # change this to the data you want to use for anonymization pool
+anoni_pool="libritts_train_other_500"        # change this to the data you want to use for anonymization pool
 am_nsf_train_data="libritts_train_clean_100"
 
-data_netcdf=/DIRECTORY_FOR/am_nsf_data # change this to dir where VC features data will be stored
+data_netcdf=/DIRECTORY_FOR/am_nsf_data       # change this to dir where VC features data will be stored
 
 # Chain model for PPG extraction
 ppg_model=exp/DIRECTORY_FOR/asr_ppg_model
-ppg_dir=${ppg_model}/nnet3_cleaned # change this to the dir where PPGs will be stored
-ppg_type="256"  # It can be either 256-dim bottleneck features or 346-dim WPD features
+ppg_dir=${ppg_model}/nnet3_cleaned           # change this to the dir where PPGs will be stored
+ppg_type="256"                               # It can be either 256-dim bottleneck features or 346-dim WPD features
 
 # Chain model for ASR evaluation
 asr_eval_model=exp/DIRECTORY_FOR/asr_eval_model
@@ -51,12 +51,15 @@ asr_eval_model=exp/DIRECTORY_FOR/asr_eval_model
 xvec_nnet_dir=exp/DIRECTORY_FOR/xvector_extractor/xvector_nnet_1a # change this to pretrained xvector model downloaded from Kaldi website
 anon_xvec_out_dir=${xvec_nnet_dir}/anon
 
-plda_dir=${xvec_nnet_dir}/xvectors_train
+# ASV_eval config
+asv_eval_model=exp/asv_eval_model         # Path where ASV_eval xvector model is stored (final.raw)
+plda_dir=${asv_eval_model}/xvectors_train # Path where mean.vec, transform.mat and plda is stored
 
-pseudo_xvec_rand_level=spk  # spk (all utterances will have same xvector) or utt (each utterance will have randomly selected xvector)
-cross_gender="false"        # true, same gender xvectors will be selected; false, other gender xvectors
-distance="plda"           # cosine or plda
-proximity="farthest"      # nearest or farthest speaker to be selected for anonymization
+# Anonymization configs
+pseudo_xvec_rand_level=spk                # spk (all utterances will have same xvector) or utt (each utterance will have randomly selected xvector)
+cross_gender="false"                      # true, same gender xvectors will be selected; false, other gender xvectors
+distance="plda"                           # cosine or plda
+proximity="farthest"                      # nearest or farthest speaker to be selected for anonymization
 
 eval2_enroll=eval2_enroll
 eval2_trial=eval2_trial
@@ -142,11 +145,14 @@ fi
 if [ $stage -le 6 ]; then
   printf "${GREEN}\nStage 6: Evaluate the dataset using speaker verification.${NC}\n"
   printf "${RED}**Exp 0.2 baseline: Eval 2, enroll - original, trial - original**${NC}\n"
-  local/asv_eval.sh ${eval2_enroll} ${eval2_trial} || exit 1;
+  local/asv_eval.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
+	  ${eval2_enroll} ${eval2_trial} || exit 1;
   printf "${RED}**Exp 3: Eval 2, enroll - original, trial - anonymized**${NC}\n"
-  local/asv_eval.sh ${eval2_enroll} ${eval2_trial}${anon_data_suffix} || exit 1;
+  local/asv_eval.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
+	  ${eval2_enroll} ${eval2_trial}${anon_data_suffix} || exit 1;
   printf "${RED}**Exp 4: Eval 2, enroll - anonymized, trial - anonymized**${NC}\n"
-  local/asv_eval.sh ${eval2_enroll}${anon_data_suffix} ${eval2_trial}${anon_data_suffix} || exit 1;
+  local/asv_eval.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
+	  ${eval2_enroll}${anon_data_suffix} ${eval2_trial}${anon_data_suffix} || exit 1;
 fi
 
 # Not anonymizing train-clean-360 here since it takes enormous amount of time and memory

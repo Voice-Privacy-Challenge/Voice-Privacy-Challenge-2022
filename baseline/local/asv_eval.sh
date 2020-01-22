@@ -70,8 +70,8 @@ if [ $stage -le 3 ]; then
     ivector-plda-scoring --normalize-length=true \
     --num-utts=ark:${nnet_dir}/xvectors_${libri_enroll}/num_utts.ark \
     "ivector-copy-plda --smoothing=0.0 $plda_dir/plda - |" \
-    "ark:ivector-mean ark:data/${libri_enroll}/spk2utt scp:${nnet_dir}/xvectors_${libri_enroll}/xvector.scp ark:- | ivector-subtract-global-mean $nnet_dir/xvectors_train/mean.vec ark:- ark:- | transform-vec $nnet_dir/xvectors_train/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
-    "ark:ivector-subtract-global-mean $nnet_dir/xvectors_train/mean.vec scp:$nnet_dir/xvectors_${libri_trials}/xvector.scp ark:- | transform-vec $nnet_dir/xvectors_train/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
+    "ark:ivector-mean ark:data/${libri_enroll}/spk2utt scp:${nnet_dir}/xvectors_${libri_enroll}/xvector.scp ark:- | ivector-subtract-global-mean $plda_dir/mean.vec ark:- ark:- | transform-vec $plda_dir/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
+    "ark:ivector-subtract-global-mean $plda_dir/mean.vec scp:$nnet_dir/xvectors_${libri_trials}/xvector.scp ark:- | transform-vec $plda_dir/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
     "cat '$librispeech_trials_file' | cut -d\  --fields=1,2 |" exp/scores_libri_trials || exit 1;
 
   utils/filter_scp.pl $libri_male exp/scores_libri_trials > exp/scores_libri_male
