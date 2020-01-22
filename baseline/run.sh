@@ -101,6 +101,7 @@ fi
 if [ $stage -le 3 ]; then
   # Prepare data for libritts-train-other-500
   local/data_prep_libritts.sh ${libritts_corpus}/train-other-500 data/${anoni_pool}
+  local/fix_data_dir.sh data/${anoni_pool}
   printf "${GREEN}\nStage 3: Extracting xvectors for anonymization pool.${NC}\n"
   local/featex/01_extract_xvectors.sh --nj $nj data/${anoni_pool} ${xvec_nnet_dir} \
 	  ${anon_xvec_out_dir}
@@ -109,21 +110,7 @@ fi
 # Make evaluation data
 if [ $stage -le 4 ]; then
   printf "${GREEN}\nStage 4: Making evaluation data${NC}\n"
-  python local/make_librispeech_eval2.py proto/eval2 ${librispeech_corpus} "" || exit 1;
-
-  # Sort and fix all data directories
-  for name in ${eval2_enroll} ${eval2_trial}; do
-    echo "Sorting data: $name"
-    for f in `ls data/${name}`; do
-      mv data/${name}/$f data/${name}/${f}.u
-      sort -u data/${name}/${f}.u > data/${name}/$f
-      rm data/${name}/${f}.u
-    done
-    utils/utt2spk_to_spk2utt.pl data/${name}/utt2spk > data/${name}/spk2utt
-
-    utils/fix_data_dir.sh data/${name}
-    utils/validate_data_dir.sh --no-feats --no-text data/${name}
-  done
+  local/make_eval2.py proto/eval2 ${librispeech_corpus} ${eval2_enroll} ${eval2_trial}
 fi
 
 # Extract xvectors from data which has to be anonymized
