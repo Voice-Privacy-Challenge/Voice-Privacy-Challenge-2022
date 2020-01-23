@@ -67,15 +67,9 @@ anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}
 
 #=========== end config ===========
 
+#Download data
 
 
-
-
-# Download pretrained models
-if [ $stage -le -1 ]; then
-  printf "${GREEN}\nStage -1: Downloading all the pretrained models.${NC}\n"
-  local/download_pretrained.sh
-fi
 
 
 # Train ASR acoustic model to extract BN features (1_asr_am)

@@ -8,3 +8,7 @@ netcdf*/
 /baseline/exp/
 /baseline/LibriSpeech/
 /baseline/data/
+/baseline/mfcc/
+/baseline/DIRECORY_FOR/
+/baseline/run_temp.sh
+
