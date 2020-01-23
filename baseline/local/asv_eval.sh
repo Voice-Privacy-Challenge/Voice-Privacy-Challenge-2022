@@ -15,8 +15,8 @@ set -e
 mfccdir=`pwd`/mfcc
 vaddir=`pwd`/mfcc
 
-nnet_dir=exp/0007_voxceleb_v2_1a/exp/xvector_nnet_1a # Pretrained model downloaded from Kaldi website
-plda_dir=${nnet_dir}/xvectors_train
+nnet_dir= # Pretrained model 
+plda_dir=
 
 stage=1
 

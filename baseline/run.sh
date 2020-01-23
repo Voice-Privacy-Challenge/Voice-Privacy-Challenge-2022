@@ -31,8 +31,8 @@ export LC_ALL=C
 nj=20
 stage=-1
 
-librispeech_corpus=/DIRECORY_FOR/LibriSpeech # LibriSpeech corpus
-libritts_corpus=/DIRECORY_FOR/LibriTTS       # LibriTTS train-other-500 corpus should be present here
+librispeech_corpus=/DIRECTORY_FOR/LibriSpeech # LibriSpeech corpus
+libritts_corpus=/DIRECTORY_FOR/LibriTTS       # LibriTTS train-other-500 corpus should be present here
 
 anoni_pool="libritts_train_other_500"        # change this to the data you want to use for anonymization pool
 am_nsf_train_data="libritts_train_clean_100"
@@ -40,15 +40,14 @@ am_nsf_train_data="libritts_train_clean_100"
 data_netcdf=/DIRECTORY_FOR/am_nsf_data       # change this to dir where VC features data will be stored
 
 # Chain model for PPG extraction
-ppg_model=exp/DIRECTORY_FOR/asr_ppg_model
+ppg_model=exp/models/1_asr_am/exp
 ppg_dir=${ppg_model}/nnet3_cleaned           # change this to the dir where PPGs will be stored
-ppg_type="256"                               # It can be either 256-dim bottleneck features or 346-dim WPD features
 
 # Chain model for ASR evaluation
 asr_eval_model=exp/DIRECTORY_FOR/asr_eval_model
 
 # x-vector extraction
-xvec_nnet_dir=exp/DIRECTORY_FOR/xvector_extractor/xvector_nnet_1a # change this to pretrained xvector model downloaded from Kaldi website
+xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a # change this to pretrained xvector model downloaded from Kaldi website
 anon_xvec_out_dir=${xvec_nnet_dir}/anon
 
 # ASV_eval config
@@ -71,19 +70,17 @@ anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}_${p
 # Download pretrained models
 if [ $stage -le -1 ]; then
   printf "${GREEN}\nStage -1: Downloading all the pretrained models.${NC}\n"
-  local/download_pretrained.sh
+  local/download_models.sh
 fi
 
 if [ $stage -le 0 ] && false; then
   printf "${GREEN}\nStage 0: Preparing training data for AM and NSF models.${NC}\n"
   local/data_prep_libritts.sh ${libritts_corpus}/train-clean-100 data/${am_nsf_train_data}
+  utils/fix_data_dir.sh data/${am_nsf_train_data}
   
   local/run_prepfeats_am_nsf.sh --nj $nj \
-	 --ivec-extractor ${ivec_extractor} \
-	 --ivec-data-dir ${ivec_data_dir} --tree-dir ${tree_dir} \
-	 --model-dir ${model_dir} --lang-dir ${lang_dir} --ppg-dir ${ppg_dir} \
+	 --ppg-model ${model_dir} --ppg-dir ${ppg_dir} \
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
-	 --plda-dir ${plda_dir} \
 	 ${am_nsf_train_data} ${data_netcdf} || exit 1;
 fi
 
@@ -101,7 +98,7 @@ fi
 if [ $stage -le 3 ]; then
   # Prepare data for libritts-train-other-500
   local/data_prep_libritts.sh ${libritts_corpus}/train-other-500 data/${anoni_pool}
-  local/fix_data_dir.sh data/${anoni_pool}
+  utils/fix_data_dir.sh data/${anoni_pool}
   printf "${GREEN}\nStage 3: Extracting xvectors for anonymization pool.${NC}\n"
   local/featex/01_extract_xvectors.sh --nj $nj data/${anoni_pool} ${xvec_nnet_dir} \
 	  ${anon_xvec_out_dir}
@@ -119,7 +116,7 @@ if [ $stage -le 5 ]; then
   for name in $eval2_enroll $eval2_trial; do
     local/anon/anonymize_data_dir.sh --nj $nj --anoni-pool ${anoni_pool} \
 	 --data-netcdf ${data_netcdf} \
-	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} --ppg-type ${ppg_type} \
+	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} \
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
@@ -149,7 +146,7 @@ if [ $stage -le 7 ] && false; then
   
   local/anon/anonymize_data_dir.sh --nj $nj --stage 0 --anoni-pool ${anoni_pool} \
 	 --data-netcdf ${data_netcdf} \
-	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} --ppg-type ${ppg_type} \
+	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} \
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
@@ -166,7 +163,7 @@ if [ $stage -le 8 ]; then
   
   local/anon/anonymize_data_dir.sh --nj $nj --anoni-pool ${anoni_pool} \
 	 --data-netcdf ${data_netcdf} \
-	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} --ppg-type ${ppg_type} \
+	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} \
 	 --xvec-nnet-dir ${xvec_nnet_dir} \
 	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
 	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \

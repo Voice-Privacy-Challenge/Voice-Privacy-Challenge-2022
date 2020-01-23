@@ -1,6 +1,8 @@
 #!/bin/bash
 
 #   TO CORECT
+mkdir -p exp data
+pushd ./exp 
 
 # Install expect for downloading files using sftp
 sudo apt install expect

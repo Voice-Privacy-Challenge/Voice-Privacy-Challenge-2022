@@ -10,24 +10,17 @@ nj=40
 stage=0
 
 # Chain model for PPG extraction
-ivec_extractor=exp/nnet3_cleaned/extractor # change this to the ivector extractor trained by chain models
-ivec_data_dir=exp/nnet3_cleaned # change this to the directory where ivectors will stored for your data
+ppg_model=         # change this to your pretrained chain model
+ppg_dir=           # change this to the dir where PPGs will be stored
 
-tree_dir=exp/chain_cleaned/tree_sp # change this to tree dir of your chain model
-model_dir=exp/chain_cleaned/tdnn_1d_sp # change this to your pretrained chain model
-lang_dir=data/lang_chain # change this to the land dir of your chain model
-
-ppg_dir=exp/nnet3_cleaned # change this to the dir where PPGs will be stored
-
-xvec_nnet_dir=exp/0007_voxceleb_v2_1a/exp/xvector_nnet_1a # change this to pretrained xvector model downloaded from Kaldi website
-
-plda_dir=${xvec_nnet_dir}/xvectors_train
+# Xvector extractor
+xvec_nnet_dir=     # change this to pretrained xvector model
 
 #===== end config =========
 
 . utils/parse_options.sh
 
-if [ $# != 1 ]; then
+if [ $# != 2 ]; then
   echo "Usage: "
   echo "  $0 [options] <data-dir>"
   echo "Options"
@@ -64,8 +57,7 @@ test_out=${feat_out_dir}/am_nsf_test # change this to dir where test data will b
 if [ $stage -le 0 ]; then
   echo "Stage 0: PPG extraction."
   local/featex/extract_ppg.sh --nj $nj --stage 0 data/${train_data} \
-	  ${ivec_extractor} ${ivec_data_dir}/ivectors_${train_data} \
-	  ${tree_dir} ${model_dir} ${lang_dir} ${ppg_dir}/ppg_${train_data}
+	  ${ppg_model} ${ppg_dir}/ppg_${train_data}
 fi
 
 # Extract 80 dimensional mel spectrograms

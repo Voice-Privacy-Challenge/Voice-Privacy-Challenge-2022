@@ -9,7 +9,6 @@
 
 nj=32
 stage=0
-ppg_type="256"
 
 . utils/parse_options.sh
 
@@ -19,7 +18,6 @@ if [ $# != 3 ]; then
   echo "Options"
   echo "   --nj=40             # Number of CPUs to use for feature extraction"
   echo "   --stage=0           # Extraction stage"
-  echo "   --ppg-type=256/346  # Two types of PPGs can be extracted  "
   exit 1;
 fi
 
@@ -33,9 +31,7 @@ data_dir=data/${data}_hires
 ivec_extractor=${ppg_model}/nnet3_cleaned/extractor
 ivec_data_dir=${ppg_model}/nnet3_cleaned/ivectors_${data}_hires
 
-tree_dir=${ppg_model}/chain_cleaned/tree_sp
 model_dir=${ppg_model}/chain_cleaned/tdnn_1d_sp
-lang_dir=${ppg_model}/lang_chain
 
 
 
@@ -50,14 +46,8 @@ if [ $stage -le 0 ]; then
 fi
 
 if [ $stage -le 1 ]; then
-  if [ "$ppg_type" = "346" ]; then
-    steps/nnet3/chain/get_phone_post.sh --cmd "$train_cmd" --nj $nj \
-       	--remove-word-position-dependency false --online-ivector-dir ${ivec_data_dir} \
-	${tree_dir} ${model_dir} ${lang_dir} ${data_dir} ${ppg_dir} || exit 1;
-  elif [ "$ppg_type" = "256" ]; then
     # Keeping nj to 1 due to GPU memory issues
-    local/featex/extract_ppg_256.sh --cmd "$train_cmd" --nj 1 \
+    local/featex/extract_bn.sh --cmd "$train_cmd" --nj 1 \
 	--iv-root ${ivec_data_dir} --model-dir ${model_dir} \
        	${data} ${ppg_dir} || exit 1;
-  fi
 fi
