@@ -110,7 +110,7 @@ fi
 # Make evaluation data
 if [ $stage -le 4 ]; then
   printf "${GREEN}\nStage 4: Making evaluation data${NC}\n"
-  local/make_eval2.py proto/eval2 ${librispeech_corpus} ${eval2_enroll} ${eval2_trial}
+  local/make_eval2.sh proto/eval2 ${librispeech_corpus} ${eval2_enroll} ${eval2_trial}
 fi
 
 # Extract xvectors from data which has to be anonymized
