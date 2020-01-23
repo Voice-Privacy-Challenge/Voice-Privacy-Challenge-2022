@@ -3,8 +3,7 @@
 # Training ASR AM to extract BN features (see the trained model in /baseline/exp/models/1_asr_am/) on LibriSpeech-train-clean-100 + LibriSpeech-train-other-500
 set -e
 
-#TO CORRECT
-#export CUDA_VISIBLE_DEVICES=1,2,3,4,5,6,7
+
 
 stage=1
 
@@ -23,9 +22,9 @@ mkdir -p $data
 # base url for downloads.
 data_url=www.openslr.org/resources/12
 lm_url=www.openslr.org/resources/11
-mfccdir=mfcc
+mfccdir=mfcc   #TO CORRECT
 
-stage=4 #TO CORRECT
+stage=19 #TO CORRECT
 
 nj=40
 
@@ -54,10 +53,6 @@ if [ $stage -le 2 ]; then
     local_librispeech/data_prep.sh $data/LibriSpeech/$part data/$(echo $part | sed s/-/_/g)
   done
 fi
-
-
-exit 1
-
 
 ## Optional text corpus normalization and LM training
 ## These scripts are here primarily as a documentation of the process that has been
@@ -95,7 +90,7 @@ fi
 
 #combine train_100 and train_500
 if [ $stage -le 5 ]; then
-  utils/data/combine_data.sh train_600 train_100 train_500 || exit 1
+  utils/data/combine_data.sh data/train_600 data/train_clean_100 data/train_other_500 || exit 1
 fi
 
 

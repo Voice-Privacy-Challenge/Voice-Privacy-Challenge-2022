@@ -1,5 +1,6 @@
 #!/bin/bash
-
+#NT 
+# Training x-vector extractor BN (see the trained model in /baseline/exp/models/2_xvect/) on LibriSpeech-train-clean-100 + LibriSpeech-train-other-500
 
 # TO CORRECT
 
