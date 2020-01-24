@@ -65,9 +65,37 @@ eval2_trial=eval2_trial
 
 anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}
 
+
+# Set this to somewhere where you want to put your data, or where someone else has already put it.  
+data_librispeech=$PWD/LibriSpeech
+data_librispeech=$PWD/voxceleb
+
+
 #=========== end config ===========
 
+
 #Download data
+
+#VoxCeleb
+#......
+
+#LibriSpeech
+# base url for downloads.
+data_url=www.openslr.org/resources/12
+lm_url=www.openslr.org/resources/11
+if [ $stage -le 1 ]; then
+  for part in dev-clean test-clean train-clean-100 train-other-500; do
+    local_librispeech/download_and_untar.sh $data_librispeech $data_url $part
+  done
+  # download the LM resources
+   local_librispeech/download_lm.sh $lm_url data/local_librispeech/lm
+fi
+#LibriTTS
+
+
+
+#Download dev data from server
+#VCTK_dev
 
 
 
