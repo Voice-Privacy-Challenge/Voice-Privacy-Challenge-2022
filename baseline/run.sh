@@ -51,7 +51,7 @@ xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a # change this to pretr
 anon_xvec_out_dir=${xvec_nnet_dir}/anon
 
 # ASV_eval config
-asv_eval_model=exp/asv_eval_model         # Path where ASV_eval xvector model is stored (final.raw)
+asv_eval_model=exp/models/asv_eval_model         # Path where ASV_eval xvector model is stored (final.raw)
 plda_dir=${asv_eval_model}/xvectors_train # Path where mean.vec, transform.mat and plda is stored
 
 # Anonymization configs
