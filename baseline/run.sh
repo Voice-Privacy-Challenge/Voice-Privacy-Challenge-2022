@@ -4,7 +4,7 @@
 # First make sure that path.sh contains correct paths for
 # pyTools written by NII, and a compiled netcdf binary
 #
-# Copyright (C) 2020  <Brij Mohan Lal Srivastava>
+# Copyright (C) 2020  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang,...>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -67,11 +67,6 @@ anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}_${p
 
 #=========== end config ===========
 
-# Download pretrained models
-if [ $stage -le -1 ]; then
-  printf "${GREEN}\nStage -1: Downloading all the pretrained models.${NC}\n"
-  local/download_models.sh
-fi
 
 if [ $stage -le 0 ] && false; then
   printf "${GREEN}\nStage 0: Preparing training data for AM and NSF models.${NC}\n"
