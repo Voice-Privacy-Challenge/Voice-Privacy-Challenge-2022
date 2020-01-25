@@ -20,8 +20,6 @@ The datasets for traing/development/evaluation consists of subsets from the foll
 * [VCTK](https://datashare.is.ed.ac.uk/handle/10283/3443)
 * [VoxCeleb 1 & 2](http://www.robots.ox.ac.uk/~vgg/data/voxceleb/)
 
-- `librispeech_corpus`: change this variable to point at your extracted LibriSpeech corpus.
-- `libritts_corpus`: change this variable to the directory where you have extracted `train-other-500` subset of LibriTTS corpus.
 
 ### Models
 
@@ -39,9 +37,9 @@ or
 
 
     
-## Models info
+### Models info
 
-### BN extractor
+#### BN extractor
 
 This is a chain ASR model trained using LibriSpeech-train-clean-100 and LibriSpeech-train-other-500 for BN feature extraction
 
@@ -49,33 +47,33 @@ This is a chain ASR model trained using LibriSpeech-train-clean-100 and LibriSpe
 - `model_dir`: Directory where pretrained chain model is stored
 
 
-### x-vector extractor
+#### x-vector extractor
 
 This is a xvector model trained over VoxCeleb 1 & 2.
 
 - `xvec_nnet_dir`: Directory where trained xvector network is stored
 - `pseudo_xvec_rand_level`: anonymized x-vectors will be produced at this level, e.g. `spk` or `utt`
-- `cross_gender`: should anonymization be done within same gender or across gender, e.g. `true` or `false`.
+- `cross_gender`: anonymization is done within same gender or across gender, e.g. `true` or `false`.
 
 
-### Acoustic model for voice conversion
+#### Acoustic model for voice conversion
 
 This module takes 3 inputs: 
 - BN
 - x-vector
 - F0
 
-The pretrained model is provided as part of this baseline. It has been trained over LibriTTS-train-clean-100
+The pretrained model is provided as part of this baseline. It is trained on LibriTTS-train-clean-100.
 
 
-### Neural source-filter model for voice conversion
+#### Neural source-filter model for voice conversion
 
 This module will take 3 inputs: 
 - Mel filterbanks extracted by SS AM
 - x-vector
 - F0
 
-The pretrained model will be provided as part of this baseline. It has been trained over 100 hour subset (train-clean-100) of LibriTTS dataset. Following configs are needed:
+The pretrained model will be provided as part of this baseline. It is trained on LibriTTS-train-clean-100.
 
 
  
