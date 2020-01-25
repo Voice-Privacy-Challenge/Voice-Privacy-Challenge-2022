@@ -7,3 +7,6 @@
 [submodule "nii_scripts"]
 	path = nii_scripts
 	url = https://github.com/nii-yamagishilab/project-CURRENNT-scripts
+[submodule "cllr"]
+	path = cllr
+	url = https://gitlab.eurecom.fr/nautsch/cllr.git
