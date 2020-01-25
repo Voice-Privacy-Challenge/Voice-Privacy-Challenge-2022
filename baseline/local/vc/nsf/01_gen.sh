@@ -31,7 +31,7 @@ export TEMP_WAVEFORM_MODEL_DIRECTORY=${proj_dir}/MODELS/h-sinc-NSF
 export TEMP_WAVEFORM_OUTPUT_DIRECTORY="${test_data_dir}/nsf_output_wav"
 
 # Path to the trained_network.jsn (or epoch*.autosave)
-export TEMP_WAVEFORM_MODEL_NETWORK_PATH=exp/nsf_model/trained_network.jsn
+export TEMP_WAVEFORM_MODEL_NETWORK_PATH=exp/models/4_nsf/trained_network.jsn
 
 # Path to a temporary directory to save intermediate files (which will be deleted after generation)
 export TEMP_WAVEFORM_TEMP_OUTPUT_DIRECTORY="${test_data_dir}/output_tmp"
