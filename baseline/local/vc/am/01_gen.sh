@@ -14,7 +14,7 @@ output_tmp_dir=${test_data_dir}/am_out_tmp
 export TEMP_ACOUSTIC_MODEL_INPUT_DIRS=${test_data_dir}/ppg,${test_data_dir}/xvector,${test_data_dir}/f0
 
 # where is the directory of the trained model
-export TEMP_ACOUSTIC_MODEL_DIRECTORY=exp/am_model
+export TEMP_ACOUSTIC_MODEL_DIRECTORY=exp/models/3_ss_am
 
 # where is the trained model?
 #  here, we use network.jsn for demonstration.
