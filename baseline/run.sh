@@ -1,8 +1,6 @@
 #!/bin/bash
-# Script for first voice privacy challenge 2020
+# Script for The First VoicePrivacy Challenge 2020
 #
-# First make sure that path.sh contains correct paths for
-# pyTools written by NII, and a compiled netcdf binary
 #
 # Copyright (C) 2020  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang,...>
 #
