@@ -26,10 +26,10 @@ The datasets for traing/development/evaluation consists of subsets from the foll
 ### Models
 
 The baseline system uses several independent models:
-1. ASR acoustic model to extract BN features (1_asr_am)
-2. X-vector extractor (2_xvect_extr)
-3. Speech synthesis (SS) acoustic model (3_ss_am)
-4. Neural source filter (NSF) model (4_nsf)
+1. ASR acoustic model to extract BN features (asr_am)
+2. X-vector extractor (xvect_extr)
+3. Speech synthesis (SS) acoustic model (ss_am)
+4. Neural source filter (NSF) model (nsf)
 
 These models optionally can be:
 *  trained with the provided scripts;
@@ -38,66 +38,35 @@ or
 
 
 
-
-
-
-
-
-
-
-
-
-=========================================================
-
-    * TO CORRECT // Anonymization using PLDA distance
-
-**NOTE**: These variables will be pre-configured if you have downloaded the 4 pre-trained models (`am_model.tar.gz`, `nsf_model.tar.gz`, `asr_ppg_model.tar.gz` and `asr_eval_model.tar.gz`) and extracted in the `exp` directory of your recipe.
-
-
-## Modules
+    
+## Models info
 
 ### BN extractor
 
-This is a chain ASR model trained using 600 hours (train-clean-100 and train-other-500) of LibriSpeech for BN feature extraction
+This is a chain ASR model trained using LibriSpeech-train-clean-100 and LibriSpeech-train-other-500 for BN feature extraction
 
 - `ivec_extractor`: i-vector extractor trained during training the chain model.
 - `model_dir`: Directory where pretrained chain model is stored
 
-
-### PPG extractor (optional or will be removed later) 
-
-This is a chain ASR model trained using 600 hours (train-clean-100 and train-other-500) of LibriSpeech. It produces 346 dimentional PPGs. This must include:
-
-- `ivec_extractor`: i-vector extractor trained during training the chain model.
-- `tree_dir`: Tree directory created during traininig the chain model.
-- `lang_dir`: Lang directory for chain model
-- `model_dir`: Directory where pretrained chain model is stored
 
 ### x-vector extractor
 
-This is a pretrained xvector model trained over VoxCeleb 1 & 2. It should be extracted in the `exp` directory of this recipe.
+This is a xvector model trained over VoxCeleb 1 & 2.
 
 - `xvec_nnet_dir`: Directory where trained xvector network is stored
 - `pseudo_xvec_rand_level`: anonymized x-vectors will be produced at this level, e.g. `spk` or `utt`
 - `cross_gender`: should anonymization be done within same gender or across gender, e.g. `true` or `false`.
 
-**NOTE**: This model will be downloaded and extracted using `step -1` of the recipe.
-
-## External modules for voice converison
-
-For voice conversion we utilize the Neural source-filter model provided by NII, Japan. You must clone and install it at your desired location. These locations will be needed to configure the recipe.
-
 
 ### Acoustic model for voice conversion
 
-This module will take 3 inputs: 
+This module takes 3 inputs: 
 - BN
 - x-vector
 - F0
 
-The pretrained model will be provided as part of this baseline. It has been trained over 100 hour subset (train-clean-100) of LibriTTS dataset. Following configs are needed:
+The pretrained model is provided as part of this baseline. It has been trained over LibriTTS-train-clean-100
 
- 
 
 ### Neural source-filter model for voice conversion
 
