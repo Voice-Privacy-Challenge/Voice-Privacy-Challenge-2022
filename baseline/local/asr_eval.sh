@@ -1,9 +1,6 @@
 #!/bin/bash
 
-#
-# Extract PPGs using chain model
-# This script extract word position dependent phonemes (346) posteriors
-#
+
 . path.sh
 . cmd.sh
 

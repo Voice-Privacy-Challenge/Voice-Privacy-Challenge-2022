@@ -9,6 +9,6 @@ netcdf*/
 /baseline/LibriSpeech/
 /baseline/data/
 /baseline/mfcc/
-/baseline/DIRECORY_FOR/
+/baseline/DIRECTORY_FOR/
 /baseline/run_temp.sh
-
+/baseline/run_nt_test.sh
