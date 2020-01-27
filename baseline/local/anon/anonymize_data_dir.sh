@@ -76,7 +76,6 @@ fi
 if [ $stage -le 3 ]; then
   printf "${RED}\nStage a.3: PPG extraction for ${data_dir}.${NC}\n"
   local/featex/extract_ppg.sh --nj $nj --stage 0 \
-	  --ppg-type ${ppg_type} \
 	  ${data_dir} ${ppg_model} ${ppg_dir}/ppg_${data_dir} || exit 1;
 fi
 
