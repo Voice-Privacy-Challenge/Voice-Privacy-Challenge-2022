@@ -10,6 +10,7 @@ export LC_ALL=C
 bin=~/work/Challenge/Baseline-N/bin/flac
 export PATH=$bin:$PATH
 
+# based on https://stackoverflow.com/a/5947802/12499892
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
