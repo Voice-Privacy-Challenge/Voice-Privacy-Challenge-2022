@@ -26,7 +26,7 @@ from os.path import join
 
 import sys
 
-prjdir = join(os.getenv('CURRENNT_SCRIPTS', ''), 'acoustic-modeling/project-DAR-continuous')
+prjdir = join(os.getenv('nii_scripts', ''), 'acoustic-modeling/project-DAR-continuous')
 
 # -------------------------------------------------
 # --------------- Configuration start --------------

@@ -2,10 +2,10 @@
 . path.sh
 
 # PATH to the pyTools
-export TEMP_CURRENNT_PROJECT_PYTOOLS_PATH=${CURRENNT_PUBLIC}/pyTools
+export TEMP_CURRENNT_PROJECT_PYTOOLS_PATH=${nii_dir}/pyTools
 
 # PATH to currennt
-export TEMP_CURRENNT_PROJECT_CURRENNT_PATH=${CURRENNT_PUBLIC}/CURRENNT_codes/build/currennt
+export TEMP_CURRENNT_PROJECT_CURRENNT_PATH=${nii_dir}/CURRENNT_codes/build/currennt
 
 # PATH to SOX (http://sox.sourceforge.net/sox.html)
 export TEMP_CURRENNT_PROJECT_SOX_PATH=/usr/bin/sox

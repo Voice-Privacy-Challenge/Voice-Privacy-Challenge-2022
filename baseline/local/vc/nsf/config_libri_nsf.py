@@ -24,7 +24,7 @@ import os
 from os.path import join
 
 import sys
-prjdir = join(os.getenv('CURRENNT_SCRIPTS', ''), 'waveform-modeling/project-NSF')
+prjdir = join(os.getenv('nii_scripts', ''), 'waveform-modeling/project-NSF')
 
 # -------------------------------------------------
 # --------------- Configuration start --------------

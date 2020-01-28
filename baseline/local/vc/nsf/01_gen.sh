@@ -17,7 +17,7 @@
 
 test_data_dir=$1
 
-proj_dir=${CURRENNT_SCRIPTS}/waveform-modeling/project-NSF
+proj_dir=${nii_scripts}/waveform-modeling/project-NSF
 
 test_mel=${test_data_dir}/am_out_mel
 test_xvector=${test_data_dir}/xvector

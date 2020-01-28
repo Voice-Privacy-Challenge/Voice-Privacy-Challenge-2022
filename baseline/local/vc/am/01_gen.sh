@@ -6,7 +6,7 @@
 . path.sh
 . local/vc/am/init.sh
 
-proj_dir=${CURRENNT_SCRIPTS}/acoustic-modeling/project-DAR-continuous
+proj_dir=${nii_scripts}/acoustic-modeling/project-DAR-continuous
 test_data_dir=$1
 
 output_dir=${test_data_dir}/am_out_mel

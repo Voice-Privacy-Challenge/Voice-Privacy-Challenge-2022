@@ -16,7 +16,8 @@ boost=https://netix.dl.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.t
 boost_dir=$PWD/boost_1_59_0
 
 nii_cmake=$PWD/nii_cmake/CMakeLists.txt
-nii_dir=$PWD/nii/CURRENNT_codes
+nii_dir=$PWD/nii
+currennt_dir=$nii_dir/CURRENNT_codes
 
 mark=.done-venv
 if [ ! -f $mark ]; then
@@ -27,7 +28,7 @@ if [ ! -f $mark ]; then
   pip install -r baseline/requirements.txt || exit 1
   touch $mark
 fi
-echo ". $venv_dir/bin/activate" > env.sh
+echo "source $venv_dir/bin/activate" > env.sh
 
 mark=.done-kaldi-tools
 if [ ! -f $mark ]; then
@@ -97,8 +98,8 @@ echo "export LD_LIBRARY_PATH=$boost_root/stage/lib:\$LD_LIBRARY_PATH" >> env.sh
 mark=.done-nii
 if [ ! -f $mark ]; then
   echo 'Building nii'
-  cp $nii_cmake $nii_dir || exit 1
-  dir=$nii_dir/build
+  cp $nii_cmake $currennt_dir || exit 1
+  dir=$currennt_dir/build
   [ -d $dir ] && rm -r $dir
   mkdir -p $dir || exit 1
   cd $dir
@@ -110,7 +111,9 @@ if [ ! -f $mark ]; then
   cd $home
   touch $mark
 fi
-echo "export PATH=$nii_dir/build:\$PATH" >> env.sh
-echo "export PYTHONPATH=$nii_dir:$nii_dir/pyTools:$PWD/nii_scripts:\$PYTHONPATH" >> env.sh
+echo "export PATH=$currennt_dir/build:\$PATH" >> env.sh
+echo "export PYTHONPATH=$currennt_dir:$nii_dir/pyTools:$PWD/nii_scripts:\$PYTHONPATH" >> env.sh
+echo "export nii_scripts=$PWD/nii_scripts"
+echo "export nii_dir=$nii_dir"
 
 echo Done
