@@ -9,6 +9,10 @@ Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for
 2. ./install.sh
 3. ./download_models.sh
 
+## Running the recipe
+
+The recipe comes with pre-trained models of anonymization. To replicate the baseline numbers, simply `cd baseline` and `./run.sh`
+
 
 ## General information
 
