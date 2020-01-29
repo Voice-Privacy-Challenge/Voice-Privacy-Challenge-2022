@@ -113,7 +113,7 @@ if [ ! -f $mark ]; then
 fi
 echo "export PATH=$currennt_dir/build:\$PATH" >> env.sh
 echo "export PYTHONPATH=$currennt_dir:$nii_dir/pyTools:$PWD/nii_scripts:\$PYTHONPATH" >> env.sh
-echo "export nii_scripts=$PWD/nii_scripts"
-echo "export nii_dir=$nii_dir"
+echo "export nii_scripts=$PWD/nii_scripts" >> env.sh
+echo "export nii_dir=$nii_dir" >> env.sh
 
 echo Done
