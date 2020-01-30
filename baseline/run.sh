@@ -27,30 +27,30 @@ export LC_ALL=C
 
 #===== begin config =======
 nj=20
-stage=6
+stage=0
 
 librispeech_corpus=/PATH_TO/LibriSpeech # LibriSpeech corpus
 libritts_corpus=/PATH_TO/LibriTTS       # LibriTTS train-other-500 corpus should be present here
+data_netcdf=/PATH_TO/am_nsf_data       # change this to dir where VC features data will be stored
 
-anoni_pool="libritts_train_other_500"        # change this to the data you want to use for anonymization pool
+anoni_pool="libritts_train_other_500"
 am_nsf_train_data="libritts_train_clean_100"
 
-data_netcdf=/PATH_TO/am_nsf_data       # change this to dir where VC features data will be stored
 
 # Chain model for PPG extraction
 ppg_model=exp/models/1_asr_am/exp
-ppg_dir=${ppg_model}/nnet3_cleaned           # change this to the dir where PPGs will be stored
+ppg_dir=${ppg_model}/nnet3_cleaned
 
 # Chain model for ASR evaluation
-asr_eval_model=exp/PATH_TO/asr_eval_model
+asr_eval_model=exp/models/asr_eval
 
 # x-vector extraction
-xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a # change this to pretrained xvector model downloaded from Kaldi website
+xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a
 anon_xvec_out_dir=${xvec_nnet_dir}/anon
 
 # ASV_eval config
-asv_eval_model=exp/asv_eval/xvect_01709_1         # Path where ASV_eval xvector model is stored (final.raw)
-plda_dir=${asv_eval_model}/xvect_train_clean_360 # Path where mean.vec, transform.mat and plda is stored
+asv_eval_model=exp/models/asv_eval/xvect_01709_1
+plda_dir=${asv_eval_model}/xvect_train_clean_360
 
 # Anonymization configs
 pseudo_xvec_rand_level=spk                # spk (all utterances will have same xvector) or utt (each utterance will have randomly selected xvector)
