@@ -11,7 +11,7 @@ Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for
 
 ## Running the recipe
 
-The recipe comes with pre-trained models of anonymization. To replicate the baseline numbers, `cd baseline` and change the following variables:
+The recipe comes with pre-trained models of anonymization. To replicate the baseline numbers, `cd baseline` and change the following variables in `run.sh`:
 
 1. `librispeech_corpus`: The directory for LibriSpeech corpus. It must have `dev-clean`, `test-clean` and `train-clean-360` subsets.
 2. `libritts_corpus`: The directory for LibriTTS corpus. It must have `train-other-500` subset.
