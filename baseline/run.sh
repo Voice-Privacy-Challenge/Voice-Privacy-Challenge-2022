@@ -29,9 +29,9 @@ export LC_ALL=C
 nj=20
 stage=0
 
-librispeech_corpus=/PATH_TO/LibriSpeech # LibriSpeech corpus
-libritts_corpus=/PATH_TO/LibriTTS       # LibriTTS train-other-500 corpus should be present here
-data_netcdf=/PATH_TO/am_nsf_data       # change this to dir where VC features data will be stored
+librispeech_corpus=DIRECTORY_FOR/LibriSpeech # LibriSpeech corpus
+libritts_corpus=DIRECTORY_FOR/LibriTTS       # LibriTTS train-other-500 corpus should be present here
+data_netcdf=DIRECTORY_FOR/am_nsf_data       # change this to dir where VC features data will be stored
 
 anoni_pool="libritts_train_other_500"
 am_nsf_train_data="libritts_train_clean_100"
@@ -69,19 +69,19 @@ anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}_${p
 if [ $stage -le 0 ]; then
   # Prepare data for libritts-train-other-500
   printf "${GREEN}\nStage 0: Prepare anonymization pool data...${NC}\n"
-  local/data_prep_libritts.sh ${libritts_corpus}/train-other-500 data/${anoni_pool}
+  local/data_prep_libritts.sh ${libritts_corpus}/train-other-500 data/${anoni_pool} || exit 1;
 fi
   
 if [ $stage -le 1 ]; then
   printf "${GREEN}\nStage 1: Extracting xvectors for anonymization pool.${NC}\n"
   local/featex/01_extract_xvectors.sh --nj $nj data/${anoni_pool} ${xvec_nnet_dir} \
-	  ${anon_xvec_out_dir}
+	  ${anon_xvec_out_dir} || exit 1;
 fi
 
 # Make evaluation data
 if [ $stage -le 2 ]; then
   printf "${GREEN}\nStage 2: Making evaluation data${NC}\n"
-  local/make_eval2.sh proto/eval2 ${librispeech_corpus} ${eval2_enroll} ${eval2_trial}
+  local/make_eval2.sh proto/eval2 ${librispeech_corpus} ${eval2_enroll} ${eval2_trial} || exit 1;
 fi
 
 # Extract xvectors from data which has to be anonymized
@@ -133,7 +133,7 @@ fi
 
 if [ $stage -le 6 ]; then
   printf "${GREEN}\nStage 6: Anonymizing dev-clean data for intelligibility assessment.${NC}\n"
-  local/data_prep_adv.sh ${librispeech_corpus}/dev-clean data/dev_clean
+  local/data_prep_adv.sh ${librispeech_corpus}/dev-clean data/dev_clean || exit 1;
   
   local/anon/anonymize_data_dir.sh --nj $nj --anoni-pool ${anoni_pool} \
 	 --data-netcdf ${data_netcdf} \
@@ -149,5 +149,5 @@ fi
 if [ $stage -le 7 ]; then
   asr_eval_data=dev_clean${anon_data_suffix}
   printf "${GREEN}\nStage 7: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}.${NC}\n"
-  local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model}
+  local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model} || exit 1;
 fi
