@@ -10,11 +10,11 @@ Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for
 
 ## Running the recipe
 
-The recipe uses the pre-trained models of anonymization. To replicate the baseline numbers:
+The recipe uses the pre-trained models of anonymization. To run the baseline system with evaluation:
 
 1. `cd baseline` 
 2. (optionally) change the following variables in `run.sh`:
-- `librispeech_corpus`: The directory for LibriSpeech corpus (will contain `dev-clean`, `train-clean-360`, `train-clean-100`,`train-other-500` subsets.
+- `librispeech_corpus`: The directory for LibriSpeech corpus (will contain `dev-clean`, `train-clean-360`, `train-clean-100`,`train-other-500` subsets).
 - `libritts_corpus`: The directory for LibriTTS corpus (will contain `train-other-500` subset).
 - `data_netcdf`: Directory where anonymized files and features will be stored (it requires at least 20Gb).
 3. run `./run.sh`.
@@ -24,11 +24,13 @@ The recipe uses the pre-trained models of anonymization. To replicate the baseli
 
 ### Datasets
 
-The datasets for traing/development/evaluation consists of subsets from the following corpora:
+The datasets for traing/development/evaluation consists of subsets from the following corpora*:
 * [LibriSpeech](http://www.openslr.org/12/)
 * [LibriTTS](http://www.openslr.org/60/)
 * [VCTK](https://datashare.is.ed.ac.uk/handle/10283/3443)
 * [VoxCeleb 1 & 2](http://www.robots.ox.ac.uk/~vgg/data/voxceleb/)
+
+*only specified subsets of these corpora can be used to train/develop an anonymization system.
 
 
 ### Models
@@ -42,7 +44,7 @@ The baseline system uses several independent models:
 These models optionally can be:
 *  trained with the provided scripts;
 or
-* downloaded (done by ./download_models.sh)
+* downloaded (done by ./baseline/local/download_models.sh)
 
 
 
