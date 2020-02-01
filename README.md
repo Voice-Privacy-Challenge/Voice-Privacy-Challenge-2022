@@ -13,11 +13,10 @@ Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for
 
 The recipe comes with pre-trained models of anonymization. To replicate the baseline numbers, `cd baseline` and change the following variables in `run.sh`:
 
-1. `librispeech_corpus`: The directory for LibriSpeech corpus. It must have `dev-clean`, `test-clean` and `train-clean-360` subsets.
-2. `libritts_corpus`: The directory for LibriTTS corpus. It must have `train-other-500` subset.
-3. `data_netcdf`: This is where anonymized files and features will be stored. Make sure you have enough space (at least 20Gb) on this disk.
-
-After these changes simply `./run.sh`.
+1. `librispeech_corpus`: The directory for LibriSpeech corpus (will contain `dev-clean`, `train-clean-360`, `train-clean-100`,`train-other-500` subsets.
+2. `libritts_corpus`: The directory for LibriTTS corpus (will contain `train-other-500` subset).
+3. `data_netcdf`: Directory where anonymized files and features will be stored (it requires at least 20Gb).
+4. run `./run.sh`.
 
 
 ## General information
