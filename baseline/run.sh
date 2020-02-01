@@ -29,15 +29,15 @@ export LC_ALL=C
 nj=20
 stage=0
 
-librispeech_corpus=DIRECTORY_FOR/LibriSpeech # LibriSpeech corpus
-libritts_corpus=DIRECTORY_FOR/LibriTTS       # LibriTTS train-other-500 corpus should be present here
-data_netcdf=DIRECTORY_FOR/am_nsf_data       # change this to dir where VC features data will be stored
+librispeech_corpus=corpora/LibriSpeech # LibriSpeech corpus (for train-other-500, train-clean-100, dev-clean)
+libritts_corpus=corpora/LibriTTS       # LibriTTS corpus (for train-other-500)
+data_netcdf=exp/am_nsf_data       # directory where features for voice anonymization will be stored
 
 anoni_pool="libritts_train_other_500"
 am_nsf_train_data="libritts_train_clean_100"
 
 
-# Chain model for PPG extraction
+# Chain model for BN extraction
 ppg_model=exp/models/1_asr_am/exp
 ppg_dir=${ppg_model}/nnet3_cleaned
 
