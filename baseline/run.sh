@@ -113,9 +113,18 @@ if [ $stage -le 4 ]; then
 	  ${eval2_enroll}${anon_data_suffix} ${eval2_trial}${anon_data_suffix} || exit 1;
 fi
 
+if [ $stage -le 5 ]; then
+  asr_eval_data=${eval2_trial}${anon_data_suffix}
+  printf "${GREEN}\nStage 5: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}.${NC}\n"
+  printf "${RED}**Exp 0.3 baseline: Eval 2 trial - original, ASR performance**${NC}\n"
+  local/asr_eval.sh --nj $nj ${eval2_trial} ${asr_eval_model} || exit 1;
+  printf "${RED}**Exp 5: Eval 2, trial - anonymized, ASR performance**${NC}\n"
+  local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model} || exit 1;
+fi
+
 # Not anonymizing train-clean-360 here since it takes enormous amount of time and memory
-if [ $stage -le 5 ] && false; then
-  printf "${GREEN}\nStage 5: Anonymizing train data for Informed xvector model.${NC}\n"
+if [ $stage -le 6 ] && false; then
+  printf "${GREEN}\nStage 6: Anonymizing train data for Informed xvector model.${NC}\n"
   local/data_prep_adv.sh ${librispeech_corpus}/train-clean-360 data/train_clean_360
   
   local/anon/anonymize_data_dir.sh --nj $nj --stage 0 --anoni-pool ${anoni_pool} \
@@ -131,23 +140,3 @@ if [ $stage -le 5 ] && false; then
   axvec_train_data=train_clean_360${anon_data_suffix}
 fi
 
-if [ $stage -le 6 ]; then
-  printf "${GREEN}\nStage 6: Anonymizing dev-clean data for intelligibility assessment.${NC}\n"
-  local/data_prep_adv.sh ${librispeech_corpus}/dev-clean data/dev_clean || exit 1;
-  
-  local/anon/anonymize_data_dir.sh --nj $nj --anoni-pool ${anoni_pool} \
-	 --data-netcdf ${data_netcdf} \
-	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} \
-	 --xvec-nnet-dir ${xvec_nnet_dir} \
-	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
-	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
-	 --proximity ${proximity} \
-	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
-	 dev_clean || exit 1;
-fi
-
-if [ $stage -le 7 ]; then
-  asr_eval_data=dev_clean${anon_data_suffix}
-  printf "${GREEN}\nStage 7: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}.${NC}\n"
-  local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model} || exit 1;
-fi
