@@ -141,7 +141,7 @@ if [ $stage -le 8 ]; then
   printf "${GREEN}\nStage 8: Extracting xvectors for ASV evaluation datasets.${NC}\n"
   for dset in $asv_eval_sets; do
     local/featex/01_extract_xvectors.sh \
-      --nj $nj data/$dset $xvec_nnet_dir \
+      --nj $nj data/$dset $asv_eval_model \
       $asv_eval_model || exit 1;
   done
 fi
