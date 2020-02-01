@@ -1,84 +1,61 @@
 #!/bin/bash
-# Copyright   2017   Johns Hopkins University (Author: Daniel Garcia-Romero)
-#             2017   Johns Hopkins University (Author: Daniel Povey)
-#        2017-2018   David Snyder
-#             2018   Ewald Enzinger
-# Apache 2.0.
-#
-# See ../README.txt for more info on data required.
-# Results (mostly equal error-rates) are inline in comments below.
+
+set -e
 
 . ./cmd.sh
 . ./path.sh
-set -e
 
-mfccdir=`pwd`/mfcc
-vaddir=`pwd`/mfcc
+asv_eval_model=exp/models/asv_eval/xvect_01709_1
+plda_dir=${asv_eval_model}/xvect_train_clean_360
+asv_eval_sets=vctk_dev
+mics='1 2'
 
-nnet_dir= # Pretrained model 
-plda_dir=
+. ./utils/parse_options.sh
 
-stage=1
-
-. utils/parse_options.sh
-
-if [ $# != 2 ]; then
-  echo "Usage: "
-  echo "  $0 [options] <enroll-dir> <trials-dir>"
-  echo "Options"
-  echo "   --nnet-dir=     # Directory where xvector extractor is present"
-  echo "   --plda-dir=     # Directory where PLDA classifier is present"
-  exit 1;
-fi
-
-libri_enroll=$1
-libri_trials=$2
-librispeech_trials_file=data/$libri_trials/trials
-libri_male=${librispeech_trials_file}_male
-libri_female=${librispeech_trials_file}_female
-
-nj=29
-if [ $stage -le 1 ]; then
-  echo "Evaluating LibriSpeech trials using pretrained VoXceleb model."
-
-  echo "Compute MFCC..."
-  for name in $libri_enroll $libri_trials; do
-    steps/make_mfcc.sh --write-utt2num-frames true --mfcc-config conf/mfcc.conf --nj $nj --cmd "$train_cmd" \
-      data/${name} exp/make_mfcc $mfccdir
-    
-    utils/fix_data_dir.sh data/${name}
-    
-    sid/compute_vad_decision.sh --nj $nj --cmd "$train_cmd" \
-      data/${name} exp/make_vad $vaddir
-    utils/fix_data_dir.sh data/${name}
+for name in $plda_dir/plda $plda_dir/mean.vec $plda_dir/transform.mat; do
+  [ ! -f $name ] && echo "File $name does not exist" && exit 1
+done
+for dset in $asv_eval_sets; do
+  data=data/$dset
+  xvect_dset=$asv_eval_model/xvectors_$dset
+  for name in $data/spk2utt $xvect_dset/xvector.scp; do
+    [ ! -f $name ] && echo "File $name does not exist" && exit 1
   done
-
-fi
-
-if [ $stage -le 2 ]; then
-  echo "Extract xvectors..."
-  for name in $libri_enroll $libri_trials; do
-    sid/nnet3/xvector/extract_xvectors.sh --cmd "$train_cmd --mem 4G" --nj $nj \
-      $nnet_dir data/${name} \
-      $nnet_dir/xvectors_${name}
+  for mic in $mics; do
+    enrolls=$data/enrolls_mic$mic
+    utt2num=$data/utt2num_mic$mic.ark
+    for name in $enrolls $utt2num; do
+      [ ! -f $name ] && echo "File $name does not exist" && exit 1
+    done
+    for gen in m f; do
+      for fixed in true false; do
+        if $fixed; then
+          trials=$data/trials_${gen}_fixed_mic$mic
+          expo=$asv_eval_model/scores_${dset}_${gen}_fixed_mic${mic}
+        else
+          trials=$data/trials_${gen}_notfixed_mic$mic
+          expo=$asv_eval_model/scores_${dset}_${gen}_notfixed_mic${mic}
+        fi
+        for name in $trials; do
+          [ ! -f $name ] && echo "File $name does not exist" && exit 1
+        done
+        echo "  dset: $dset  mic: $mic  gender: $gen  fixed: $fixed"
+        $train_cmd $expo/log/ivector-plda-scoring.log \
+          ivector-plda-scoring --normalize-length=true \
+              --num-utts=ark:$utt2num \
+              "ivector-copy-plda --smoothing=0.0 $plda_dir/plda - |" \
+              "ark:cut -d' ' -f1 $enrolls | grep -Ff - $xvect_dset/xvector.scp | ivector-mean ark:$data/spk2utt scp:- ark:- | ivector-subtract-global-mean $plda_dir/mean.vec ark:- ark:- | transform-vec $plda_dir/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
+              "ark:cut -d' ' -f2 $trials | sort | uniq | grep -Ff - $xvect_dset/xvector.scp | ivector-subtract-global-mean $plda_dir/mean.vec scp:- ark:- | transform-vec $plda_dir/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
+              "cat $trials | cut -d' ' --fields=1,2 |" $expo/scores || exit 1
+        eer=`compute-eer <(local/prepare_for_eer.py $trials $expo/scores) 2> /dev/null`
+        mindcf1=`sid/compute_min_dcf.py --p-target 0.01 $expo/scores $trials 2> /dev/null`
+        mindcf2=`sid/compute_min_dcf.py --p-target 0.001 $expo/scores $trials 2> /dev/null`
+        echo "    EER: $eer%" | tee $expo/EER
+        echo "    minDCF(p-target=0.01): $mindcf1" | tee -a $expo/EER
+        echo "    minDCF(p-target=0.001): $mindcf2" | tee -a $expo/EER
+      done
+    done
   done
-fi
+done
 
-if [ $stage -le 3 ]; then
-  echo "Scoring the trials..."
-  $train_cmd exp/scores/log/librispeech_trial_scoring.log \
-    ivector-plda-scoring --normalize-length=true \
-    --num-utts=ark:${nnet_dir}/xvectors_${libri_enroll}/num_utts.ark \
-    "ivector-copy-plda --smoothing=0.0 $plda_dir/plda - |" \
-    "ark:ivector-mean ark:data/${libri_enroll}/spk2utt scp:${nnet_dir}/xvectors_${libri_enroll}/xvector.scp ark:- | ivector-subtract-global-mean $plda_dir/mean.vec ark:- ark:- | transform-vec $plda_dir/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
-    "ark:ivector-subtract-global-mean $plda_dir/mean.vec scp:$nnet_dir/xvectors_${libri_trials}/xvector.scp ark:- | transform-vec $plda_dir/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
-    "cat '$librispeech_trials_file' | cut -d\  --fields=1,2 |" exp/scores_libri_trials || exit 1;
-
-  utils/filter_scp.pl $libri_male exp/scores_libri_trials > exp/scores_libri_male
-  utils/filter_scp.pl $libri_female exp/scores_libri_trials > exp/scores_libri_female
-  pooled_eer=$(paste $librispeech_trials_file exp/scores_libri_trials | awk '{print $6, $3}' | compute-eer - 2>/dev/null)
-  male_eer=$(paste $libri_male exp/scores_libri_male | awk '{print $6, $3}' | compute-eer - 2>/dev/null)
-  female_eer=$(paste $libri_female exp/scores_libri_female | awk '{print $6, $3}' | compute-eer - 2>/dev/null)
-  echo "EER: Pooled ${pooled_eer}%, Male ${male_eer}%, Female ${female_eer}%"
-fi
-
+echo '  Done'

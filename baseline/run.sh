@@ -52,6 +52,8 @@ anon_xvec_out_dir=${xvec_nnet_dir}/anon
 # ASV_eval config
 asv_eval_model=exp/models/asv_eval/xvect_01709_1
 plda_dir=${asv_eval_model}/xvect_train_clean_360
+asv_eval_sets=vctk_dev
+[ -d data/vctk_test ] && asv_eval_sets="$asv_eval_sets vctk_test"
 
 # Anonymization configs
 pseudo_xvec_rand_level=spk                # spk (all utterances will have same xvector) or utt (each utterance will have randomly selected xvector)
@@ -116,13 +118,13 @@ fi
 if [ $stage -le 6 ]; then
   printf "${GREEN}\nStage 6: Evaluate the dataset using speaker verification.${NC}\n"
   printf "${RED}**Exp 0.2 baseline: Eval 2, enroll - original, trial - original**${NC}\n"
-  local/asv_eval.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
+  local/asv_eval_libri.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
 	  ${eval2_enroll} ${eval2_trial} || exit 1;
   printf "${RED}**Exp 3: Eval 2, enroll - original, trial - anonymized**${NC}\n"
-  local/asv_eval.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
+  local/asv_eval_libri.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
 	  ${eval2_enroll} ${eval2_trial}${anon_data_suffix} || exit 1;
   printf "${RED}**Exp 4: Eval 2, enroll - anonymized, trial - anonymized**${NC}\n"
-  local/asv_eval.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
+  local/asv_eval_libri.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
 	  ${eval2_enroll}${anon_data_suffix} ${eval2_trial}${anon_data_suffix} || exit 1;
 fi
 
@@ -135,9 +137,27 @@ if [ $stage -le 7 ]; then
   local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model} || exit 1;
 fi
 
+if [ $stage -le 8 ]; then
+  printf "${GREEN}\nStage 8: Extracting xvectors for ASV evaluation datasets.${NC}\n"
+  for dset in $asv_eval_sets; do
+    local/featex/01_extract_xvectors.sh \
+      --nj $nj data/$dset $xvec_nnet_dir \
+      $asv_eval_model || exit 1;
+  done
+fi
+
+if [ $stage -le 9 ]; then
+  printf "${GREEN}\nStage 9: Evaluate datasets using speaker verification.${NC}\n"
+  local/asv_eval.sh \
+    --plda_dir $plda_dir \
+    --asv_eval_model $asv_eval_model \
+    --asv_eval_sets "$asv_eval_sets" \
+    --mics 2|| exit 1;
+fi
+
 # Not anonymizing train-clean-360 here since it takes enormous amount of time and memory
-if [ $stage -le 8 ] && false; then
-  printf "${GREEN}\nStage 8: Anonymizing train data for Informed xvector model.${NC}\n"
+if [ $stage -le 10 ] && false; then
+  printf "${GREEN}\nStage 10: Anonymizing train data for Informed xvector model.${NC}\n"
   local/data_prep_adv.sh ${librispeech_corpus}/train-clean-360 data/train_clean_360 || exit 1;
   local/anon/anonymize_data_dir.sh --nj $nj --stage 0 --anoni-pool ${anoni_pool} \
 	 --data-netcdf ${data_netcdf} \
