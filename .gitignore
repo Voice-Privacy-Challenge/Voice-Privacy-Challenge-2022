@@ -1,9 +1,11 @@
 /venv/
 *.pyc
 *.tar.gz
+*.tar.xz
 netcdf*/
 /.done-*
 /boost_*/
+/flac-*/
 /env.sh
 /baseline/exp/
 /baseline/LibriSpeech/
