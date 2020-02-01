@@ -26,7 +26,7 @@ if [ ! -f $mark ]; then
   python3 -m virtualenv $venv_dir || exit 1
   . $venv_dir/bin/activate
   echo 'Installing python dependencies'
-  pip install -r baseline/requirements.txt || exit 1
+  pip install -r requirements.txt || exit 1
   touch $mark
 fi
 echo "source $venv_dir/bin/activate" > env.sh
