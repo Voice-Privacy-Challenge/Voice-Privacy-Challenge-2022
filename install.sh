@@ -22,7 +22,7 @@ currennt_dir=$nii_dir/CURRENNT_codes
 mark=.done-venv
 if [ ! -f $mark ]; then
   echo 'Making python virtual environment'
-  virtualenv $venv_dir || exit 1
+  python3 -m virtualenv $venv_dir || exit 1
   . $venv_dir/bin/activate
   echo 'Installing python dependencies'
   pip install -r baseline/requirements.txt || exit 1
