@@ -10,8 +10,8 @@ trial_data="$4"
 local/data_prep_adv.sh ${librispeech_corpus}/dev-clean data/${enroll_data}
 local/data_prep_adv.sh ${librispeech_corpus}/dev-clean data/${trial_data}
 
-rm data/${enroll_data}/text data/${enroll_data}/spk2utt
-rm data/${trial_data}/text data/${trial_data}/spk2utt
+rm data/${enroll_data}/spk2utt
+rm data/${trial_data}/spk2utt
 
 python local/fix_eval2.py ${proto_dir} data/${enroll_data} data/${trial_data} || exit 1;
 
