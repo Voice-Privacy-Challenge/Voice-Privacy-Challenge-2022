@@ -148,11 +148,13 @@ fi
 
 if [ $stage -le 9 ]; then
   printf "${GREEN}\nStage 9: Evaluate datasets using speaker verification.${NC}\n"
-  local/asv_eval.sh \
-    --plda_dir $plda_dir \
-    --asv_eval_model $asv_eval_model \
-    --asv_eval_sets "$asv_eval_sets" \
-    --mics 2|| exit 1;
+  for subset in '_m_common' '_m' '_f_common' '_f'; do
+    local/asv_eval.sh \
+      --plda_dir $plda_dir \
+      --asv_eval_model $asv_eval_model \
+      --asv_eval_sets "$asv_eval_sets" \
+      --subset $subset --channel '_mic2' || exit 1;
+  done
 fi
 
 # Not anonymizing train-clean-360 here since it takes enormous amount of time and memory
