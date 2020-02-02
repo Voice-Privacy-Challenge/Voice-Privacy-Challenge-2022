@@ -100,22 +100,24 @@ echo "export LD_LIBRARY_PATH=$boost_root/stage/lib:\$LD_LIBRARY_PATH" >> env.sh
 
 mark=.done-flac
 if [ ! -f $mark ]; then
-  if [ ! -f $(basename $flac) ]; then
-    wget $flac || exit 1
+  if [ -z "$(which flac)" ]; then
+    if [ ! -f $(basename $flac) ]; then
+      wget $flac || exit 1
+    fi
+    echo 'Unpacking flac source files'
+    [ -d $flac_dir ] && rm -r $flac_dir
+    tar -xf $(basename $flac) || exit 1
+    echo 'Building flac'
+    cd $flac_dir
+    ./configure --prefix=$PWD/install || exit 1
+    make -j $nj || exit 1
+    make -j $nj check || exit 1
+    make install || exit 1
+    echo "export PATH=$flac_dir/install/bin:\$PATH" >> env.sh
   fi
-  echo 'Unpacking flac source files'
-  [ -d $flac_dir ] && rm -r $flac_dir
-  tar -xf $(basename $flac) || exit 1
-  echo 'Building flac'
-  cd $flac_dir
-  ./configure --prefix=$PWD/install || exit 1
-  make -j $nj || exit 1
-  make -j $nj check || exit 1
-  make install || exit 1
   cd $home
   touch $mark
 fi
-echo "export PATH=$flac_dir/install/bin:\$PATH" >> env.sh
 
 mark=.done-nii
 if [ ! -f $mark ]; then
