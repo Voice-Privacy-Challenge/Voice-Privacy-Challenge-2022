@@ -111,7 +111,7 @@ if [ ! -f $mark ]; then
     cd $flac_dir
     ./configure --prefix=$PWD/install || exit 1
     make -j $nj || exit 1
-    make -j $nj check || exit 1
+    # make -j $nj check || exit 1
     make install || exit 1
     echo "export PATH=$flac_dir/install/bin:\$PATH" >> env.sh
   fi
