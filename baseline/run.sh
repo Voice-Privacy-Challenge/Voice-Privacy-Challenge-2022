@@ -29,9 +29,9 @@ set -e
 nj=$(nproc)
 stage=0
 
-librispeech_corpus=corpora/LibriSpeech # LibriSpeech corpus (for train-other-500, train-clean-100, dev-clean)
-libritts_corpus=corpora/LibriTTS       # LibriTTS corpus (for train-other-500)
-data_netcdf=exp/am_nsf_data       # directory where features for voice anonymization will be stored
+librispeech_corpus=$(realpath corpora/LibriSpeech) # LibriSpeech corpus (for train-other-500, train-clean-100, dev-clean)
+libritts_corpus=$(realpath corpora/LibriTTS)       # LibriTTS corpus (for train-other-500)
+data_netcdf=$(realpath exp/am_nsf_data)       # directory where features for voice anonymization will be stored
 
 anoni_pool="libritts_train_other_500"
 am_nsf_train_data="libritts_train_clean_100"
