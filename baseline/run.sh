@@ -55,6 +55,10 @@ plda_dir=${asv_eval_model}/xvect_train_clean_360
 asv_eval_sets=vctk_dev
 [ -d data/vctk_test ] && asv_eval_sets="$asv_eval_sets vctk_test"
 
+# ASR_eval config
+asr_eval_sets=vctk_dev_asr
+[ -d data/vctk_test_asr ] && asr_eval_sets="$asr_eval_sets vctk_test_asr"
+
 # Anonymization configs
 pseudo_xvec_rand_level=spk                # spk (all utterances will have same xvector) or utt (each utterance will have randomly selected xvector)
 cross_gender="false"                      # true, same gender xvectors will be selected; false, other gender xvectors
@@ -137,8 +141,17 @@ if [ $stage -le 7 ]; then
   local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model} || exit 1;
 fi
 
+
+
 if [ $stage -le 8 ]; then
-  printf "${GREEN}\nStage 8: Extracting xvectors for ASV evaluation datasets.${NC}\n"
+  for asr_eval_data in $asr_eval_sets; do
+    printf "${GREEN}\nStage 8: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}.${NC}\n"
+    local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model} || exit 1;
+  done
+fi
+
+if [ $stage -le 9 ]; then
+  printf "${GREEN}\nStage 9: Extracting xvectors for ASV evaluation datasets.${NC}\n"
   for dset in $asv_eval_sets; do
     local/featex/01_extract_xvectors.sh \
       --nj $nj data/$dset $asv_eval_model \
@@ -146,8 +159,8 @@ if [ $stage -le 8 ]; then
   done
 fi
 
-if [ $stage -le 9 ]; then
-  printf "${GREEN}\nStage 9: Evaluate datasets using speaker verification.${NC}\n"
+if [ $stage -le 10 ]; then
+  printf "${GREEN}\nStage 10: Evaluate datasets using speaker verification.${NC}\n"
   for subset in '_m_common' '_m' '_f_common' '_f'; do
     local/asv_eval.sh \
       --plda_dir $plda_dir \
@@ -158,8 +171,8 @@ if [ $stage -le 9 ]; then
 fi
 
 # Not anonymizing train-clean-360 here since it takes enormous amount of time and memory
-if [ $stage -le 10 ] && false; then
-  printf "${GREEN}\nStage 10: Anonymizing train data for Informed xvector model.${NC}\n"
+if [ $stage -le 11 ] && false; then
+  printf "${GREEN}\nStage 11: Anonymizing train data for Informed xvector model.${NC}\n"
   local/data_prep_adv.sh ${librispeech_corpus}/train-clean-360 data/train_clean_360 || exit 1;
   local/anon/anonymize_data_dir.sh --nj $nj --stage 0 --anoni-pool ${anoni_pool} \
 	 --data-netcdf ${data_netcdf} \

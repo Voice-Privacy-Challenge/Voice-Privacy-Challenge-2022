@@ -18,6 +18,11 @@ EOF
   fi
   echo '  Unpacking VCTK dev set...'
   tar -xf vctk_dev.tar.gz || exit 1
+  [ ! -f $dir/text ] && echo "File $dir/text does not exist" && exit 1
+  cut -d' ' -f1 $dir/text > $dir/text1
+  cut -d' ' -f2- $dir/text | sed -r 's/,|!|\?|\./ /g' | sed -r 's/ +/ /g' | awk '{print toupper($0)}' > $dir/text2
+  paste -d' ' $dir/text1 $dir/text2 > $dir/text
+  rm $dir/text1 $dir/text2
   utils/fix_data_dir.sh $dir || exit 1
   utils/validate_data_dir.sh --no-feats $dir || exit 1
 fi
