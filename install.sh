@@ -31,7 +31,7 @@ if [ ! -f $mark ]; then
   pip install -r requirements.txt || exit 1
   touch $mark
 fi
-echo "source $venv_dir/bin/activate" > env.sh
+echo "if [[ -z \${VIRTUAL_ENV+x} ]] || [[ \$VIRTUAL_ENV != $venv_dir ]]; then source $venv_dir/bin/activate; fi" > env.sh
 
 mark=.done-kaldi-tools
 if [ ! -f $mark ]; then
