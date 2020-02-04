@@ -88,17 +88,26 @@ This module will take 3 inputs:
 The pretrained model will be provided as part of this baseline. It is trained on LibriTTS-train-clean-100.
 
 
- 
+## Authors
+Authors : Brij Mohan Lal Srivastava (INRIA France), Natalia Tomashenko (LIA, France), Xin Wang (NII Japan), ...
+
+Date : 2020
+
+Contact : voice.privacy.challenge@gmail.com
+
+-INRIA France
+-LIA, University of Avignon, France
+-NII, Japan
+-EURECOM  
+
+## Acknowledgement
+
+This work was supported in part by the French National Research Agency under projects HARPOCRATES (ANR-19-DATA-0008) and DEEP-PRIVACY (ANR-18-
+CE23-0018), by the European Union’s Horizon 2020 Research and Innovation Program under Grant Agreement No. 825081 COMPRISE (\url{https://www.compriseh2020.eu/}), and jointly by the French National Research Agency and the Japan Science and Technology Agency under project VoicePersonae. 
 
 ## License
 
 Copyright (C) 2020
-
-Multispeech, INRIA France; 
-
-LIA, University of Avignon, France;
-
-NII, Japan.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -112,11 +121,5 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Authors : Brij Mohan Lal Srivastava (INRIA France), Natalia Tomashenko (LIA, France), Xin Wang (NII Japan), ...
-
-Date : 2020
-
-Contact : voice.privacy.challenge@gmail.com
 
 ---------------------------------------------------------------------------
