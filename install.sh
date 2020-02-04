@@ -113,11 +113,12 @@ if [ ! -f $mark ]; then
     make -j $nj || exit 1
     # make -j $nj check || exit 1
     make install || exit 1
-    echo "export PATH=$flac_dir/install/bin:\$PATH" >> env.sh
   fi
   cd $home
   touch $mark
 fi
+[ -f $flac_dir/install/bin/flac ] && \
+  echo "export PATH=$flac_dir/install/bin:\$PATH" >> env.sh
 
 mark=.done-nii
 if [ ! -f $mark ]; then
