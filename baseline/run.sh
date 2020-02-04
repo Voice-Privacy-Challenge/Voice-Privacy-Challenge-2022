@@ -29,6 +29,7 @@ set -e
 nj=$(nproc)
 stage=0
 
+data_url=www.openslr.org/resources/12              # Link to download LibriSpeech corpus
 librispeech_corpus=$(realpath corpora/LibriSpeech) # LibriSpeech corpus (for train-other-500, train-clean-100, dev-clean)
 libritts_corpus=$(realpath corpora/LibriTTS)       # LibriTTS corpus (for train-other-500)
 data_netcdf=$(realpath exp/am_nsf_data)       # directory where features for voice anonymization will be stored
@@ -84,28 +85,44 @@ if [ $stage -le 1 ]; then
   local/download_models.sh || exit 1;
 fi
   
-# Extract xvectors from anonymization pool
+# Download LibriSpeech development set
 if [ $stage -le 2 ]; then
+  printf "${GREEN}\nStage 2: Downloading LibriSpeech development set...${NC}\n"
+  for part in dev-clean; do
+    local_librispeech/download_and_untar.sh corpora $data_url $part
+  done
+fi
+
+# Download LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and data sets for training evaluation models ASR_eval and ASV_eval (train-clean-360)
+if [ $stage -le 3 ]; then
+  printf "${GREEN}\nStage 3: Downloading LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and for training evaluation models ASR_eval and ASV_eval (train-clean-360)...${NC}\n"
+  for part in train-clean-100 train-other-500 train-clean-360; do
+    local_librispeech/download_and_untar.sh corpora $data_url $part
+  done
+fi
+
+# Extract xvectors from anonymization pool
+if [ $stage -le 4 ]; then
   # Prepare data for libritts-train-other-500
-  printf "${GREEN}\nStage 2: Prepare anonymization pool data...${NC}\n"
+  printf "${GREEN}\nStage 4: Prepare anonymization pool data...${NC}\n"
   local/data_prep_libritts.sh ${libritts_corpus}/train-other-500 data/${anoni_pool} || exit 1;
 fi
   
-if [ $stage -le 3 ]; then
-  printf "${GREEN}\nStage 3: Extracting xvectors for anonymization pool.${NC}\n"
+if [ $stage -le 5 ]; then
+  printf "${GREEN}\nStage 5: Extracting xvectors for anonymization pool.${NC}\n"
   local/featex/01_extract_xvectors.sh --nj $nj data/${anoni_pool} ${xvec_nnet_dir} \
 	  ${anon_xvec_out_dir} || exit 1;
 fi
 
 # Make evaluation data
-if [ $stage -le 4 ]; then
-  printf "${GREEN}\nStage 4: Making evaluation data${NC}\n"
+if [ $stage -le 6 ]; then
+  printf "${GREEN}\nStage 6: Making evaluation data${NC}\n"
   local/make_eval2.sh proto/eval2 ${librispeech_corpus} ${eval2_enroll} ${eval2_trial} || exit 1;
 fi
 
 # Extract xvectors from data which has to be anonymized
-if [ $stage -le 5 ]; then
-  printf "${GREEN}\nStage 5: Anonymizing eval2 data.${NC}\n"
+if [ $stage -le 7 ]; then
+  printf "${GREEN}\nStage 7: Anonymizing eval2 data.${NC}\n"
   for name in $eval2_enroll $eval2_trial; do
     local/anon/anonymize_data_dir.sh --nj $nj --anoni-pool ${anoni_pool} \
 	 --data-netcdf ${data_netcdf} \
@@ -119,8 +136,8 @@ if [ $stage -le 5 ]; then
   done
 fi
 
-if [ $stage -le 6 ]; then
-  printf "${GREEN}\nStage 6: Evaluate the dataset using speaker verification.${NC}\n"
+if [ $stage -le 8 ]; then
+  printf "${GREEN}\nStage 8: Evaluate the dataset using speaker verification.${NC}\n"
   printf "${RED}**Exp 0.2 baseline: Eval 2, enroll - original, trial - original**${NC}\n"
   local/asv_eval_libri.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
 	  ${eval2_enroll} ${eval2_trial} || exit 1;
@@ -132,9 +149,9 @@ if [ $stage -le 6 ]; then
 	  ${eval2_enroll}${anon_data_suffix} ${eval2_trial}${anon_data_suffix} || exit 1;
 fi
 
-if [ $stage -le 7 ]; then
+if [ $stage -le 9 ]; then
   asr_eval_data=${eval2_trial}${anon_data_suffix}
-  printf "${GREEN}\nStage 7: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}.${NC}\n"
+  printf "${GREEN}\nStage 9: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}.${NC}\n"
   printf "${RED}**Exp 0.3 baseline: Eval 2 trial - original, ASR performance**${NC}\n"
   local/asr_eval.sh --nj $nj ${eval2_trial} ${asr_eval_model} || exit 1;
   printf "${RED}**Exp 5: Eval 2, trial - anonymized, ASR performance**${NC}\n"
@@ -143,15 +160,15 @@ fi
 
 
 
-if [ $stage -le 8 ]; then
+if [ $stage -le 10 ]; then
   for asr_eval_data in $asr_eval_sets; do
-    printf "${GREEN}\nStage 8: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}.${NC}\n"
+    printf "${GREEN}\nStage 10: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}.${NC}\n"
     local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model} || exit 1;
   done
 fi
 
-if [ $stage -le 9 ]; then
-  printf "${GREEN}\nStage 9: Extracting xvectors for ASV evaluation datasets.${NC}\n"
+if [ $stage -le 11 ]; then
+  printf "${GREEN}\nStage 11: Extracting xvectors for ASV evaluation datasets.${NC}\n"
   for dset in $asv_eval_sets; do
     local/featex/01_extract_xvectors.sh \
       --nj $nj data/$dset $asv_eval_model \
@@ -159,8 +176,8 @@ if [ $stage -le 9 ]; then
   done
 fi
 
-if [ $stage -le 10 ]; then
-  printf "${GREEN}\nStage 10: Evaluate datasets using speaker verification.${NC}\n"
+if [ $stage -le 12 ]; then
+  printf "${GREEN}\nStage 12: Evaluate datasets using speaker verification.${NC}\n"
   for subset in '_m_common' '_m' '_f_common' '_f'; do
     local/asv_eval.sh \
       --plda_dir $plda_dir \
@@ -171,8 +188,8 @@ if [ $stage -le 10 ]; then
 fi
 
 # Not anonymizing train-clean-360 here since it takes enormous amount of time and memory
-if [ $stage -le 11 ] && false; then
-  printf "${GREEN}\nStage 11: Anonymizing train data for Informed xvector model.${NC}\n"
+if [ $stage -le 13 ] && false; then
+  printf "${GREEN}\nStage 13: Anonymizing train data for Informed xvector model.${NC}\n"
   local/data_prep_adv.sh ${librispeech_corpus}/train-clean-360 data/train_clean_360 || exit 1;
   local/anon/anonymize_data_dir.sh --nj $nj --stage 0 --anoni-pool ${anoni_pool} \
 	 --data-netcdf ${data_netcdf} \
