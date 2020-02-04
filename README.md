@@ -90,14 +90,12 @@ The pretrained model will be provided as part of this baseline. It is trained on
 
 ## Authors
 
+Brij Mohan Lal Srivastava (INRIA France), Natalia Tomashenko (LIA, France), Xin Wang (NII Japan), ...
+
 - INRIA France
 - LIA, University of Avignon, France
 - NII, Japan
 - EURECOM  
-
-Authors : Brij Mohan Lal Srivastava (INRIA France), Natalia Tomashenko (LIA, France), Xin Wang (NII Japan), ...
-
-Date : 2020
 
 Contact : voice.privacy.challenge@gmail.com
 
