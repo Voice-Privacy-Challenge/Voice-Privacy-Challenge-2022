@@ -92,10 +92,10 @@ The pretrained model will be provided as part of this baseline. It is trained on
 
 Brij Mohan Lal Srivastava (INRIA France), Natalia Tomashenko (LIA, France), Xin Wang (NII Japan), ...
 
-- INRIA France
+- INRIA, France
 - LIA, University of Avignon, France
 - NII, Japan
-- EURECOM  
+- EURECOM, France
 
 Contact : voice.privacy.challenge@gmail.com
 
@@ -103,7 +103,7 @@ Contact : voice.privacy.challenge@gmail.com
 ## Acknowledgement
 
 This work was supported in part by the French National Research Agency under projects HARPOCRATES (ANR-19-DATA-0008) and DEEP-PRIVACY (ANR-18-
-CE23-0018), by the European Union’s Horizon 2020 Research and Innovation Program under Grant Agreement No. 825081 COMPRISE (\url{https://www.compriseh2020.eu/}), and jointly by the French National Research Agency and the Japan Science and Technology Agency under project VoicePersonae. 
+CE23-0018), by the European Union’s Horizon 2020 Research and Innovation Program under Grant Agreement No. 825081 COMPRISE (https://www.compriseh2020.eu/), and jointly by the French National Research Agency and the Japan Science and Technology Agency under project VoicePersonae. 
 
 ## License
 
