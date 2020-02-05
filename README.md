@@ -88,19 +88,26 @@ This module will take 3 inputs:
 The pretrained model will be provided as part of this baseline. It is trained on LibriTTS-train-clean-100.
 
 
-## Authors
+## Organizers (in alphabetical order)
 
-Brij Mohan Lal Srivastava (INRIA France), Natalia Tomashenko (LIA, France), Xin Wang (NII Japan), ...
-
-- INRIA, France
-- LIA, University of Avignon, France
-- NII, Japan
-- EURECOM, France
+Jean-François Bonastre - University of Avignon - LIA, France
+Nicholas Evans - EURECOM, France
+Fuming Fang - NII, Japan
+Andreas Nautsch - EURECOM, France
+Paul-Gauthier Noé - University of Avignon - LIA, France
+Jose Patino - EURECOM, France
+Md Sahidullah - Inria, France
+Brij Mohan Lal Srivastava - Inria, France
+Natalia Tomashenko - University of Avignon - LIA, France
+Massimiliano Todisco - EURECOM, France
+Emmanuel Vincent - Inria, France
+Xin Wang - NII, Japan
+Junichi Yamagishi - NII, Japan and University of Edinburgh, UK
 
 Contact : voice.privacy.challenge@gmail.com
 
 
-## Acknowledgement
+## Acknowledgements
 
 This work was supported in part by the French National Research Agency under projects HARPOCRATES (ANR-19-DATA-0008) and DEEP-PRIVACY (ANR-18-
 CE23-0018), by the European Union’s Horizon 2020 Research and Innovation Program under Grant Agreement No. 825081 COMPRISE (https://www.compriseh2020.eu/), and jointly by the French National Research Agency and the Japan Science and Technology Agency under project VoicePersonae. 
