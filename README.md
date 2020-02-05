@@ -90,19 +90,19 @@ The pretrained model will be provided as part of this baseline. It is trained on
 
 ## Organizers (in alphabetical order)
 
-Jean-François Bonastre - University of Avignon - LIA, France
-Nicholas Evans - EURECOM, France
-Fuming Fang - NII, Japan
-Andreas Nautsch - EURECOM, France
-Paul-Gauthier Noé - University of Avignon - LIA, France
-Jose Patino - EURECOM, France
-Md Sahidullah - Inria, France
-Brij Mohan Lal Srivastava - Inria, France
-Natalia Tomashenko - University of Avignon - LIA, France
-Massimiliano Todisco - EURECOM, France
-Emmanuel Vincent - Inria, France
-Xin Wang - NII, Japan
-Junichi Yamagishi - NII, Japan and University of Edinburgh, UK
+- Jean-François Bonastre - University of Avignon - LIA, France
+- Nicholas Evans - EURECOM, France
+- Fuming Fang - NII, Japan
+- Andreas Nautsch - EURECOM, France
+- Paul-Gauthier Noé - University of Avignon - LIA, France
+- Jose Patino - EURECOM, France
+- Md Sahidullah - Inria, France
+- Brij Mohan Lal Srivastava - Inria, France
+- Natalia Tomashenko - University of Avignon - LIA, France
+- Massimiliano Todisco - EURECOM, France
+- Emmanuel Vincent - Inria, France
+- Xin Wang - NII, Japan
+- Junichi Yamagishi - NII, Japan and University of Edinburgh, UK
 
 Contact : voice.privacy.challenge@gmail.com
 
