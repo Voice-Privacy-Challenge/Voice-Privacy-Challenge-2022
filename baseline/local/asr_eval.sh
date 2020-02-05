@@ -33,9 +33,9 @@ graph_dir=${model_dir}/graph_tgsmall
 large_lang_dir=${model_dir}/lang_test_tglarge
 small_lang_dir=${model_dir}/lang_test_tgsmall
 
-utt2spk=${original_data_dir}/utt2spk
-[ ! -f $utt2spk ] && echo "File $utt2spk does not exist" && exit 1
-num_spk=$(wc -l < $utt2spk)
+spk2utt=${original_data_dir}/spk2utt
+[ ! -f $spk2utt ] && echo "File $spk2utt does not exist" && exit 1
+num_spk=$(wc -l < $spk2utt)
 [ $nj -gt $num_spk ] && nj=$num_spk
 
 export LC_ALL=C
