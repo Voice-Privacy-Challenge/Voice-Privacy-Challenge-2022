@@ -14,3 +14,4 @@ netcdf*/
 /baseline/corpora/
 /baseline/run_temp.sh
 /baseline/run_nt_test.sh
+temp*/
