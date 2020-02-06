@@ -112,7 +112,7 @@ if [ $stage -le 4 ]; then
   local/data_prep_libritts.sh ${libritts_corpus}/train-other-500 data/${anoni_pool} || exit 1;
 fi
   
-if [ $stage -le 7 ]; then
+if [ $stage -le 5 ]; then
   printf "${GREEN}\nStage 5: Extracting xvectors for anonymization pool.${NC}\n"
   local/featex/01_extract_xvectors.sh --nj $nj data/${anoni_pool} ${xvec_nnet_dir} \
 	  ${anon_xvec_out_dir} || exit 1;
