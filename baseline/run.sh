@@ -89,7 +89,7 @@ fi
 if [ $stage -le 2 ]; then
   printf "${GREEN}\nStage 2: Downloading LibriSpeech development set...${NC}\n"
   for part in dev-clean; do
-    local_librispeech/download_and_untar.sh corpora $data_url $part
+    local_librispeech/download_and_untar.sh corpora $data_url $part || exit 1;
   done
 fi
 
@@ -97,7 +97,7 @@ fi
 if [ $stage -le 3 ]; then
   printf "${GREEN}\nStage 3: Downloading LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and for training evaluation models ASR_eval and ASV_eval (train-clean-360)...${NC}\n"
   for part in train-clean-100 train-other-500 train-clean-360; do
-    local_librispeech/download_and_untar.sh corpora $data_url $part
+    local_librispeech/download_and_untar.sh corpora $data_url $part || exit 1;
   done
 fi
 
@@ -157,8 +157,6 @@ if [ $stage -le 9 ]; then
   printf "${RED}**Exp 5: Eval 2, trial - anonymized, ASR performance**${NC}\n"
   local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model} || exit 1;
 fi
-
-
 
 if [ $stage -le 10 ]; then
   for asr_eval_data in $asr_eval_sets; do
