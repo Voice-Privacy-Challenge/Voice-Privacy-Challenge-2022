@@ -1,4 +1,4 @@
-import kaldi_io
+from kaldiio import WriteHelper, ReadHelper
 from ioTools import readwrite
 
 import numpy as np
@@ -19,20 +19,22 @@ save_plot_pitch = join(data_dir, 'pitch.png')
 save_plot_ypitch = join(data_dir, 'yaapt_pitch.png')
 
 #with open(pitch_feats_file) as f:
-for key, mat in kaldi_io.read_mat_scp(pitch_feats_file):
-    print key, mat.shape
-    nccf = mat[:, 0]
-    pitch = mat[:, 1]
-    break
+with ReadHelper('scp:'+pitch_feats_file) as reader:
+    for key, mat in reader:
+        print key, mat.shape
+        nccf = mat[:, 0]
+        pitch = mat[:, 1]
+        break
 
-for key, mat in kaldi_io.read_mat_scp(pro_pitch_feats_file):
-    print key, mat.shape
-    pov = mat[:, 0]
-    yaapt_f0 = readwrite.read_raw_mat(join(yaap_pitch_dir, key+'.f0'), 1)
-    print "yaapt pitch: ", yaapt_f0.shape
-    #pov = pov / np.sum(pov)
-    #pitch = mat[:, 1]
-    break
+with ReadHelper('scp:'+pro_pitch_feats_file) as reader:
+    for key, mat in reader:
+        print key, mat.shape
+        pov = mat[:, 0]
+        yaapt_f0 = readwrite.read_raw_mat(join(yaap_pitch_dir, key+'.f0'), 1)
+        print "yaapt pitch: ", yaapt_f0.shape
+        #pov = pov / np.sum(pov)
+        #pitch = mat[:, 1]
+        break
 
 x = np.arange(nccf.shape[0])
 x1 = np.arange(yaapt_f0.shape[0])

@@ -3,8 +3,7 @@ from os.path import basename, join
 import operator
 
 import numpy as np
-import kaldi_io
-from kaldiio import WriteHelper
+from kaldiio import WriteHelper, ReadHelper
 
 args = sys.argv
 print(args)
@@ -72,8 +71,10 @@ pool_xvec_file = join(xvec_out_dir, 'xvectors_'+basename(pool_data),
                      'spk_xvector.scp')
 pool_xvectors = {}
 c = 0
-with open(pool_xvec_file) as f:
-    for key, xvec in kaldi_io.read_vec_flt_scp(f):
+#with open(pool_xvec_file) as f:
+ #   for key, xvec in kaldi_io.read_vec_flt_scp(f):
+with ReadHelper('scp:'+pool_xvec_file) as reader:
+    for key, xvec in reader:
         #print key, mat.shape
         pool_xvectors[key] = xvec
         c += 1

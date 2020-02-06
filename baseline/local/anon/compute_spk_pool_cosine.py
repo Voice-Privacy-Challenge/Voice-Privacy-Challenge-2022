@@ -1,5 +1,5 @@
 import sys
-import kaldi_io
+from kaldiio import WriteHelper, ReadHelper
 import os
 from os.path import join, isdir
 
@@ -19,15 +19,15 @@ pool_xvec_file = join(pool_xvec_dir, 'spk_xvector.scp')
 
 pool_xvectors = {}
 c = 0
-with open(pool_xvec_file) as f:
-    for key, xvec in kaldi_io.read_vec_flt_scp(f):
+with ReadHelper('scp:'+pool_xvec_file) as reader:
+    for key, xvec in reader:
         #print key, mat.shape
         pool_xvectors[key] = xvec
         c += 1
 print("Read ", c, "pool xvectors")
 
-with open(src_xvec_file) as f:
-    for sspk, sxvec in kaldi_io.read_vec_flt_scp(f):
+with ReadHelper('scp:'+src_xvec_file) as reader:
+    for sspk, sxvec in reader:
         print("Computing cosine measure for " + sspk)
         with open(join(scores_dir, 'affinity_'+sspk), 'w') as sf:
             for pspk, pxvec in pool_xvectors.items():
