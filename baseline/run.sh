@@ -32,7 +32,6 @@ stage=0
 data_url=www.openslr.org/resources/12              # Link to download LibriSpeech corpus
 librispeech_corpus=$(realpath corpora/LibriSpeech) # LibriSpeech corpus (for train-other-500, train-clean-100, dev-clean)
 libritts_corpus=$(realpath corpora/LibriTTS)       # LibriTTS corpus (for train-other-500)
-data_netcdf=$(realpath exp/am_nsf_data)       # directory where features for voice anonymization will be stored
 
 anoni_pool="libritts_train_other_500"
 am_nsf_train_data="libritts_train_clean_100"
@@ -75,8 +74,10 @@ anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}_${p
 
 # Download VCTK development set
 if [ $stage -le 0 ]; then
+  printf "${GREEN}\nStage 0: Downloading LibriSpeech development set...${NC}\n"
+  local/download_dev.sh libri '_f _m' || exit 1;
   printf "${GREEN}\nStage 0: Downloading VCTK development set...${NC}\n"
-  local/download_vctk.sh || exit 1;
+  local/download_dev.sh vctk '_f_mic2 _f_common_mic2 _m_mic2 _m_common_mic2' || exit 1;
 fi
 
 # Download pretrained models
@@ -84,7 +85,8 @@ if [ $stage -le 1 ]; then
   printf "${GREEN}\nStage 1: Downloading pretrained models...${NC}\n"
   local/download_models.sh || exit 1;
 fi
-  
+data_netcdf=$(realpath exp/am_nsf_data)   # directory where features for voice anonymization will be stored
+
 # Download LibriSpeech development set
 if [ $stage -le 2 ]; then
   printf "${GREEN}\nStage 2: Downloading LibriSpeech development set...${NC}\n"
