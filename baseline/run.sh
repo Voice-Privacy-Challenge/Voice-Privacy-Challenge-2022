@@ -29,9 +29,11 @@ set -e
 nj=$(nproc)
 stage=0
 
-data_url=www.openslr.org/resources/12              # Link to download LibriSpeech corpus
-librispeech_corpus=$(realpath corpora/LibriSpeech) # LibriSpeech corpus (for train-other-500, train-clean-100, dev-clean)
-libritts_corpus=$(realpath corpora/LibriTTS)       # LibriTTS corpus (for train-other-500)
+data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
+data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS corpus
+
+librispeech_corpus=$(realpath corpora/LibriSpeech) # Directory for LibriSpeech corpus 
+libritts_corpus=$(realpath corpora/LibriTTS)       # Directory for LibriTTS corpus 
 
 anoni_pool="libritts_train_other_500"
 am_nsf_train_data="libritts_train_clean_100"
@@ -87,19 +89,19 @@ if [ $stage -le 1 ]; then
 fi
 data_netcdf=$(realpath exp/am_nsf_data)   # directory where features for voice anonymization will be stored
 
-# Download LibriSpeech development set
+# Download LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and data sets for training evaluation models ASR_eval and ASV_eval (train-clean-360)
 if [ $stage -le 2 ]; then
-  printf "${GREEN}\nStage 2: Downloading LibriSpeech development set...${NC}\n"
-  for part in dev-clean; do
-    local_librispeech/download_and_untar.sh corpora $data_url $part || exit 1;
+  printf "${GREEN}\nStage 2: Downloading LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and for training evaluation models ASR_eval and ASV_eval (train-clean-360)...${NC}\n"
+  for part in train-clean-100 train-other-500 train-clean-360 LibriSpeech; do
+    local/download_and_untar.sh corpora $data_url_librispeech $part 
   done
 fi
 
-# Download LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and data sets for training evaluation models ASR_eval and ASV_eval (train-clean-360)
+# Download LibriTTS data sets for training anonymization system (train-other-500, train-clean-100)
 if [ $stage -le 3 ]; then
-  printf "${GREEN}\nStage 3: Downloading LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and for training evaluation models ASR_eval and ASV_eval (train-clean-360)...${NC}\n"
-  for part in train-clean-100 train-other-500 train-clean-360; do
-    local_librispeech/download_and_untar.sh corpora $data_url $part || exit 1;
+  printf "${GREEN}\nStage 3: Downloading LibriTTS data sets fortraining anonymization system (train-other-500, train-clean-100)...${NC}\n"
+  for part in train-clean-100 train-other-500; do
+    local/download_and_untar.sh corpora $data_url_libritts $part LibriTTS
   done
 fi
 
@@ -110,7 +112,7 @@ if [ $stage -le 4 ]; then
   local/data_prep_libritts.sh ${libritts_corpus}/train-other-500 data/${anoni_pool} || exit 1;
 fi
   
-if [ $stage -le 5 ]; then
+if [ $stage -le 7 ]; then
   printf "${GREEN}\nStage 5: Extracting xvectors for anonymization pool.${NC}\n"
   local/featex/01_extract_xvectors.sh --nj $nj data/${anoni_pool} ${xvec_nnet_dir} \
 	  ${anon_xvec_out_dir} || exit 1;
