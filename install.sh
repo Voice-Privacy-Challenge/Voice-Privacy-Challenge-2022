@@ -6,6 +6,7 @@ nj=$(nproc)
 
 home=$PWD
 
+conda_url=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 venv_dir=$PWD/venv
 
 netcdf=https://github.com/Unidata/netcdf-c/archive/v4.3.3.1.tar.gz
@@ -24,14 +25,19 @@ currennt_dir=$nii_dir/CURRENNT_codes
 mark=.done-venv
 if [ ! -f $mark ]; then
   echo 'Making python virtual environment'
-  pip2 install virtualenv || exit 1
-  python2 -m virtualenv $venv_dir || exit 1
+  name=$(basename $conda_url)
+  if [ ! -f $name ]; then
+    wget $conda_url || exit 1
+  fi
+  [ ! -f $name ] && echo "File $name does not exist" && exit 1
+  [ -d $venv_dir ] && rm -r $venv_dir
+  sh $name -b -p $venv_dir || exit 1
   . $venv_dir/bin/activate
   echo 'Installing python dependencies'
   pip install -r requirements.txt || exit 1
   touch $mark
 fi
-echo "if [[ -z \${VIRTUAL_ENV+x} ]] || [[ \$VIRTUAL_ENV != $venv_dir ]]; then source $venv_dir/bin/activate; fi" > env.sh
+echo "if [ \$(which python) != $venv_dir/bin/python ]; then source $venv_dir/bin/activate; fi" > env.sh
 
 mark=.done-kaldi-tools
 if [ ! -f $mark ]; then
