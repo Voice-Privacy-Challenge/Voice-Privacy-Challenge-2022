@@ -39,7 +39,7 @@ fi
 
 if [ $stage -le 1 ]; then
   python local/featex/create_ppg_data.py ${ppg_file} ${out_dir} || exit 1;
-  python local/featex/create_melspec_data.py ${ppg_file} ${out_dir} || exit 1;
+  python local/featex/create_melspec_data.py ${melspec_file} ${out_dir} || exit 1;
 fi
 
 if [ $stage -le 2 ]; then

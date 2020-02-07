@@ -31,9 +31,7 @@ stage=0
 
 data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
 data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS corpus
-
-librispeech_corpus=$(realpath corpora/LibriSpeech) # Directory for LibriSpeech corpus 
-libritts_corpus=$(realpath corpora/LibriTTS)       # Directory for LibriTTS corpus 
+corpora=corpora
 
 anoni_pool="libritts_train_other_500"
 am_nsf_train_data="libritts_train_clean_100"
@@ -95,22 +93,25 @@ if [ $stage -le 1 ]; then
   local/download_models.sh || exit 1;
 fi
 data_netcdf=$(realpath exp/am_nsf_data)   # directory where features for voice anonymization will be stored
+mkdir -p $data_netcdf || exit 1;
 
 # Download LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and data sets for training evaluation models ASR_eval and ASV_eval (train-clean-360)
 if [ $stage -le 2 ]; then
   printf "${GREEN}\nStage 2: Downloading LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and for training evaluation models ASR_eval and ASV_eval (train-clean-360)...${NC}\n"
   for part in train-clean-100 train-other-500 train-clean-360 LibriSpeech; do
-    local/download_and_untar.sh corpora $data_url_librispeech $part 
+    local/download_and_untar.sh $corpora $data_url_librispeech $part 
   done
 fi
+librispeech_corpus=$(realpath $corpora/LibriSpeech) # Directory for LibriSpeech corpus 
 
 # Download LibriTTS data sets for training anonymization system (train-other-500, train-clean-100)
 if [ $stage -le 3 ]; then
   printf "${GREEN}\nStage 3: Downloading LibriTTS data sets fortraining anonymization system (train-other-500, train-clean-100)...${NC}\n"
   for part in train-clean-100 train-other-500; do
-    local/download_and_untar.sh corpora $data_url_libritts $part LibriTTS
+    local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS
   done
 fi
+libritts_corpus=$(realpath $corpora/LibriTTS)       # Directory for LibriTTS corpus 
 
 # Extract xvectors from anonymization pool
 if [ $stage -le 4 ]; then
@@ -199,20 +200,20 @@ if [ $stage -le 12 ]; then
   done
 fi
 
-# Not anonymizing train-clean-360 here since it takes enormous amount of time and memory
-if [ $stage -le 13 ] && false; then
-  printf "${GREEN}\nStage 13: Anonymizing train data for Informed xvector model.${NC}\n"
-  local/data_prep_adv.sh ${librispeech_corpus}/train-clean-360 data/train_clean_360 || exit 1;
-  local/anon/anonymize_data_dir.sh --nj $nj --stage 0 --anoni-pool ${anoni_pool} \
-	 --data-netcdf ${data_netcdf} \
-	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} \
-	 --xvec-nnet-dir ${xvec_nnet_dir} \
-	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
-	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
-	 --proximity ${proximity} \
-	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
-	 train_clean_360 || exit 1;
-  axvec_train_data=train_clean_360${anon_data_suffix}
-fi
+# This stage is for post-evaluation analysis only: (anonymizing train-clean-360 to retrain ASR_eval and ASV_eval models)
+#if [ $stage -le 13 ] && false; then
+#  printf "${GREEN}\nStage 13: Anonymizing train data for Informed xvector model.${NC}\n"
+#  local/data_prep_adv.sh ${librispeech_corpus}/train-clean-360 data/train_clean_360 || exit 1;
+#  local/anon/anonymize_data_dir.sh --nj $nj --stage 0 --anoni-pool ${anoni_pool} \
+#	 --data-netcdf ${data_netcdf} \
+#	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} \
+#	 --xvec-nnet-dir ${xvec_nnet_dir} \
+#	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
+#	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
+#	 --proximity ${proximity} \
+#	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
+#	 train_clean_360 || exit 1;
+#  axvec_train_data=train_clean_360${anon_data_suffix}
+#fi
 
 echo Done

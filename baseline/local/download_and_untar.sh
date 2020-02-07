@@ -23,10 +23,12 @@ url=$2
 part=$3
 corpus=$4
 
-if [ ! -d "$data" ]; then
-  echo "$0: no such directory $data"
-  exit 1;
-fi
+#if [ ! -d "$data" ]; then
+#  echo "$0: no such directory $data"
+#  exit 1;
+#fi
+
+mkdir -p $data || exit 1
 
 part_ok=false
 list="dev-clean test-clean dev-other test-other train-clean-100 train-clean-360 train-other-500"

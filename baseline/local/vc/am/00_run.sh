@@ -5,7 +5,7 @@
 
 export AM_NSF_FEAT_OUT="$1"
 
-proj_dir=${CURRENNT_SCRIPTS}/acoustic-modeling/project-DAR-continuous
+proj_dir=${nii_scripts}/acoustic-modeling/project-DAR-continuous
 
 
 # preparing the training data
