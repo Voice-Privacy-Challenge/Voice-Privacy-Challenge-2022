@@ -44,6 +44,7 @@ for dset in $asv_eval_sets; do
   echo "    EER: $eer%" | tee $expo/EER
   echo "    minDCF(p-target=0.01): $mindcf1" | tee -a $expo/EER
   echo "    minDCF(p-target=0.001): $mindcf2" | tee -a $expo/EER
+  PYTHONPATH=$(realpath ../cllr) python ../cllr/compute_cllr.py -k $trials -s $expo/scores -e
 done
 
 echo '  Done'
