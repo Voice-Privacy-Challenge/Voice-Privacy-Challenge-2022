@@ -13,12 +13,7 @@ Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for
 The recipe uses the pre-trained models of anonymization. To run the baseline system with evaluation:
 
 1. `cd baseline` 
-2. (optionally) change the following variables in `run.sh`:
-- `librispeech_corpus`: The directory for LibriSpeech corpus (will contain `dev-clean`, `train-clean-360`, `train-clean-100`,`train-other-500` subsets).
-- `libritts_corpus`: The directory for LibriTTS corpus (will contain `train-other-500` subset).
-- `data_netcdf`: Directory where anonymized files and features will be stored (it requires at least 20Gb).
-3. run `./run.sh`.
-
+2. run `./run.sh`. In run.sh, to download models and data the user will be requested the password which is provided during the Challenge registration.
 
 ## General information
 
