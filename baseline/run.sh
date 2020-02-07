@@ -86,6 +86,7 @@ if [ $stage -le 1 ]; then
   local/download_models.sh || exit 1;
 fi
 data_netcdf=$(realpath exp/am_nsf_data)   # directory where features for voice anonymization will be stored
+mkdir -p $data_netcdf || exit 1;
 
 # Download LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and data sets for training evaluation models ASR_eval and ASV_eval (train-clean-360)
 if [ $stage -le 2 ]; then
