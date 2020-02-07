@@ -54,12 +54,11 @@ anon_xvec_out_dir=${xvec_nnet_dir}/anon
 # ASV_eval config
 asv_eval_model=exp/models/asv_eval/xvect_01709_1
 plda_dir=${asv_eval_model}/xvect_train_clean_360
-asv_eval_sets=vctk_dev
-[ -d data/vctk_test ] && asv_eval_sets="$asv_eval_sets vctk_test"
 
-# ASR_eval config
-asr_eval_sets=vctk_dev_asr
-[ -d data/vctk_test_asr ] && asr_eval_sets="$asr_eval_sets vctk_test_asr"
+# Evaluation data sets
+eval_sets='libri_dev vctk_dev'
+[ -d data/libri_test ] && eval_sets="$eval_sets libri_test"
+[ -d data/vctk_test ] && eval_sets="$eval_sets vctk_test"
 
 # Anonymization configs
 pseudo_xvec_rand_level=spk                # spk (all utterances will have same xvector) or utt (each utterance will have randomly selected xvector)
@@ -67,19 +66,27 @@ cross_gender="false"                      # true, same gender xvectors will be s
 distance="plda"                           # cosine or plda
 proximity="farthest"                      # nearest or farthest speaker to be selected for anonymization
 
-eval2_enroll=eval2_enroll
-eval2_trial=eval2_trial
+#eval2_enroll=eval2_enroll
+#eval2_trial=eval2_trial
 
 anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}_${proximity}
 
 #=========== end config ===========
 
-# Download VCTK development set
+## Download VCTK development set
+#if [ $stage -le 0 ]; then
+#  printf "${GREEN}\nStage 0: Downloading LibriSpeech development set...${NC}\n"
+#  local/download_dev.sh libri '' '_f _m' || exit 1;
+#  printf "${GREEN}\nStage 0: Downloading VCTK development set...${NC}\n"
+#  local/download_dev.sh vctk '_mic2' '_f_mic2 _f_common_mic2 _m_mic2 _m_common_mic2' || exit 1;
+#fi
+
+# Download development set
 if [ $stage -le 0 ]; then
   printf "${GREEN}\nStage 0: Downloading LibriSpeech development set...${NC}\n"
-  local/download_dev.sh libri '_f _m' || exit 1;
+  local/download_dev.sh libri || exit 1;
   printf "${GREEN}\nStage 0: Downloading VCTK development set...${NC}\n"
-  local/download_dev.sh vctk '_f_mic2 _f_common_mic2 _m_mic2 _m_common_mic2' || exit 1;
+  local/download_dev.sh vctk || exit 1;
 fi
 
 # Download pretrained models
@@ -118,16 +125,16 @@ if [ $stage -le 5 ]; then
 	  ${anon_xvec_out_dir} || exit 1;
 fi
 
-# Make evaluation data
-if [ $stage -le 6 ]; then
-  printf "${GREEN}\nStage 6: Making evaluation data${NC}\n"
-  local/make_eval2.sh proto/eval2 ${librispeech_corpus} ${eval2_enroll} ${eval2_trial} || exit 1;
-fi
+## Make evaluation data
+#if [ $stage -le 6 ]; then
+#  printf "${GREEN}\nStage 6: Making evaluation data${NC}\n"
+#  local/make_eval2.sh proto/eval2 ${librispeech_corpus} ${eval2_enroll} ${eval2_trial} || exit 1;
+#fi
 
 # Extract xvectors from data which has to be anonymized
 if [ $stage -le 7 ]; then
   printf "${GREEN}\nStage 7: Anonymizing eval2 data.${NC}\n"
-  for name in $eval2_enroll $eval2_trial; do
+  for name in $eval_sets; do
     local/anon/anonymize_data_dir.sh --nj $nj --anoni-pool ${anoni_pool} \
 	 --data-netcdf ${data_netcdf} \
 	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} \
@@ -139,6 +146,9 @@ if [ $stage -le 7 ]; then
 	 ${name} || exit 1;
   done
 fi
+
+echo 'The rest is not ready yet'
+exit 0
 
 if [ $stage -le 8 ]; then
   printf "${GREEN}\nStage 8: Evaluate the dataset using speaker verification.${NC}\n"

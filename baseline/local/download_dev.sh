@@ -2,14 +2,21 @@
 
 set -e
 
-if [ $# != 2 ]; then
+#if [ $# != 3 ]; then
+#  echo "Usage: "
+#  echo "  $0 [options] <data-set> <enr_suff> <tri_suff>"
+#  exit 1;
+#fi
+
+if [ $# != 1 ]; then
   echo "Usage: "
-  echo "  $0 [options] <data-set> <subsets>"
+  echo "  $0 [options] <data-set>"
   exit 1;
 fi
 
 data_set=$1
-subsets="$2"
+#enr_suff=$2
+#tri_suff="$3"
 
 expo_dir=data/${data_set}_dev
 
@@ -35,28 +42,39 @@ EOF
   utils/validate_data_dir.sh --no-feats $dir || exit 1
 fi
 
-echo "  Making ${data_set} trials subsets for ASR evaluation"
-dirs=''
-for subset in $subsets; do
-  dir=${expo_dir}_asr${subset}
-  if [ ! -f $dir/wav.scp ]; then
-    echo "    $dir"
-    trials=$expo_dir/trials$subset
-    [ ! -f $trials ] && echo "File $trials does not exist" && exit 1
-    [ -d $dir ] && rm -r $dir
-    mkdir -p $dir
-    cut -d' ' -f2 $trials | sort | uniq > $dir/utt-list
-    utils/subset_data_dir.sh --utt-list $dir/utt-list $expo_dir $dir || exit 1
-  fi
-  dirs="$dirs $dir"
-done
-
-dir=${expo_dir}_asr
-if [ ! -f $dir/wav.scp ]; then
-  echo "  Combining ${data_set} trials subsets for ASR evaluation"
-  [ -d $dir ] && rm -r $dir
-  utils/combine_data.sh $dir $dirs || exit 1
-  utils/validate_data_dir.sh --no-feats $dir || exit 1
-fi
+#echo "  Making ${data_set} enrolls dataset"
+#dir=${expo_dir}_enr${enr_suff}
+#if [ ! -f $dir/wav.scp ]; then
+#  echo "    $dir"
+#  enrolls=$expo_dir/enrolls$enr_suff
+#  [ ! -f $enrolls ] && echo "File $enrolls does not exist" && exit 1
+#  [ -d $dir ] && rm -r $dir
+#  mkdir -p $dir
+#  utils/subset_data_dir.sh --utt-list $enrolls $expo_dir $dir || exit 1
+#fi
+#
+#echo "  Making ${data_set} trials datasets"
+#dirs=''
+#for subset in $tri_suff; do
+#  dir=${expo_dir}_tri${subset}
+#  if [ ! -f $dir/wav.scp ]; then
+#    echo "    $dir"
+#    trials=$expo_dir/trials$subset
+#    [ ! -f $trials ] && echo "File $trials does not exist" && exit 1
+#    [ -d $dir ] && rm -r $dir
+#    mkdir -p $dir
+#    cut -d' ' -f2 $trials | sort | uniq > $dir/utt-list
+#    utils/subset_data_dir.sh --utt-list $dir/utt-list $expo_dir $dir || exit 1
+#  fi
+#  dirs="$dirs $dir"
+#done
+#
+#dir=${expo_dir}_asr
+#if [ ! -f $dir/wav.scp ]; then
+#  echo "  Combining ${data_set} trials tri_suff"
+#  [ -d $dir ] && rm -r $dir
+#  utils/combine_data.sh $dir $dirs || exit 1
+#  utils/validate_data_dir.sh --no-feats $dir || exit 1
+#fi
 
 echo '  Done'
