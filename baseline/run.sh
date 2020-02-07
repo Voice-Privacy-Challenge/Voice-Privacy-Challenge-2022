@@ -190,20 +190,20 @@ if [ $stage -le 12 ]; then
   done
 fi
 
-# Not anonymizing train-clean-360 here since it takes enormous amount of time and memory
-if [ $stage -le 13 ] && false; then
-  printf "${GREEN}\nStage 13: Anonymizing train data for Informed xvector model.${NC}\n"
-  local/data_prep_adv.sh ${librispeech_corpus}/train-clean-360 data/train_clean_360 || exit 1;
-  local/anon/anonymize_data_dir.sh --nj $nj --stage 0 --anoni-pool ${anoni_pool} \
-	 --data-netcdf ${data_netcdf} \
-	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} \
-	 --xvec-nnet-dir ${xvec_nnet_dir} \
-	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
-	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
-	 --proximity ${proximity} \
-	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
-	 train_clean_360 || exit 1;
-  axvec_train_data=train_clean_360${anon_data_suffix}
-fi
+# This stage is for post-evaluation analysis only: (anonymizing train-clean-360 to retrain ASR_eval and ASV_eval models)
+#if [ $stage -le 13 ] && false; then
+#  printf "${GREEN}\nStage 13: Anonymizing train data for Informed xvector model.${NC}\n"
+#  local/data_prep_adv.sh ${librispeech_corpus}/train-clean-360 data/train_clean_360 || exit 1;
+#  local/anon/anonymize_data_dir.sh --nj $nj --stage 0 --anoni-pool ${anoni_pool} \
+#	 --data-netcdf ${data_netcdf} \
+#	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} \
+#	 --xvec-nnet-dir ${xvec_nnet_dir} \
+#	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
+#	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
+#	 --proximity ${proximity} \
+#	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
+#	 train_clean_360 || exit 1;
+#  axvec_train_data=train_clean_360${anon_data_suffix}
+#fi
 
 echo Done
