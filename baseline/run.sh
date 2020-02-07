@@ -31,9 +31,7 @@ stage=0
 
 data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
 data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS corpus
-
-librispeech_corpus=$(realpath corpora/LibriSpeech) # Directory for LibriSpeech corpus 
-libritts_corpus=$(realpath corpora/LibriTTS)       # Directory for LibriTTS corpus 
+corpora=corpora
 
 anoni_pool="libritts_train_other_500"
 am_nsf_train_data="libritts_train_clean_100"
@@ -93,17 +91,19 @@ data_netcdf=$(realpath exp/am_nsf_data)   # directory where features for voice a
 if [ $stage -le 2 ]; then
   printf "${GREEN}\nStage 2: Downloading LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and for training evaluation models ASR_eval and ASV_eval (train-clean-360)...${NC}\n"
   for part in train-clean-100 train-other-500 train-clean-360 LibriSpeech; do
-    local/download_and_untar.sh corpora $data_url_librispeech $part 
+    local/download_and_untar.sh $corpora $data_url_librispeech $part 
   done
 fi
+librispeech_corpus=$(realpath $corpora/LibriSpeech) # Directory for LibriSpeech corpus 
 
 # Download LibriTTS data sets for training anonymization system (train-other-500, train-clean-100)
 if [ $stage -le 3 ]; then
   printf "${GREEN}\nStage 3: Downloading LibriTTS data sets fortraining anonymization system (train-other-500, train-clean-100)...${NC}\n"
   for part in train-clean-100 train-other-500; do
-    local/download_and_untar.sh corpora $data_url_libritts $part LibriTTS
+    local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS
   done
 fi
+libritts_corpus=$(realpath $corpora/LibriTTS)       # Directory for LibriTTS corpus 
 
 # Extract xvectors from anonymization pool
 if [ $stage -le 4 ]; then
