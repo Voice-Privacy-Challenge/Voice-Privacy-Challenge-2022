@@ -77,7 +77,7 @@ fi
 if [ $stage -le 3 ]; then
   echo "Stage 3: x-vector extraction."
   for sdata in ${split_data}; do
-    local/featex/01_extract_xvectors.sh --nj $nj ${split_dir}/${sdata} ${xvec_nnet_dir} \
+    local/featex/01_extract_xvectors.sh --nj ${dev_spks} ${split_dir}/${sdata} ${xvec_nnet_dir} \
 	  ${xvec_out_dir}
   done
 fi
