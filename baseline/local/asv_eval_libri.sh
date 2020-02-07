@@ -80,5 +80,11 @@ if [ $stage -le 3 ]; then
   male_eer=$(paste $libri_male exp/scores_libri_male | awk '{print $6, $3}' | compute-eer - 2>/dev/null)
   female_eer=$(paste $libri_female exp/scores_libri_female | awk '{print $6, $3}' | compute-eer - 2>/dev/null)
   echo "EER: Pooled ${pooled_eer}%, Male ${male_eer}%, Female ${female_eer}%"
+  echo "Pooled:"
+  PYTHONPATH=$(realpath ../cllr) python ../cllr/compute_cllr.py -k $librispeech_trials_file -s exp/scores_libri_trials -e
+  echo "Male:"
+  PYTHONPATH=$(realpath ../cllr) python ../cllr/compute_cllr.py -k $libri_male -s exp/scores_libri_male -e
+  echo "Female"
+  PYTHONPATH=$(realpath ../cllr) python ../cllr/compute_cllr.py -k $libri_female -s exp/scores_libri_female -e
 fi
 
