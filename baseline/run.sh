@@ -27,7 +27,7 @@ set -e
 #===== begin config =======
 
 nj=$(nproc)
-stage=0
+stage=7
 
 data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
 data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS corpus
@@ -54,9 +54,9 @@ asv_eval_model=exp/models/asv_eval/xvect_01709_1
 plda_dir=${asv_eval_model}/xvect_train_clean_360
 
 # Evaluation data sets
-eval_sets='libri_dev vctk_dev'
-[ -d data/libri_test ] && eval_sets="$eval_sets libri_test"
-[ -d data/vctk_test ] && eval_sets="$eval_sets vctk_test"
+#eval_sets='libri_dev vctk_dev'
+#[ -d data/libri_test ] && eval_sets="$eval_sets libri_test"
+#[ -d data/vctk_test ] && eval_sets="$eval_sets vctk_test"
 
 # Anonymization configs
 pseudo_xvec_rand_level=spk                # spk (all utterances will have same xvector) or utt (each utterance will have randomly selected xvector)
@@ -126,25 +126,44 @@ if [ $stage -le 5 ]; then
 	  ${anon_xvec_out_dir} || exit 1;
 fi
 
-## Make evaluation data
-#if [ $stage -le 6 ]; then
-#  printf "${GREEN}\nStage 6: Making evaluation data${NC}\n"
-#  local/make_eval2.sh proto/eval2 ${librispeech_corpus} ${eval2_enroll} ${eval2_trial} || exit 1;
-#fi
+# Make evaluation data
+if [ $stage -le 6 ]; then
+  printf "${GREEN}\nStage 6: Making evaluation subsets${NC}\n"
+  dset=data/libri_dev
+  utils/subset_data_dir.sh --utt-list $dset/enrolls $dset ${dset}_enrolls || exit 1
+  temp=$(mktemp)
+  cut -d' ' -f2 $dset/trials_f | sort | uniq > $temp
+  utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_f || exit 1
+  cut -d' ' -f2 $dset/trials_m | sort | uniq > $temp
+  utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_m || exit 1
+  dset=data/vctk_dev
+  utils/subset_data_dir.sh --utt-list $dset/enrolls_mic2 $dset ${dset}_enrolls || exit 1
+  cut -d' ' -f2 $dset/trials_f_mic2 | sort | uniq > $temp
+  utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_f || exit 1
+  cut -d' ' -f2 $dset/trials_f_common_mic2 | sort | uniq > $temp
+  utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_f_common || exit 1
+  cut -d' ' -f2 $dset/trials_m_mic2 | sort | uniq > $temp
+  utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_m || exit 1
+  cut -d' ' -f2 $dset/trials_m_common_mic2 | sort | uniq > $temp
+  utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_m_common || exit 1
+  rm $temp
+  #local/make_eval2.sh proto/eval2 ${librispeech_corpus} ${eval2_enroll} ${eval2_trial} || exit 1;
+fi
 
 # Extract xvectors from data which has to be anonymized
 if [ $stage -le 7 ]; then
   printf "${GREEN}\nStage 7: Anonymizing eval2 data.${NC}\n"
-  for name in $eval_sets; do
-    local/anon/anonymize_data_dir.sh --nj $nj --anoni-pool ${anoni_pool} \
-	 --data-netcdf ${data_netcdf} \
-	 --ppg-model ${ppg_model} --ppg-dir ${ppg_dir} \
-	 --xvec-nnet-dir ${xvec_nnet_dir} \
-	 --anon-xvec-out-dir ${anon_xvec_out_dir} --plda-dir ${plda_dir} \
-	 --pseudo-xvec-rand-level ${pseudo_xvec_rand_level} --distance ${distance} \
-	 --proximity ${proximity} \
-	 --cross-gender ${cross_gender} --anon-data-suffix ${anon_data_suffix} \
-	 ${name} || exit 1;
+  for dset in libri_dev_{enrolls,trials_f,trials_m} \
+      vctk_dev_{enrolls,trials_f,trials_f_common,trials_m,trials_m_common}; do
+    local/anon/anonymize_data_dir.sh \
+      --nj $nj --anoni-pool $anoni_pool \
+	    --data-netcdf $data_netcdf \
+	    --ppg-model $ppg_model --ppg-dir $ppg_dir \
+	    --xvec-nnet-dir $xvec_nnet_dir \
+	    --anon-xvec-out-dir $anon_xvec_out_dir --plda-dir $plda_dir \
+	    --pseudo-xvec-rand-level $pseudo_xvec_rand_level --distance $distance \
+	    --proximity $proximity --cross-gender $cross_gender \
+      --anon-data-suffix $anon_data_suffix $dset || exit 1;
   done
 fi
 
