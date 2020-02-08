@@ -27,7 +27,7 @@ set -e
 #===== begin config =======
 
 nj=$(nproc)
-stage=0
+stage=7
 
 data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
 data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS corpus
