@@ -17,8 +17,9 @@ The recipe uses the pre-trained models of anonymization. To run the baseline sys
 
 ## General information
 
-### Datasets
+For more details about the baseline and data please see [The VoicePrivacy 2020 Challenge Evaluation Plan](https://www.voiceprivacychallenge.org/docs/VoicePrivacy_2020_Eval_Plan_v1_1.pdf)
 
+### Datasets
 
 #### Training data
 The dataset for anonymization system traing consists of subsets from the following corpora*:
@@ -38,57 +39,12 @@ The dataset for anonymization system traing consists of subsets from the followi
 ### Models
 
 The baseline system uses several independent models:
-1. ASR acoustic model to extract BN features (asr_am)
-2. X-vector extractor (xvect_extr)
-3. Speech synthesis (SS) acoustic model (ss_am)
-4. Neural source filter (NSF) model (nsf)
+1. ASR acoustic model to extract BN features (`1_asr_am`) - trained on LibriSpeech-train-clean-100 and LibriSpeech-train-other-500
+2. X-vector extractor (`2_xvect_extr`) - trained on VoxCeleb 1 & 2.
+3. Speech synthesis (SS) acoustic model (`3_ss_am`) - trained on LibriTTS-train-clean-100.
+4. Neural source filter (NSF) model (`4_nsf`) - trained on LibriTTS-train-clean-100.
 
-These models optionally can be:
-*  trained with the provided scripts;
-or
-* downloaded (done by ./baseline/local/download_models.sh)
-
-
-
-    
-### Models info
-
-#### BN extractor
-
-This is a chain ASR model trained using LibriSpeech-train-clean-100 and LibriSpeech-train-other-500 for BN feature extraction
-
-- `ivec_extractor`: i-vector extractor trained during training the chain model.
-- `model_dir`: Directory where pretrained chain model is stored
-
-
-#### x-vector extractor
-
-This is a xvector model trained over VoxCeleb 1 & 2.
-
-- `xvec_nnet_dir`: Directory where trained xvector network is stored
-- `pseudo_xvec_rand_level`: anonymized x-vectors will be produced at this level, e.g. `spk` or `utt`
-- `cross_gender`: anonymization is done within same gender or across gender, e.g. `true` or `false`.
-
-
-#### Acoustic model for voice conversion
-
-This module takes 3 inputs: 
-- BN
-- x-vector
-- F0
-
-The pretrained model is provided as part of this baseline. It is trained on LibriTTS-train-clean-100.
-
-
-#### Neural source-filter model for voice conversion
-
-This module will take 3 inputs: 
-- Mel filterbanks extracted by SS AM
-- x-vector
-- F0
-
-The pretrained model will be provided as part of this baseline. It is trained on LibriTTS-train-clean-100.
-
+All the pretrained models are provided as part of this baseline (downloaded by ./baseline/local/download_models.sh)
 
 ## Organizers (in alphabetical order)
 
