@@ -1,4 +1,5 @@
 /venv/
+.nfs*
 *.pyc
 *.tar.gz
 *.tar.xz
