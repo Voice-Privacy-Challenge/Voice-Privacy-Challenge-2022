@@ -6,58 +6,60 @@ set -e
 . cmd.sh
 
 nj=$(nproc)
-data=$1
-model_dir=$2
+dset=vctk_dev_trials_f_all
+model=exp/models/asr_eval
+printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
+results=exp/results-$results
 
 . utils/parse_options.sh
 
-if [ $# != 2 ]; then
-  echo "Usage: "
-  echo "  $0 [options] <srcdir> <model-dir>"
-  echo "Options"
-  echo "   --nj=40     # Number of CPUs to use for feature extraction"
-  echo "   --stage=0     # Extraction stage"
-  exit 1;
-fi
+ivec_extr=$model/extractor
+graph_dir=$model/graph_tgsmall
+large_lang=$model/lang_test_tglarge
+small_lang=$model/lang_test_tgsmall
+data=data/${dset}_hires
+ivect=$ivec_extr/ivect_$dset
 
-
-original_data_dir=data/${data}
-
-data_dir=data/${data}_hires
-
-ivec_extractor=${model_dir}/extractor
-ivec_data_dir=${model_dir}/ivectors_${data}_hires
-
-graph_dir=${model_dir}/graph_tgsmall
-large_lang_dir=${model_dir}/lang_test_tglarge
-small_lang_dir=${model_dir}/lang_test_tgsmall
-
-spk2utt=${original_data_dir}/spk2utt
+spk2utt=data/$dset/spk2utt
 [ ! -f $spk2utt ] && echo "File $spk2utt does not exist" && exit 1
 num_spk=$(wc -l < $spk2utt)
 [ $nj -gt $num_spk ] && nj=$num_spk
 
-export LC_ALL=C
-if [ $stage -le 0 ]; then
-  utils/copy_data_dir.sh ${original_data_dir} ${data_dir}
-  steps/make_mfcc.sh --nj $nj --mfcc-config conf/mfcc_hires.conf \
-	--cmd "$train_cmd" ${data_dir}
-  steps/compute_cmvn_stats.sh ${data_dir} || exit 1;
-  utils/fix_data_dir.sh ${data_dir}
-
-  steps/online/nnet2/extract_ivectors_online.sh --cmd "$train_cmd" --nj $nj \
-       	${data_dir} ${ivec_extractor} ${ivec_data_dir} 
+if [ ! -f $data/.done_mfcc ]; then
+  printf "${RED}  compute MFCC: $dset${NC}\n"
+  utils/copy_data_dir.sh data/$dset $data || exit 1
+  steps/make_mfcc.sh --nj $nj --cmd "$train_cmd" --mfcc-config conf/mfcc_hires.conf $data || exit 1
+  steps/compute_cmvn_stats.sh $data || exit 1
+  utils/fix_data_dir.sh $data || exit 1
+  touch $data/.done_mfcc
 fi
 
-if [ $stage -le 1 ]; then
-  steps/nnet3/decode.sh --acwt 1.0 --post-decode-acwt 10.0 \
-    --nj $nj --cmd "$decode_cmd" \
-    --online-ivector-dir ${ivec_data_dir} \
-    $graph_dir ${data_dir} ${model_dir}/decode_${data}_tgsmall || exit 1
-  steps/lmrescore_const_arpa.sh \
-    --cmd "$decode_cmd" ${small_lang_dir} ${large_lang_dir} \
-    ${data_dir} ${model_dir}/decode_${data}_{tgsmall,tglarge} || exit 1
+if [ ! -f $ivect/.done ]; then
+  printf "${RED}  compute i-vect: $dset${NC}\n"
+  steps/online/nnet2/extract_ivectors_online.sh --nj $nj --cmd "$train_cmd" \
+    $data ${ivec_extr} $ivect || exit 1
+  touch $ivect/.done
+fi
 
-  grep WER ${model_dir}/decode_${data}_tglarge/wer* | utils/best_wer.sh;
-  grep WER ${model_dir}/decode_${data}_tgsmall/wer* | utils/best_wer.sh;
+expo=$model/decode_${dset}_tgsmall
+if [ ! -f $expo/.done ]; then
+  printf "${RED}  decoding: $dset${NC}\n"
+  steps/nnet3/decode.sh \
+    --nj $nj --cmd "$decode_cmd" \
+    --acwt 1.0 --post-decode-acwt 10.0 \
+    --online-ivector-dir $ivect \
+    $graph_dir $data $expo || exit 1
+  mkdir -p $results
+  grep WER $expo/wer* | utils/best_wer.sh | tee -a $results/ASR-$dset
+  touch $expo/.done
+fi
+
+expo=$model/decode_${data}_tglarge
+if [ ! -f $expo/.done ]; then
+  printf "${RED}  rescoring: $dset${NC}\n"
+  steps/lmrescore_const_arpa.sh \
+    --cmd "$decode_cmd" $small_lang $large_lang \
+    $data $model/decode_${dset}_tgsmall $expo || exit 1
+  grep WER $expo/wer* | utils/best_wer.sh | tee -a $results/ASR-$dset
+  touch $expo/.done
 fi

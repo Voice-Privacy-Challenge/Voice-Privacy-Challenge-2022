@@ -24,7 +24,7 @@ set -e
 #===== begin config =======
 
 nj=$(nproc)
-stage=0
+stage=12
 
 download_full=false  # If download_full=true all the data that can be used in the training/development will be dowloaded (except for Voxceleb-1,2 corpus); otherwise - only those subsets that are used in the current baseline (with the pretrained models)
 data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
@@ -32,6 +32,9 @@ data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS c
 corpora=corpora
 
 anoni_pool="libritts_train_other_500"
+
+printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
+results=exp/results-$results
 
 . utils/parse_options.sh || exit 1;
 
@@ -60,9 +63,6 @@ distance="plda"                           # cosine or plda
 proximity="farthest"                      # nearest or farthest speaker to be selected for anonymization
 
 anon_data_suffix=_anon
-
-printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
-results=exp/results-$results
 
 #=========== end config ===========
 
@@ -206,7 +206,33 @@ if [ $stage -le 9 ]; then
   done
 fi
 
+# Make VCTK anonymized evaluation subsets
 if [ $stage -le 10 ]; then
+  printf "${GREEN}\nStage 8: Making VCTK anonymized evaluation subsets...${NC}\n"
+  dset=data/vctk_dev
+  for name in ${dset}_trials_f_all$anon_data_suffix ${dset}_trials_m_all$anon_data_suffix; do
+    [ ! -d $name ] && echo "Directory $name does not exist" && exit 1
+  done
+  temp=$(mktemp)
+  cut -d' ' -f2 ${dset}_trials_f/trials | sort | uniq > $temp
+  utils/subset_data_dir.sh --utt-list $temp ${dset}_trials_f_all ${dset}_trials_f${anon_data_suffix} || exit 1
+  cp ${dset}_trials_f/trials ${dset}_trials_f${anon_data_suffix} || exit 1
+
+  cut -d' ' -f2 ${dset}_trials_f_common/trials | sort | uniq > $temp
+  utils/subset_data_dir.sh --utt-list $temp ${dset}_trials_f_all ${dset}_trials_f_common${anon_data_suffix} || exit 1
+  cp ${dset}_trials_f_common/trials ${dset}_trials_f_common${anon_data_suffix} || exit 1
+
+  cut -d' ' -f2 ${dset}_trials_m/trials | sort | uniq > $temp
+  utils/subset_data_dir.sh --utt-list $temp ${dset}_trials_m_all ${dset}_trials_m${anon_data_suffix} || exit 1
+  cp ${dset}_trials_m/trials ${dset}_trials_m${anon_data_suffix} || exit 1
+
+  cut -d' ' -f2 ${dset}_trials_m_common/trials | sort | uniq > $temp
+  utils/subset_data_dir.sh --utt-list $temp ${dset}_trials_m_all ${dset}_trials_m_common${anon_data_suffix} || exit 1
+  cp ${dset}_trials_m_common/trials ${dset}_trials_m_common${anon_data_suffix} || exit 1
+  rm $temp
+fi
+
+if [ $stage -le 11 ]; then
   printf "${GREEN}\nStage 10: Evaluate datasets using speaker verification...${NC}\n"
   printf "${RED}**ASV: libri_dev_trials_f, enroll - original, trial - original**${NC}\n"
   local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
@@ -269,55 +295,23 @@ if [ $stage -le 10 ]; then
     --enrolls vctk_dev_enrolls$anon_data_suffix --trials vctk_dev_trials_m_common$anon_data_suffix --results $results || exit 1;
 fi
 
-echo 'The rest is not ready yet'
-exit 0
-
-if [ $stage -le 11 ]; then
-  printf "${GREEN}\nStage 11: Evaluate the dataset using speaker verification...${NC}\n"
-  printf "${RED}**Exp 0.2 baseline: Eval 2, enroll - original, trial - original**${NC}\n"
-  local/asv_eval_libri.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
-	  ${eval2_enroll} ${eval2_trial} || exit 1;
-  printf "${RED}**Exp 3: Eval 2, enroll - original, trial - anonymized**${NC}\n"
-  local/asv_eval_libri.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
-	  ${eval2_enroll} ${eval2_trial}${anon_data_suffix} || exit 1;
-  printf "${RED}**Exp 4: Eval 2, enroll - anonymized, trial - anonymized**${NC}\n"
-  local/asv_eval_libri.sh --nnet-dir ${asv_eval_model} --plda-dir ${plda_dir} \
-	  ${eval2_enroll}${anon_data_suffix} ${eval2_trial}${anon_data_suffix} || exit 1;
-fi
-
+# Make ASR evaluation subsets
 if [ $stage -le 12 ]; then
-  asr_eval_data=${eval2_trial}${anon_data_suffix}
-  printf "${GREEN}\nStage 12: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}...${NC}\n"
-  printf "${RED}**Exp 0.3 baseline: Eval 2 trial - original, ASR performance**${NC}\n"
-  local/asr_eval.sh --nj $nj ${eval2_trial} ${asr_eval_model} || exit 1;
-  printf "${RED}**Exp 5: Eval 2, trial - anonymized, ASR performance**${NC}\n"
-  local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model} || exit 1;
+  printf "${GREEN}\nStage 8: Making ASR evaluation subsets...${NC}\n"
+  for name in data/libri_dev_{trials_f,trials_m} data/libri_dev_{trials_f,trials_m}$anon_data_suffix \
+      data/vctk_dev_{trials_f_all,trials_m_all} data/vctk_dev_{trials_f_all,trials_m_all}$anon_data_suffix; do
+    [ ! -d $name ] && echo "Directory $name does not exist" && exit 1
+  done
+  utils/combine_data.sh data/libri_dev_asr data/libri_dev_{trials_f,trials_m} || exit 1
+  utils/combine_data.sh data/libri_dev_asr$anon_data_suffix data/libri_dev_{trials_f,trials_m}$anon_data_suffix || exit 1
+  utils/combine_data.sh data/vctk_dev_asr data/vctk_dev_{trials_f_all,trials_m_all} || exit 1
+  utils/combine_data.sh data/vctk_dev_asr$anon_data_suffix data/vctk_dev_{trials_f_all,trials_m_all}$anon_data_suffix || exit 1
 fi
 
 if [ $stage -le 13 ]; then
-  for asr_eval_data in $asr_eval_sets; do
-    printf "${GREEN}\nStage 13: Performing intelligibility assessment using ASR decoding on ${asr_eval_data}...${NC}\n"
-    local/asr_eval.sh --nj $nj ${asr_eval_data} ${asr_eval_model} || exit 1;
-  done
-fi
-
-if [ $stage -le 14 ]; then
-  printf "${GREEN}\nStage 14: Extracting xvectors for ASV evaluation datasets...${NC}\n"
-  for dset in $asv_eval_sets; do
-    local/featex/01_extract_xvectors.sh \
-      --nj $nj data/$dset $asv_eval_model \
-      $asv_eval_model || exit 1;
-  done
-fi
-
-if [ $stage -le 15 ]; then
-  printf "${GREEN}\nStage 15: Evaluate datasets using speaker verification...${NC}\n"
-  for subset in '_m_common' '_m' '_f_common' '_f'; do
-    local/asv_eval.sh \
-      --plda_dir $plda_dir \
-      --asv_eval_model $asv_eval_model \
-      --asv_eval_sets "$asv_eval_sets" \
-      --subset $subset --channel '_mic2' || exit 1;
+  for dset in libri_dev_asr libri_dev_asr$anon_data_suffix vctk_dev_asr vctk_dev_asr$anon_data_suffix; do
+    printf "${GREEN}\nStage 12: Performing intelligibility assessment using ASR decoding on libri_dev_asr...${NC}\n"
+    local/asr_eval.sh --nj $nj --dset $dset --model $asr_eval_model --results $results || exit 1;
   done
 fi
 
