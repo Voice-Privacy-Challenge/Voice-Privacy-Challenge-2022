@@ -83,7 +83,7 @@ mkdir -p $data_netcdf || exit 1;
 if [ $stage -le 2 ]; then
   printf "${GREEN}\nStage 2: Downloading LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) and for training evaluation models ASR_eval and ASV_eval (train-clean-360)...${NC}\n"
   for part in train-clean-100 train-other-500 train-clean-360 LibriSpeech; do
-    local/download_and_untar.sh $corpora $data_url_librispeech $part 
+    local/download_and_untar.sh $corpora $data_url_librispeech $part || exit 1;
   done
 fi
 librispeech_corpus=$(realpath $corpora/LibriSpeech) # Directory for LibriSpeech corpus 
@@ -92,7 +92,7 @@ librispeech_corpus=$(realpath $corpora/LibriSpeech) # Directory for LibriSpeech 
 if [ $stage -le 3 ]; then
   printf "${GREEN}\nStage 3: Downloading LibriTTS data sets fortraining anonymization system (train-other-500, train-clean-100)...${NC}\n"
   for part in train-clean-100 train-other-500; do
-    local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS
+    local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS || exit 1;
   done
 fi
 libritts_corpus=$(realpath $corpora/LibriTTS)       # Directory for LibriTTS corpus 
