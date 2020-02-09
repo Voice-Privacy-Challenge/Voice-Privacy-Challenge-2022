@@ -5,8 +5,9 @@ set -e
 . path.sh
 . cmd.sh
 
-nj=32
-stage=0
+nj=$(nproc)
+data=$1
+model_dir=$2
 
 . utils/parse_options.sh
 
@@ -19,8 +20,6 @@ if [ $# != 2 ]; then
   exit 1;
 fi
 
-data=$1
-model_dir=$2
 
 original_data_dir=data/${data}
 

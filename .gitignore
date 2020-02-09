@@ -1,6 +1,7 @@
 /venv/
 .nfs*
 *.pyc
+__pycache__/
 *.swp
 *.tar.gz
 *.tar.xz
