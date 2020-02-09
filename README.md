@@ -17,8 +17,9 @@ The recipe uses the pre-trained models of anonymization. To run the baseline sys
 
 ## General information
 
-### Datasets
+For more details about the baseline and data please see [The VoicePrivacy 2020 Challenge Evaluation Plan](https://www.voiceprivacychallenge.org/docs/VoicePrivacy_2020_Eval_Plan_v1_1.pdf)
 
+### Datasets
 
 #### Training data
 The dataset for anonymization system traing consists of subsets from the following corpora*:
@@ -47,8 +48,6 @@ These models optionally can be:
 *  trained with the provided scripts;
 or
 * downloaded (done by ./baseline/local/download_models.sh)
-
-
 
     
 ### Models info
