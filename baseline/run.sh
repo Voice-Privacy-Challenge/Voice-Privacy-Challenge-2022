@@ -21,9 +21,6 @@
 
 set -e
 
-. path.sh
-. cmd.sh
-
 #===== begin config =======
 
 nj=$(nproc)
@@ -37,7 +34,10 @@ corpora=corpora
 anoni_pool="libritts_train_other_500"
 am_nsf_train_data="libritts_train_clean_100"
 
-. parse_options.sh || exit 1;
+. utils/parse_options.sh || exit 1;
+
+. path.sh
+. cmd.sh
 
 # Chain model for BN extraction
 ppg_model=exp/models/1_asr_am/exp
@@ -90,7 +90,7 @@ fi
 librispeech_corpus=$(realpath $corpora/LibriSpeech) # Directory for LibriSpeech corpus 
 
 # Download LibriTTS data sets for training anonymization system (train-clean-100)
-if $download_full && [ $stage -le 3 ]; then
+if $download_full && [[ $stage -le 3 ]]; then
   printf "${GREEN}\nStage 3: Downloading LibriTTS data sets fortraining anonymization system (train-clean-100)...${NC}\n"
   for part in train-clean-100; do
     local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS || exit 1;

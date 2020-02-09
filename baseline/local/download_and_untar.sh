@@ -10,12 +10,13 @@ if [ "$1" == --remove-archive ]; then
   shift
 fi
 
-if [ $# -ne 3 ]; then
+if [ $# -ne 4 ]; then
   echo "Usage: $0 [--remove-archive] <data-base> <url-base> <corpus-part>"
   echo "e.g.: $0 /export/a15/vpanayotov/data www.openslr.org/resources/11 dev-clean"
   echo "With --remove-archive it will remove the archive after successfully un-tarring it."
   echo "<corpus-part> can be one of: dev-clean, test-clean, dev-other, test-other,"
   echo "          train-clean-100, train-clean-360, train-other-500."
+  exit 1
 fi
 
 data=$1
