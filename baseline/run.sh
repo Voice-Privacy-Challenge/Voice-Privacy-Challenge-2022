@@ -24,7 +24,7 @@ set -e
 #===== begin config =======
 
 nj=$(nproc)
-stage=12
+stage=14
 
 download_full=false  # If download_full=true all the data that can be used in the training/development will be dowloaded (except for Voxceleb-1,2 corpus); otherwise - only those subsets that are used in the current baseline (with the pretrained models)
 data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
@@ -312,6 +312,32 @@ if [ $stage -le 13 ]; then
   for dset in libri_dev_asr libri_dev_asr$anon_data_suffix vctk_dev_asr vctk_dev_asr$anon_data_suffix; do
     printf "${GREEN}\nStage 12: Performing intelligibility assessment using ASR decoding on libri_dev_asr...${NC}\n"
     local/asr_eval.sh --nj $nj --dset $dset --model $asr_eval_model --results $results || exit 1;
+  done
+fi
+
+if [ $stage -le 14 ]; then
+  printf "${GREEN}\nStage 14: Collecting results${NC}\n"
+  expo=$results/results.txt
+  for name in `find $results -type d -name "ASV-*" | sort`; do
+    echo "$(basename $name)" | tee -a $expo
+    [ ! -f $name/EER ] && echo "Directory $name/EER does not exist" && exit 1
+    #for label in 'EER:' 'minDCF(p-target=0.01):' 'minDCF(p-target=0.001):'; do
+    for label in 'EER:'; do
+      value=$(grep "$label" $name/EER)
+      echo "  $value" | tee -a $expo
+    done
+    [ ! -f $name/Cllr ] && echo "Directory $name/Cllr does not exist" && exit 1
+    for label in 'Cllr (min/act):' 'ROCCH-EER:'; do
+      value=$(grep "$label" $name/Cllr)
+      value=$(echo $value)
+      echo "  $value" | tee -a $expo
+    done
+  done
+  for name in `find $results -type f -name "ASR-*" | sort`; do
+    echo "$(basename $name)" | tee -a $expo
+    while read line; do
+      echo "  $line" | tee -a $expo
+    done < $name
   done
 fi
 
