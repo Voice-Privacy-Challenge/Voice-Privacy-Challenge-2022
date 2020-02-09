@@ -39,46 +39,12 @@ The dataset for anonymization system traing consists of subsets from the followi
 ### Models
 
 The baseline system uses several independent models:
-1. ASR acoustic model to extract BN features (asr_am)
-2. X-vector extractor (xvect_extr)
-3. Speech synthesis (SS) acoustic model (ss_am)
-4. Neural source filter (NSF) model (nsf)
+1. ASR acoustic model to extract BN features (`1_asr_am`) - trained on LibriSpeech-train-clean-100 and LibriSpeech-train-other-500
+2. X-vector extractor (`2_xvect_extr`) - trained on VoxCeleb 1 & 2.
+3. Speech synthesis (SS) acoustic model (`3_ss_am`) - trained on LibriTTS-train-clean-100.
+4. Neural source filter (NSF) model (`4_nsf`) - trained on LibriTTS-train-clean-100.
 
-These models optionally can be:
-*  trained with the provided scripts;
-or
-* downloaded (done by ./baseline/local/download_models.sh)
-
-    
-### Models info
-
-#### BN extractor
-
-Chain TDNN-F ASR AM trained on LibriSpeech-train-clean-100 and LibriSpeech-train-other-500 for BN feature extraction.
-
-#### x-vector extractor
-
-X-vector model trained on VoxCeleb 1 & 2.
-
-#### Speech symthesis (SS) acoustic model (AM)
-
-Speech symthesis AM is trained on LibriTTS-train-clean-100.
-
-Input features: 
-- BN
-- x-vector
-- F0
-
-#### Neural source-filter (NSF) model for voice conversion
-
-NSF model is trained on LibriTTS-train-clean-100.
-
-Input features:
-- Mel filterbanks extracted by SS AM
-- x-vector
-- F0
-
-All the pretrained models are provided as part of this baseline. 
+All the pretrained models are provided as part of this baseline (downloaded (done by ./baseline/local/download_models.sh))
 
 ## Organizers (in alphabetical order)
 
