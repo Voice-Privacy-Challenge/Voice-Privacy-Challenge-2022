@@ -55,40 +55,36 @@ or
 
 #### BN extractor
 
-This is a chain ASR model trained using LibriSpeech-train-clean-100 and LibriSpeech-train-other-500 for BN feature extraction
-
-- `ivec_extractor`: i-vector extractor trained during training the chain model.
-- `model_dir`: Directory where pretrained chain model is stored
-
+Chain TDNN-F ASR AM trained on LibriSpeech-train-clean-100 and LibriSpeech-train-other-500 for BN feature extraction
 
 #### x-vector extractor
 
-This is a xvector model trained over VoxCeleb 1 & 2.
+X-vector model trained on VoxCeleb 1 & 2.
 
 - `xvec_nnet_dir`: Directory where trained xvector network is stored
 - `pseudo_xvec_rand_level`: anonymized x-vectors will be produced at this level, e.g. `spk` or `utt`
 - `cross_gender`: anonymization is done within same gender or across gender, e.g. `true` or `false`.
 
 
-#### Acoustic model for voice conversion
+#### Speech symthesis (SS) acoustic model (AM)
 
-This module takes 3 inputs: 
+Speech symthesis AM is trained on LibriTTS-train-clean-100.
+
+Input features: 
 - BN
 - x-vector
 - F0
 
-The pretrained model is provided as part of this baseline. It is trained on LibriTTS-train-clean-100.
+#### Neural source-filter (NSF) model for voice conversion
 
+NSF model is trained on LibriTTS-train-clean-100.
 
-#### Neural source-filter model for voice conversion
-
-This module will take 3 inputs: 
+Input features:
 - Mel filterbanks extracted by SS AM
 - x-vector
 - F0
 
-The pretrained model will be provided as part of this baseline. It is trained on LibriTTS-train-clean-100.
-
+All the pretrained models are provided as part of this baseline. 
 
 ## Organizers (in alphabetical order)
 
