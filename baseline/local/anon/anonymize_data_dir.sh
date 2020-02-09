@@ -49,6 +49,11 @@ fi
 
 data_dir="$1" # Data to be anonymized, must be in Kaldi format
 
+spk2utt=data/$data_dir/spk2utt
+[ ! -f $spk2utt ] && echo "File $spk2utt does not exist" && exit 1
+num_spk=$(wc -l < $spk2utt)
+[ $nj -gt $num_spk ] && nj=$num_spk
+
 # Extract xvectors from data which has to be anonymized
 if [ $stage -le 0 ]; then
   printf "${RED}\nStage a.0: Extracting xvectors for ${data_dir}.${NC}\n"
