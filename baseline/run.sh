@@ -32,7 +32,6 @@ data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS c
 corpora=corpora
 
 anoni_pool="libritts_train_other_500"
-am_nsf_train_data="libritts_train_clean_100"
 
 . utils/parse_options.sh || exit 1;
 
