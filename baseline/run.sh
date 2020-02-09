@@ -310,7 +310,7 @@ fi
 
 if [ $stage -le 13 ]; then
   for dset in libri_dev_asr libri_dev_asr$anon_data_suffix vctk_dev_asr vctk_dev_asr$anon_data_suffix; do
-    printf "${GREEN}\nStage 13: Performing intelligibility assessment using ASR decoding on libri_dev_asr...${NC}\n"
+    printf "${GREEN}\nStage 13: Performing intelligibility assessment using ASR decoding on $dset...${NC}\n"
     local/asr_eval.sh --nj $nj --dset $dset --model $asr_eval_model --results $results || exit 1;
   done
 fi
