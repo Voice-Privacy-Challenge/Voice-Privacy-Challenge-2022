@@ -54,16 +54,11 @@ or
 
 #### BN extractor
 
-Chain TDNN-F ASR AM trained on LibriSpeech-train-clean-100 and LibriSpeech-train-other-500 for BN feature extraction
+Chain TDNN-F ASR AM trained on LibriSpeech-train-clean-100 and LibriSpeech-train-other-500 for BN feature extraction.
 
 #### x-vector extractor
 
 X-vector model trained on VoxCeleb 1 & 2.
-
-- `xvec_nnet_dir`: Directory where trained xvector network is stored
-- `pseudo_xvec_rand_level`: anonymized x-vectors will be produced at this level, e.g. `spk` or `utt`
-- `cross_gender`: anonymization is done within same gender or across gender, e.g. `true` or `false`.
-
 
 #### Speech symthesis (SS) acoustic model (AM)
 
