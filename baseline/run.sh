@@ -27,7 +27,7 @@ set -e
 #===== begin config =======
 
 nj=$(nproc)
-stage=0
+stage=8
 
 data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
 data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS corpus
@@ -59,7 +59,7 @@ cross_gender="false"                      # true, same gender xvectors will be s
 distance="plda"                           # cosine or plda
 proximity="farthest"                      # nearest or farthest speaker to be selected for anonymization
 
-anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}_${proximity}
+anon_data_suffix=_anon
 
 #=========== end config ===========
 
@@ -113,25 +113,50 @@ fi
 # Make evaluation data
 if [ $stage -le 6 ]; then
   printf "${GREEN}\nStage 6: Making evaluation subsets${NC}\n"
+  for name in data/libri_dev/{enrolls,trials_f,trials_m} \
+      data/vctk_dev/{enrolls_mic2,trials_f_common_mic2,trials_f_mic2,trials_m_common_mic2,trials_m_mic2}; do
+    [ ! -f $name ] && echo "File $name does not exist" && exit 1
+  done
+
   dset=data/libri_dev
   utils/subset_data_dir.sh --utt-list $dset/enrolls $dset ${dset}_enrolls || exit 1
+  cp $dset/enrolls ${dset}_enrolls || exit 1
+
   temp=$(mktemp)
   cut -d' ' -f2 $dset/trials_f | sort | uniq > $temp
   utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_f || exit 1
+  cp $dset/trials_f ${dset}_trials_f/trials || exit 1
+
   cut -d' ' -f2 $dset/trials_m | sort | uniq > $temp
   utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_m || exit 1
+  cp $dset/trials_m ${dset}_trials_m/trials || exit 1
+
   dset=data/vctk_dev
   utils/subset_data_dir.sh --utt-list $dset/enrolls_mic2 $dset ${dset}_enrolls || exit 1
+  cp $dset/enrolls_mic2 ${dset}_enrolls/enrolls || exit 1
+
   cut -d' ' -f2 $dset/trials_f_mic2 | sort | uniq > $temp
   utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_f || exit 1
+  cp $dset/trials_f_mic2 ${dset}_trials_f/trials || exit 1
+
   cut -d' ' -f2 $dset/trials_f_common_mic2 | sort | uniq > $temp
   utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_f_common || exit 1
+  cp $dset/trials_f_common_mic2 ${dset}_trials_f_common/trials || exit 1
+
   utils/combine_data.sh ${dset}_trials_f_all ${dset}_trials_f ${dset}_trials_f_common || exit 1
+  cat ${dset}_trials_f/trials ${dset}_trials_f_common/trials > ${dset}_trials_f_all/trials
+
   cut -d' ' -f2 $dset/trials_m_mic2 | sort | uniq > $temp
   utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_m || exit 1
+  cp $dset/trials_m_mic2 ${dset}_trials_m/trials || exit 1
+
   cut -d' ' -f2 $dset/trials_m_common_mic2 | sort | uniq > $temp
   utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_m_common || exit 1
+  cp $dset/trials_m_common_mic2 ${dset}_trials_m_common/trials || exit 1
+
   utils/combine_data.sh ${dset}_trials_m_all ${dset}_trials_m ${dset}_trials_m_common || exit 1
+  cat ${dset}_trials_m/trials ${dset}_trials_m_common/trials > ${dset}_trials_m_all/trials
+
   rm $temp
 fi
 
