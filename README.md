@@ -44,7 +44,7 @@ The baseline system uses several independent models:
 3. Speech synthesis (SS) acoustic model (`3_ss_am`) - trained on LibriTTS-train-clean-100.
 4. Neural source filter (NSF) model (`4_nsf`) - trained on LibriTTS-train-clean-100.
 
-All the pretrained models are provided as part of this baseline (downloaded (done by ./baseline/local/download_models.sh))
+All the pretrained models are provided as part of this baseline (downloaded by ./baseline/local/download_models.sh)
 
 ## Organizers (in alphabetical order)
 
