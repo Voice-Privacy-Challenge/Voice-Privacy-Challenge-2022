@@ -208,7 +208,7 @@ fi
 
 # Make VCTK anonymized evaluation subsets
 if [ $stage -le 10 ]; then
-  printf "${GREEN}\nStage 8: Making VCTK anonymized evaluation subsets...${NC}\n"
+  printf "${GREEN}\nStage 10: Making VCTK anonymized evaluation subsets...${NC}\n"
   dset=data/vctk_dev
   for name in ${dset}_trials_f_all$anon_data_suffix ${dset}_trials_m_all$anon_data_suffix; do
     [ ! -d $name ] && echo "Directory $name does not exist" && exit 1
@@ -233,7 +233,7 @@ if [ $stage -le 10 ]; then
 fi
 
 if [ $stage -le 11 ]; then
-  printf "${GREEN}\nStage 10: Evaluate datasets using speaker verification...${NC}\n"
+  printf "${GREEN}\nStage 11: Evaluate datasets using speaker verification...${NC}\n"
   printf "${RED}**ASV: libri_dev_trials_f, enroll - original, trial - original**${NC}\n"
   local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
     --enrolls libri_dev_enrolls --trials libri_dev_trials_f --results $results || exit 1;
@@ -297,7 +297,7 @@ fi
 
 # Make ASR evaluation subsets
 if [ $stage -le 12 ]; then
-  printf "${GREEN}\nStage 8: Making ASR evaluation subsets...${NC}\n"
+  printf "${GREEN}\nStage 12: Making ASR evaluation subsets...${NC}\n"
   for name in data/libri_dev_{trials_f,trials_m} data/libri_dev_{trials_f,trials_m}$anon_data_suffix \
       data/vctk_dev_{trials_f_all,trials_m_all} data/vctk_dev_{trials_f_all,trials_m_all}$anon_data_suffix; do
     [ ! -d $name ] && echo "Directory $name does not exist" && exit 1
@@ -310,7 +310,7 @@ fi
 
 if [ $stage -le 13 ]; then
   for dset in libri_dev_asr libri_dev_asr$anon_data_suffix vctk_dev_asr vctk_dev_asr$anon_data_suffix; do
-    printf "${GREEN}\nStage 12: Performing intelligibility assessment using ASR decoding on libri_dev_asr...${NC}\n"
+    printf "${GREEN}\nStage 13: Performing intelligibility assessment using ASR decoding on libri_dev_asr...${NC}\n"
     local/asr_eval.sh --nj $nj --dset $dset --model $asr_eval_model --results $results || exit 1;
   done
 fi
