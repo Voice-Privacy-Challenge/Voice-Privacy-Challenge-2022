@@ -131,6 +131,9 @@ if [ $stage -le 6 ]; then
   utils/subset_data_dir.sh --utt-list $temp $dset ${dset}_trials_m || exit 1
   cp $dset/trials_m ${dset}_trials_m/trials || exit 1
 
+  utils/combine_data.sh ${dset}_trials_all ${dset}_trials_f ${dset}_trials_m || exit 1
+  cat ${dset}_trials_f/trials ${dset}_trials_m/trials > ${dset}_trials_all/trials
+
   dset=data/vctk_dev
   utils/subset_data_dir.sh --utt-list $dset/enrolls_mic2 $dset ${dset}_enrolls || exit 1
   cp $dset/enrolls_mic2 ${dset}_enrolls/enrolls || exit 1
@@ -157,6 +160,9 @@ if [ $stage -le 6 ]; then
   utils/combine_data.sh ${dset}_trials_m_all ${dset}_trials_m ${dset}_trials_m_common || exit 1
   cat ${dset}_trials_m/trials ${dset}_trials_m_common/trials > ${dset}_trials_m_all/trials
 
+  utils/combine_data.sh ${dset}_trials_all ${dset}_trials_f_all ${dset}_trials_m_all || exit 1
+  cat ${dset}_trials_f_all/trials ${dset}_trials_m_all/trials > ${dset}_trials_all/trials
+
   rm $temp
 fi
 
@@ -174,7 +180,76 @@ if [ $stage -le 7 ]; then
 	    --pseudo-xvec-rand-level $pseudo_xvec_rand_level --distance $distance \
 	    --proximity $proximity --cross-gender $cross_gender \
       --anon-data-suffix $anon_data_suffix $dset || exit 1;
+    if [ -f data/$dset/enrolls ]; then
+      cp data/$dset/enrolls $dset$anon_data_suffix || exit 1
+    else
+      [ ! -f data/$dset/trials ] && echo "File data/$dset/trials does not exist" && exit 1
+      cp data/$dset/trials $dset$anon_data_suffix || exit 1
+    fi
   done
+fi
+
+if [ $stage -le 8 ]; then
+  printf "${GREEN}\nStage 8: Evaluate datasets using speaker verification.${NC}\n"
+  printf "${RED}**ASV: libri_dev_trials_f, enroll - original, trial - original**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    libri_dev_enrolls libri_dev_trials_f || exit 1;
+  printf "${RED}**ASV: libri_dev_trials_f, enroll - original, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    libri_dev_enrolls libri_dev_trials_f$anon_data_suffix || exit 1;
+  printf "${RED}**ASV: libri_dev_trials_f, enroll - anonymized, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    libri_dev_enrolls$anon_data_suffix libri_dev_trials_f$anon_data_suffix || exit 1;
+
+  printf "${RED}**ASV: libri_dev_trials_m, enroll - original, trial - original**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    libri_dev_enrolls libri_dev_trials_m || exit 1;
+  printf "${RED}**ASV: libri_dev_trials_m, enroll - original, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    libri_dev_enrolls libri_dev_trials_m$anon_data_suffix || exit 1;
+  printf "${RED}**ASV: libri_dev_trials_m, enroll - anonymized, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    libri_dev_enrolls$anon_data_suffix libri_dev_trials_m$anon_data_suffix || exit 1;
+
+  printf "${RED}**ASV: vctk_dev_trials_f, enroll - original, trial - original**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls vctk_dev_trials_f || exit 1;
+  printf "${RED}**ASV: vctk_dev_trials_f, enroll - original, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls vctk_dev_trials_f$anon_data_suffix || exit 1;
+  printf "${RED}**ASV: vctk_dev_trials_f, enroll - anonymized, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls$anon_data_suffix vctk_dev_trials_f$anon_data_suffix || exit 1;
+
+  printf "${RED}**ASV: vctk_dev_trials_m, enroll - original, trial - original**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls vctk_dev_trials_m || exit 1;
+  printf "${RED}**ASV: vctk_dev_trials_m, enroll - original, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls vctk_dev_trials_m$anon_data_suffix || exit 1;
+  printf "${RED}**ASV: vctk_dev_trials_m, enroll - anonymized, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls$anon_data_suffix vctk_dev_trials_m$anon_data_suffix || exit 1;
+
+  printf "${RED}**ASV: vctk_dev_trials_f_common, enroll - original, trial - original**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls vctk_dev_trials_f_common || exit 1;
+  printf "${RED}**ASV: vctk_dev_trials_f_common, enroll - original, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls vctk_dev_trials_f_common$anon_data_suffix || exit 1;
+  printf "${RED}**ASV: vctk_dev_trials_f_common, enroll - anonymized, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls$anon_data_suffix vctk_dev_trials_f_common$anon_data_suffix || exit 1;
+
+  printf "${RED}**ASV: vctk_dev_trials_m_common, enroll - original, trial - original**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls vctk_dev_trials_m_common || exit 1;
+  printf "${RED}**ASV: vctk_dev_trials_m_common, enroll - original, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls vctk_dev_trials_m_common$anon_data_suffix || exit 1;
+  printf "${RED}**ASV: vctk_dev_trials_m_common, enroll - anonymized, trial - anonymized**${NC}\n"
+  local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
+    vctk_dev_enrolls$anon_data_suffix vctk_dev_trials_m_common$anon_data_suffix || exit 1;
 fi
 
 echo 'The rest is not ready yet'

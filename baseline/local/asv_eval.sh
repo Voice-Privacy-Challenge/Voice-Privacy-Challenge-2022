@@ -16,6 +16,33 @@ channel=
 for name in $plda_dir/plda $plda_dir/mean.vec $plda_dir/transform.mat; do
   [ ! -f $name ] && echo "File $name does not exist" && exit 1
 done
+
+if [ $stage -le 1 ]; then
+  echo "Compute MFCC..."
+  for name in $libri_enroll $libri_trials; do
+    steps/make_mfcc.sh --write-utt2num-frames true --mfcc-config conf/mfcc.conf --nj $nj --cmd "$train_cmd" \
+      data/${name} exp/make_mfcc $mfccdir
+
+    utils/fix_data_dir.sh data/${name}
+
+    sid/compute_vad_decision.sh --nj $nj --cmd "$train_cmd" \
+      data/${name} exp/make_vad $vaddir
+    utils/fix_data_dir.sh data/${name}
+  done
+
+fi
+
+if [ $stage -le 2 ]; then
+  echo "Extract xvectors..."
+  for name in $libri_enroll $libri_trials; do
+    sid/nnet3/xvector/extract_xvectors.sh --cmd "$train_cmd --mem 4G" --nj $nj \
+      $nnet_dir data/${name} \
+      $nnet_dir/xvectors_${name}
+  done
+fi
+
+
+
 for dset in $asv_eval_sets; do
   data=data/$dset
   xvect_dset=$asv_eval_model/xvectors_$dset
