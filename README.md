@@ -19,13 +19,20 @@ The recipe uses the pre-trained models of anonymization. To run the baseline sys
 
 ### Datasets
 
-The datasets for traing/development/evaluation consists of subsets from the following corpora*:
-* [LibriSpeech](http://www.openslr.org/12/)
-* [LibriTTS](http://www.openslr.org/60/)
-* [VCTK](https://datashare.is.ed.ac.uk/handle/10283/3443)
-* [VoxCeleb 1 & 2](http://www.robots.ox.ac.uk/~vgg/data/voxceleb/)
 
-*only specified subsets of these corpora can be used to train/develop an anonymization system.
+#### Training data
+The dataset for anonymization system traing consists of subsets from the following corpora*:
+* [LibriSpeech](http://www.openslr.org/12/) - train-clean-100, train-other-500
+* [LibriTTS](http://www.openslr.org/60/) - train-clean-100, train-other-500
+* [VoxCeleb 1 & 2](http://www.robots.ox.ac.uk/~vgg/data/voxceleb/) - all
+
+*only specified subsets of these corpora can be used for training.
+
+#### Development and evaluation data
+* [VCTK](https://datashare.is.ed.ac.uk/handle/10283/3443) - subsets vctk_dev and vctk_test are download from server in run.sh
+* [LibriSpeech](http://www.openslr.org/12/) - subsets libri_dev and libri_test are download from server in run.sh
+
+*vctk_test and libri_test will be available to download after the specifed deadline
 
 
 ### Models
