@@ -199,10 +199,10 @@ if [ $stage -le 9 ]; then
 	    --proximity $proximity --cross-gender $cross_gender \
       --anon-data-suffix $anon_data_suffix $dset || exit 1;
     if [ -f data/$dset/enrolls ]; then
-      cp data/$dset/enrolls $dset$anon_data_suffix || exit 1
+      cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1
     else
       [ ! -f data/$dset/trials ] && echo "File data/$dset/trials does not exist" && exit 1
-      cp data/$dset/trials $dset$anon_data_suffix || exit 1
+      cp data/$dset/trials data/$dset$anon_data_suffix/ || exit 1
     fi
   done
 fi
