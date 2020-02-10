@@ -46,6 +46,11 @@ The baseline system uses several independent models:
 
 All the pretrained models are provided as part of this baseline (downloaded by ./baseline/local/download_models.sh)
 
+### Results
+
+The repoert result file with all the metrics for submission will be generated in: ./baseline/exp/results-`date`-`time`/results.txt
+See [RESULTS](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS)
+
 ## Organizers (in alphabetical order)
 
 - Jean-François Bonastre - University of Avignon - LIA, France
