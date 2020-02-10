@@ -54,12 +54,13 @@ if [ ! -f $expo/.done ]; then
   touch $expo/.done
 fi
 
-expo=$model/decode_${data}_tglarge
+expo=$model/decode_${dset}_tglarge
 if [ ! -f $expo/.done ]; then
   printf "${RED}  rescoring: $dset${NC}\n"
   steps/lmrescore_const_arpa.sh \
     --cmd "$decode_cmd" $small_lang $large_lang \
     $data $model/decode_${dset}_tgsmall $expo || exit 1
+  mkdir -p $results
   grep WER $expo/wer* | utils/best_wer.sh | tee -a $results/ASR-$dset
   touch $expo/.done
 fi
