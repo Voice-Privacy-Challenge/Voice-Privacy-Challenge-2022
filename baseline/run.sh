@@ -95,7 +95,6 @@ if $download_full && [[ $stage -le 3 ]]; then
     local/download_and_untar.sh $corpora $data_url_librispeech $part LibriSpeech || exit 1;
   done
 fi
-librispeech_corpus=$(realpath $corpora/LibriSpeech) # Directory for LibriSpeech corpus 
 
 # Download LibriTTS data sets for training anonymization system (train-clean-100)
 if $download_full && [[ $stage -le 4 ]]; then
@@ -104,8 +103,7 @@ if $download_full && [[ $stage -le 4 ]]; then
     local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS || exit 1;
   done
 fi
-libritts_corpus=$(realpath $corpora/LibriTTS)       # Directory for LibriTTS corpus 
-
+ 
 # Download LibriTTS data sets for training anonymization system (train-other-500)
 if [ $stage -le 5 ]; then
   printf "${GREEN}\nStage 5: Downloading LibriTTS data sets for training anonymization system (train-other-500)...${NC}\n"
@@ -113,6 +111,9 @@ if [ $stage -le 5 ]; then
     local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS || exit 1;
   done
 fi
+
+libritts_corpus=$(realpath $corpora/LibriTTS)       # Directory for LibriTTS corpus 
+librispeech_corpus=$(realpath $corpora/LibriSpeech) # Directory for LibriSpeech corpus
 
 # Extract xvectors from anonymization pool
 if [ $stage -le 6 ]; then
