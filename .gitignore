@@ -20,3 +20,5 @@ netcdf*/
 /baseline/run_nt_test.sh
 /Miniconda*
 temp*/
+/baseline/libri*
+/baseline/vctk_dev_enrolls_anon*
