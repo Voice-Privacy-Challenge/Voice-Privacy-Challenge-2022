@@ -64,6 +64,9 @@ proximity="farthest"                      # nearest or farthest speaker to be se
 
 anon_data_suffix=_anon
 
+rand_seed_e=2020
+rand_seed_t=42
+
 #=========== end config ===========
 
 # Download development set
