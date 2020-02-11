@@ -187,6 +187,8 @@ fi
 # Extract xvectors from data which has to be anonymized
 if [ $stage -le 9 ]; then
   printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
+  rand_seed=2020
+
   for dset in libri_dev_{enrolls,trials_f,trials_m} \
               vctk_dev_{enrolls,trials_f_all,trials_m_all}; do
     local/anon/anonymize_data_dir.sh \
@@ -197,6 +199,7 @@ if [ $stage -le 9 ]; then
 	    --anon-xvec-out-dir $anon_xvec_out_dir --plda-dir $plda_dir \
 	    --pseudo-xvec-rand-level $pseudo_xvec_rand_level --distance $distance \
 	    --proximity $proximity --cross-gender $cross_gender \
+	    --rand-seed ${rand_seed} \
       --anon-data-suffix $anon_data_suffix $dset || exit 1;
     if [ -f data/$dset/enrolls ]; then
       cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1

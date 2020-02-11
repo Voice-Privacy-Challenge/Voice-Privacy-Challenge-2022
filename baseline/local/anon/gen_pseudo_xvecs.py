@@ -18,10 +18,12 @@ rand_level = args[6]
 cross_gender = args[7] == "true"
 proximity = args[8]
 
+rand_seed = args[9]
+
 REGION = 100
 WORLD = 200
 
-random.seed(2020)
+random.seed(rand_seed)
 
 if cross_gender:
     print("**Opposite gender speakers will be selected.**")

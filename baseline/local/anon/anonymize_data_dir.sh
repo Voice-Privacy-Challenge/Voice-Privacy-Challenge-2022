@@ -35,6 +35,8 @@ proximity="farthest"        # nearest/farthest
 
 anon_data_suffix=_anon_${pseudo_xvec_rand_level}_${cross_gender}_${distance}_${proximity}
 
+rand_seed=2020
+
 #=========== end config ===========
 
 . utils/parse_options.sh
@@ -66,7 +68,7 @@ if [ $stage -le 1 ]; then
   printf "${RED}\nStage a.1: Generating pseudo-speakers for ${data_dir}.${NC}\n"
   local/anon/make_pseudospeaker.sh --rand-level ${pseudo_xvec_rand_level} \
       	  --cross-gender ${cross_gender} --distance ${distance} \
-	  --proximity ${proximity} \
+	  --proximity ${proximity} --rand-seed ${rand_seed} \
 	  data/${data_dir} data/${anoni_pool} ${anon_xvec_out_dir} \
 	  ${plda_dir} || exit 1;
 fi
