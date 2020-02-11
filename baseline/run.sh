@@ -190,10 +190,17 @@ fi
 # Extract xvectors from data which has to be anonymized
 if [ $stage -le 9 ]; then
   printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
-  rand_seed=2020
 
   for dset in libri_dev_{enrolls,trials_f,trials_m} \
               vctk_dev_{enrolls,trials_f_all,trials_m_all}; do
+    
+    # Set different random seeds for enroll and trial
+    if [[ $dset == *_enrolls ]]; then
+      rand_seed=${rand_seed_e}
+    else
+      rand_seed=${rand_seed_t}
+    fi
+
     local/anon/anonymize_data_dir.sh \
       --nj $nj --anoni-pool $anoni_pool \
 	    --data-netcdf $data_netcdf \
