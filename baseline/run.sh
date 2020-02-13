@@ -64,9 +64,6 @@ proximity="farthest"                      # nearest or farthest speaker to be se
 
 anon_data_suffix=_anon
 
-rand_seed_e=2020
-rand_seed_t=42
-
 #=========== end config ===========
 
 # Download development set
@@ -190,16 +187,11 @@ fi
 # Extract xvectors from data which has to be anonymized
 if [ $stage -le 9 ]; then
   printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
-
+  rand_seed=0
   for dset in libri_dev_{enrolls,trials_f,trials_m} \
               vctk_dev_{enrolls,trials_f_all,trials_m_all}; do
-    
-    # Set different random seeds for enroll and trial
-    if [[ $dset == *_enrolls ]]; then
-      rand_seed=${rand_seed_e}
-    else
-      rand_seed=${rand_seed_t}
-    fi
+
+    echo $rand_seed >> rand_seed.txt
 
     local/anon/anonymize_data_dir.sh \
       --nj $nj --anoni-pool $anoni_pool \
@@ -209,7 +201,7 @@ if [ $stage -le 9 ]; then
 	    --anon-xvec-out-dir $anon_xvec_out_dir --plda-dir $plda_dir \
 	    --pseudo-xvec-rand-level $pseudo_xvec_rand_level --distance $distance \
 	    --proximity $proximity --cross-gender $cross_gender \
-	    --rand-seed ${rand_seed} \
+	    --rand-seed $rand_seed \
       --anon-data-suffix $anon_data_suffix $dset || exit 1;
     if [ -f data/$dset/enrolls ]; then
       cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1
@@ -217,6 +209,7 @@ if [ $stage -le 9 ]; then
       [ ! -f data/$dset/trials ] && echo "File data/$dset/trials does not exist" && exit 1
       cp data/$dset/trials data/$dset$anon_data_suffix/ || exit 1
     fi
+    rand_seed=$((rand_seed+1))
   done
 fi
 
@@ -227,7 +220,11 @@ if [ $stage -le 10 ]; then
   for name in ${dset}_trials_f_all$anon_data_suffix ${dset}_trials_m_all$anon_data_suffix; do
     [ ! -d $name ] && echo "Directory $name does not exist" && exit 1
   done
+  for suff in _trials_f _trials_f_common _trials_m _trials_m_common; do
+    [ -d ${dset}${suff}${anon_data_suffix} ] && rm -r ${dset}${suff}${anon_data_suffix}
+  done
   temp=$(mktemp)
+  [ -d  ]
   cut -d' ' -f2 ${dset}_trials_f/trials | sort | uniq > $temp
   utils/subset_data_dir.sh --utt-list $temp ${dset}_trials_f_all$anon_data_suffix ${dset}_trials_f${anon_data_suffix} || exit 1
   cp ${dset}_trials_f/trials ${dset}_trials_f${anon_data_suffix} || exit 1
