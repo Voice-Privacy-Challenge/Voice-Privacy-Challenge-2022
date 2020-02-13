@@ -114,7 +114,7 @@ for spk, gender in src_spk2gender.items():
                            reverse=True)
 
 
-    # Select 500 least affinity speakers and then randomly select 100 out of
+    # Select WORLD least affinity speakers and then randomly select REGION out of
     # them
     top_spk = sorted_aff[:WORLD]
     if rand_level == 'spk':
