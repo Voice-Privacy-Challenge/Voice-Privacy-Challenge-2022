@@ -190,9 +190,6 @@ if [ $stage -le 9 ]; then
   rand_seed=0
   for dset in libri_dev_{enrolls,trials_f,trials_m} \
               vctk_dev_{enrolls,trials_f_all,trials_m_all}; do
-
-    echo $rand_seed >> rand_seed.txt
-
     local/anon/anonymize_data_dir.sh \
       --nj $nj --anoni-pool $anoni_pool \
 	    --data-netcdf $data_netcdf \
