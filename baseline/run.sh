@@ -58,7 +58,7 @@ plda_dir=${asv_eval_model}/xvect_train_clean_360
 
 # Anonymization configs
 pseudo_xvec_rand_level=spk                # spk (all utterances will have same xvector) or utt (each utterance will have randomly selected xvector)
-cross_gender="false"                      # true, same gender xvectors will be selected; false, other gender xvectors
+cross_gender="false"                      # false, same gender xvectors will be selected; true, other gender xvectors
 distance="plda"                           # cosine or plda
 proximity="farthest"                      # nearest or farthest speaker to be selected for anonymization
 
