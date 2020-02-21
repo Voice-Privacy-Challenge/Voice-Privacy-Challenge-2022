@@ -12,3 +12,4 @@ pytz==2019.3
 scipy==1.2.2
 six==1.13.0
 subprocess32==3.5.4
+librosa==0.7.1
