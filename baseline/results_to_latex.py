@@ -13,7 +13,7 @@ Latex files are generated in a latex_table/ folder at the same root folder as th
 
 import sys,os
 
-def parse_scores_new(scores_file):  
+def parse_scores(scores_file):  
     
     with open(scores_file) as f:
         file_content = f.readlines()
@@ -37,9 +37,6 @@ def parse_scores_new(scores_file):
     #Table for dev ASR results    
     ASR_table_dev = get_table(file_content,'ASR','dev',header_ASR,nr_cols_ASR,width_ASR,line_jump_ASR)
     ASR_table_test = get_table(file_content,'ASR','test',header_ASR,nr_cols_ASR,width_ASR,line_jump_ASR)
-    
-    #ASR_table_dev = get_table_asr(file_content,'dev')
-    #ASR_table_test = get_table_asr(file_content,'test')
     
     #Print tables (12 is the size of an empty table)
     if len(ASV_table_dev)>12: print_table(scores_file,ASV_table_dev,'ASV','dev')
@@ -82,7 +79,7 @@ def get_table(scores, task, partition, header, nr_cols,width,line_jump):
 
 def initialise_table(nr_cols,width):
     table_content = []
-    table_content.append(r'\usepackage{graphicx}'+'\n')
+    table_content.append(r'%\usepackage{graphicx}'+'\n')
     table_content.append(r'\begin{table}[]'+'\n')
     table_content.append(r'\centering'+'\n')
     table_content.append(r'\resizebox{'+str(width)+r'\textwidth}{!}{'+'\n')
@@ -140,5 +137,5 @@ if __name__ == "__main__":
     #  python results_to_latex.py my_scores
     scores_file = sys.argv[1]
     #scores_file = 'RESULTS_xvectors'
-    parse_scores_new(scores_file)
+    parse_scores(scores_file)
     
