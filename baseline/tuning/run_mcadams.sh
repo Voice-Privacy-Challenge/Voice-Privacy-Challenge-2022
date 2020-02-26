@@ -59,7 +59,6 @@ anon_data_suffix=_anon
 #McAdams anonymisation configs
 n_lpc=20
 mcadams=0.8
-pip install librosa
 
 #=========== end config ===========
 
