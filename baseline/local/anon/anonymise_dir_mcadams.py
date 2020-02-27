@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.0
 # -*- coding: utf-8 -*-
 """
-@author: Jose Patino, Massimiliano Todisco, Pramod Bachhav
+@author: Jose Patino, Massimiliano Todisco, Pramod Bachhav, Nicholas Evans
 Audio Security and Privacy Group, EURECOM
 """
 import os
@@ -50,8 +50,9 @@ def anonym(file, output_dir, winLengthinms=20, shiftLengthinms=10, lp_order=20, 
         ind_imag_con = ind_imag[np.arange(0,np.size(ind_imag),2)]
         
         # here we define the new angles of the poles, shifted accordingly to the mcadams coefficient
-        # values >1 expand the spectru, while values <1 compress it
-        # the choice of this value is strongly linked to the number of lpc coefficients
+        # values >1 expand the spectrum, while values <1 constract it for angles>1
+	# values >1 constract the spectrum, while values <1 expand it for angles<1
+	# the choice of this value is strongly linked to the number of lpc coefficients
         # a bigger lpc coefficients number constraints the effect of the coefficient to very small variations
         # a smaller lpc coefficients number allows for a bigger flexibility
         new_angles = np.angle(poles[ind_imag_con])**mcadams
