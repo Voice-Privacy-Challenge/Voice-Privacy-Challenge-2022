@@ -88,6 +88,7 @@ if __name__ == "__main__":
     #Parse args    
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir',type=str,default='../data/libri_test_enrolls_anon')
+    parser.add_argument('--anon_suffix',type=str,default='_anon')
     parser.add_argument('--n_coeffs',type=int,default=20)
     parser.add_argument('--mc_coeff',type=float,default=0.8)
     parser.add_argument('--winLengthinms',type=int,default=20)
@@ -95,8 +96,10 @@ if __name__ == "__main__":
     config = parser.parse_args()
     
     #Load protocol file
-    list_name= config.data_dir[0:-5] + '/wav.scp'
+    list_name= config.data_dir + '/wav.scp'
     list_files = np.genfromtxt(list_name,dtype='U')
+    
+    config.data_dir = config.data_dir+config.anon_suffix
     
     for idx,file in enumerate(list_files):   
         print(str(idx+1),'/',len(list_files))

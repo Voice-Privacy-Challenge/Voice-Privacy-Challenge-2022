@@ -152,7 +152,7 @@ if [ $stage -le 9 ]; then
      mkdir -p data/$dset$anon_data_suffix/wav
      
      #anonymise subset based on the current wav.scp file 
-     python local/anon/anonymise_dir_mcadams.py --data_dir=data/$dset$anon_data_suffix --n_coeffs=$n_lpc --mc_coeff=$mcadams     
+     python local/anon/anonymise_dir_mcadams.py --data_dir=data/$dset --anon_suffix=$anon_data_suffix --n_coeffs=$n_lpc --mc_coeff=$mcadams     
      
      echo $dset
      #overwrite wav.scp file with new anonymised content
