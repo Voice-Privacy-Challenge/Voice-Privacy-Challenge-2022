@@ -196,7 +196,7 @@ if [ $stage -le 8 ]; then
   rm $temp
 fi
 
-# Anonimization
+# Anonymization
 if [ $stage -le 9 ]; then
   printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
   if [ $mcadams ]; then
