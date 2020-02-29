@@ -89,7 +89,7 @@ fi
 data_netcdf=$(realpath exp/am_nsf_data)   # directory where features for voice anonymization will be stored
 mkdir -p $data_netcdf || exit 1;
 
-if ! $mcadams; then
+if [ ! $mcadams ]; then
 
   # Download  VoxCeleb-1,2 corpus for training anonymization system models
   if $download_full && [[ $stage -le 2 ]]; then
@@ -196,7 +196,7 @@ if [ $stage -le 8 ]; then
   rm $temp
 fi
 
-# Extract xvectors from data which has to be anonymized
+# Anonimization
 if [ $stage -le 9 ]; then
   printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
   if [ $mcadams ]; then
