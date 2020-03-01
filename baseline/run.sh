@@ -199,20 +199,14 @@ fi
 # Anonymization
 if [ $stage -le 9 ]; then
   printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
-  if [ $mcadams ]; then
-    for dset in libri_dev_{enrolls,trials_f,trials_m} \
-                vctk_dev_{enrolls,trials_f_all,trials_m_all} \
-                libri_test_{enrolls,trials_f,trials_m} \
-                vctk_test_{enrolls,trials_f_all,trials_m_all}; do
+  for dset in libri_dev_{enrolls,trials_f,trials_m} \
+              vctk_dev_{enrolls,trials_f_all,trials_m_all} \
+              libri_test_{enrolls,trials_f,trials_m} \
+              vctk_test_{enrolls,trials_f_all,trials_m_all}; do
+    if [ $mcadams ]; then
       echo $dset
       #copy content of the folder to the new folder
       utils/copy_data_dir.sh data/$dset data/$dset$anon_data_suffix || exit 1
-      if [ -f data/$dset/enrolls ]; then
-        cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1
-      else
-        [ ! -f data/$dset/trials ] && echo "File data/$dset/trials does not exist" && exit 1
-        cp data/$dset/trials data/$dset$anon_data_suffix/ || exit 1
-      fi
       #create folder that will contain the anonymised wav files
       mkdir -p data/$dset$anon_data_suffix/wav
       #anonymise subset based on the current wav.scp file 
@@ -223,29 +217,24 @@ if [ $stage -le 9 ]; then
       #note sox is inclued to by-pass that files written by local/anon/anonymise_dir_mcadams.py were in float32 format and not pcm
       ls data/$dset$anon_data_suffix/wav/*/*.wav | \
         awk -F'[/.]' '{print $5 " sox " $0 " -t wav -R -b 16 - |"}' > data/$dset$anon_data_suffix/wav.scp
-    done
-  else
-    for suff in dev test; do
-      for dset in libri_${suff}_{enrolls,trials_f,trials_m} \
-                  vctk_${suff}_{enrolls,trials_f_all,trials_m_all}; do
-        local/anon/anonymize_data_dir.sh \
-          --nj $nj --anoni-pool $anoni_pool \
-          --data-netcdf $data_netcdf \
-          --ppg-model $ppg_model --ppg-dir $ppg_dir \
-          --xvec-nnet-dir $xvec_nnet_dir \
-          --anon-xvec-out-dir $anon_xvec_out_dir --plda-dir $plda_dir \
-          --pseudo-xvec-rand-level $pseudo_xvec_rand_level --distance $distance \
-          --proximity $proximity --cross-gender $cross_gender \
-          --anon-data-suffix $anon_data_suffix $dset || exit 1;
-        if [ -f data/$dset/enrolls ]; then
-          cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1
-        else
-          [ ! -f data/$dset/trials ] && echo "File data/$dset/trials does not exist" && exit 1
-          cp data/$dset/trials data/$dset$anon_data_suffix/ || exit 1
-        fi
-      done
-    done
-  fi
+    else
+      local/anon/anonymize_data_dir.sh \
+        --nj $nj --anoni-pool $anoni_pool \
+        --data-netcdf $data_netcdf \
+        --ppg-model $ppg_model --ppg-dir $ppg_dir \
+        --xvec-nnet-dir $xvec_nnet_dir \
+        --anon-xvec-out-dir $anon_xvec_out_dir --plda-dir $plda_dir \
+        --pseudo-xvec-rand-level $pseudo_xvec_rand_level --distance $distance \
+        --proximity $proximity --cross-gender $cross_gender \
+        --anon-data-suffix $anon_data_suffix $dset || exit 1;
+    fi
+    if [ -f data/$dset/enrolls ]; then
+      cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1
+    else
+      [ ! -f data/$dset/trials ] && echo "File data/$dset/trials does not exist" && exit 1
+      cp data/$dset/trials data/$dset$anon_data_suffix/ || exit 1
+    fi
+  done
 fi
 
 # Make VCTK anonymized evaluation subsets
