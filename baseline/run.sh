@@ -207,6 +207,12 @@ if [ $stage -le 9 ]; then
       echo $dset
       #copy content of the folder to the new folder
       utils/copy_data_dir.sh data/$dset data/$dset$anon_data_suffix || exit 1
+      if [ -f data/$dset/enrolls ]; then
+        cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1
+      else
+        [ ! -f data/$dset/trials ] && echo "File data/$dset/trials does not exist" && exit 1
+        cp data/$dset/trials data/$dset$anon_data_suffix/ || exit 1
+      fi
       #create folder that will contain the anonymised wav files
       mkdir -p data/$dset$anon_data_suffix/wav
       #anonymise subset based on the current wav.scp file 
