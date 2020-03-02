@@ -190,6 +190,7 @@ fi
 # Extract xvectors from data which has to be anonymized
 if [ $stage -le 9 ]; then
   printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
+  rand_seed=0
   for suff in dev test; do
     for dset in libri_${suff}_{enrolls,trials_f,trials_m} \
                 vctk_${suff}_{enrolls,trials_f_all,trials_m_all}; do
@@ -201,6 +202,7 @@ if [ $stage -le 9 ]; then
         --anon-xvec-out-dir $anon_xvec_out_dir --plda-dir $plda_dir \
         --pseudo-xvec-rand-level $pseudo_xvec_rand_level --distance $distance \
         --proximity $proximity --cross-gender $cross_gender \
+	      --rand-seed $rand_seed \
         --anon-data-suffix $anon_data_suffix $dset || exit 1;
       if [ -f data/$dset/enrolls ]; then
         cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1
@@ -208,6 +210,7 @@ if [ $stage -le 9 ]; then
         [ ! -f data/$dset/trials ] && echo "File data/$dset/trials does not exist" && exit 1
         cp data/$dset/trials data/$dset$anon_data_suffix/ || exit 1
       fi
+      rand_seed=$((rand_seed+1))
     done
   done
 fi
@@ -221,6 +224,7 @@ if [ $stage -le 10 ]; then
     for name in ${dset}_trials_f_all$anon_data_suffix ${dset}_trials_m_all$anon_data_suffix; do
       [ ! -d $name ] && echo "Directory $name does not exist" && exit 1
     done
+
     cut -d' ' -f2 ${dset}_trials_f/trials | sort | uniq > $temp
     utils/subset_data_dir.sh --utt-list $temp ${dset}_trials_f_all$anon_data_suffix ${dset}_trials_f${anon_data_suffix} || exit 1
     cp ${dset}_trials_f/trials ${dset}_trials_f${anon_data_suffix} || exit 1

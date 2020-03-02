@@ -3,6 +3,7 @@ from os.path import basename, join
 import operator
 
 import numpy as np
+import random
 from kaldiio import WriteHelper, ReadHelper
 
 args = sys.argv
@@ -17,6 +18,13 @@ rand_level = args[6]
 cross_gender = args[7] == "true"
 proximity = args[8]
 
+rand_seed = args[9]
+
+REGION = 100
+WORLD = 200
+
+random.seed(rand_seed)
+
 if cross_gender:
     print("**Opposite gender speakers will be selected.**")
 else:
@@ -27,11 +35,11 @@ print("Proximity: " + proximity)
 # Core logic of anonymization by randomization
 def select_random_xvec(top500, pool_xvectors):
     # number of random xvectors to select out of pool
-    NR = 100
-    random100mask = np.random.random_integers(0, 199, NR)
+    #random100mask = np.random.random_integers(0, 199, NR)
+    random100mask = random.sample(range(WORLD), REGION)
     pseudo_spk_list = [x for i, x in enumerate(top500) if i in
                            random100mask]
-    pseudo_spk_matrix = np.zeros((NR, 512), dtype='float64')
+    pseudo_spk_matrix = np.zeros((REGION, 512), dtype='float64')
     for i, spk_aff in enumerate(pseudo_spk_list):
         pseudo_spk_matrix[i, :] = pool_xvectors[spk_aff[0]]
     # Take mean of 100 randomly selected xvectors
@@ -106,9 +114,9 @@ for spk, gender in src_spk2gender.items():
                            reverse=True)
 
 
-    # Select 500 least affinity speakers and then randomly select 100 out of
+    # Select WORLD least affinity speakers and then randomly select REGION out of
     # them
-    top_spk = sorted_aff[:200]
+    top_spk = sorted_aff[:WORLD]
     if rand_level == 'spk':
         # For rand_level = spk, one xvector is assigned to all the utterances
         # of a speaker
