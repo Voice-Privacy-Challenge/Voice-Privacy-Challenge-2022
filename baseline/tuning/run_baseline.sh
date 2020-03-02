@@ -2,7 +2,7 @@
 # Script for The First VoicePrivacy Challenge 2020
 #
 #
-# Copyright (C) 2020  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino,...>
+# Copyright (C) 2020  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang,...>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ set -e
 #===== begin config =======
 
 nj=$(nproc)
-mcadams=false
 stage=0
 
 download_full=false  # If download_full=true all the data that can be used in the training/development will be dowloaded (except for Voxceleb-1,2 corpus); otherwise - only those subsets that are used in the current baseline (with the pretrained models)
@@ -65,10 +64,6 @@ proximity="farthest"                      # nearest or farthest speaker to be se
 
 anon_data_suffix=_anon
 
-#McAdams anonymisation configs
-n_lpc=20
-mc_coeff=0.8
-
 #=========== end config ===========
 
 # Download datasets
@@ -89,55 +84,51 @@ fi
 data_netcdf=$(realpath exp/am_nsf_data)   # directory where features for voice anonymization will be stored
 mkdir -p $data_netcdf || exit 1;
 
-if ! $mcadams; then
+# Download  VoxCeleb-1,2 corpus for training anonymization system models
+if $download_full && [[ $stage -le 2 ]]; then
+  printf "${GREEN}\nStage 2: In order to download VoxCeleb-1,2 corpus, please go to: http://www.robots.ox.ac.uk/~vgg/data/voxceleb/ ...${NC}\n"
+  sleep 10; 
+fi
 
-  # Download  VoxCeleb-1,2 corpus for training anonymization system models
-  if $download_full && [[ $stage -le 2 ]]; then
-    printf "${GREEN}\nStage 2: In order to download VoxCeleb-1,2 corpus, please go to: http://www.robots.ox.ac.uk/~vgg/data/voxceleb/ ...${NC}\n"
-    sleep 10; 
-  fi
+# Download LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) 
+if $download_full && [[ $stage -le 3 ]]; then
+  printf "${GREEN}\nStage 3: Downloading LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100)...${NC}\n"
+  for part in train-clean-100 train-other-500; do
+    local/download_and_untar.sh $corpora $data_url_librispeech $part LibriSpeech || exit 1;
+  done
+fi
 
-  # Download LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) 
-  if $download_full && [[ $stage -le 3 ]]; then
-    printf "${GREEN}\nStage 3: Downloading LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100)...${NC}\n"
-    for part in train-clean-100 train-other-500; do
-      local/download_and_untar.sh $corpora $data_url_librispeech $part LibriSpeech || exit 1;
-    done
-  fi
+# Download LibriTTS data sets for training anonymization system (train-clean-100)
+if $download_full && [[ $stage -le 4 ]]; then
+  printf "${GREEN}\nStage 4: Downloading LibriTTS data sets for training anonymization system (train-clean-100)...${NC}\n"
+  for part in train-clean-100; do
+    local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS || exit 1;
+  done
+fi
+ 
+# Download LibriTTS data sets for training anonymization system (train-other-500)
+if [ $stage -le 5 ]; then
+  printf "${GREEN}\nStage 5: Downloading LibriTTS data sets for training anonymization system (train-other-500)...${NC}\n"
+  for part in train-other-500; do
+    local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS || exit 1;
+  done
+fi
 
-  # Download LibriTTS data sets for training anonymization system (train-clean-100)
-  if $download_full && [[ $stage -le 4 ]]; then
-    printf "${GREEN}\nStage 4: Downloading LibriTTS data sets for training anonymization system (train-clean-100)...${NC}\n"
-    for part in train-clean-100; do
-      local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS || exit 1;
-    done
-  fi
-   
-  # Download LibriTTS data sets for training anonymization system (train-other-500)
-  if [ $stage -le 5 ]; then
-    printf "${GREEN}\nStage 5: Downloading LibriTTS data sets for training anonymization system (train-other-500)...${NC}\n"
-    for part in train-other-500; do
-      local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS || exit 1;
-    done
-  fi
+libritts_corpus=$(realpath $corpora/LibriTTS)       # Directory for LibriTTS corpus 
+librispeech_corpus=$(realpath $corpora/LibriSpeech) # Directory for LibriSpeech corpus
 
-  libritts_corpus=$(realpath $corpora/LibriTTS)       # Directory for LibriTTS corpus 
-  librispeech_corpus=$(realpath $corpora/LibriSpeech) # Directory for LibriSpeech corpus
-
-  # Extract xvectors from anonymization pool
-  if [ $stage -le 6 ]; then
-    # Prepare data for libritts-train-other-500
-    printf "${GREEN}\nStage 6: Prepare anonymization pool data...${NC}\n"
-    local/data_prep_libritts.sh ${libritts_corpus}/train-other-500 data/${anoni_pool} || exit 1;
-  fi
-    
-  if [ $stage -le 7 ]; then
-    printf "${GREEN}\nStage 7: Extracting xvectors for anonymization pool...${NC}\n"
-    local/featex/01_extract_xvectors.sh --nj $nj data/${anoni_pool} ${xvec_nnet_dir} \
-      ${anon_xvec_out_dir} || exit 1;
-  fi
-
-fi # ! $mcadams
+# Extract xvectors from anonymization pool
+if [ $stage -le 6 ]; then
+  # Prepare data for libritts-train-other-500
+  printf "${GREEN}\nStage 6: Prepare anonymization pool data...${NC}\n"
+  local/data_prep_libritts.sh ${libritts_corpus}/train-other-500 data/${anoni_pool} || exit 1;
+fi
+  
+if [ $stage -le 7 ]; then
+  printf "${GREEN}\nStage 7: Extracting xvectors for anonymization pool...${NC}\n"
+  local/featex/01_extract_xvectors.sh --nj $nj data/${anoni_pool} ${xvec_nnet_dir} \
+	  ${anon_xvec_out_dir} || exit 1;
+fi
 
 # Make evaluation data
 if [ $stage -le 8 ]; then
@@ -196,29 +187,12 @@ if [ $stage -le 8 ]; then
   rm $temp
 fi
 
-# Anonymization
+# Extract xvectors from data which has to be anonymized
 if [ $stage -le 9 ]; then
   printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
-  rand_seed=0
-  for dset in libri_dev_{enrolls,trials_f,trials_m} \
-              vctk_dev_{enrolls,trials_f_all,trials_m_all} \
-              libri_test_{enrolls,trials_f,trials_m} \
-              vctk_test_{enrolls,trials_f_all,trials_m_all}; do
-    if [ $mcadams ]; then
-      echo $dset
-      #copy content of the folder to the new folder
-      utils/copy_data_dir.sh data/$dset data/$dset$anon_data_suffix || exit 1
-      #create folder that will contain the anonymised wav files
-      mkdir -p data/$dset$anon_data_suffix/wav
-      #anonymise subset based on the current wav.scp file 
-      python local/anon/anonymise_dir_mcadams.py \
-        --data_dir=data/$dset --anon_suffix=$anon_data_suffix \
-        --n_coeffs=$n_lpc --mc_coeff=$mc_coeff || exit 1
-      #overwrite wav.scp file with new anonymised content
-      #note sox is inclued to by-pass that files written by local/anon/anonymise_dir_mcadams.py were in float32 format and not pcm
-      ls data/$dset$anon_data_suffix/wav/*/*.wav | \
-        awk -F'[/.]' '{print $5 " sox " $0 " -t wav -R -b 16 - |"}' > data/$dset$anon_data_suffix/wav.scp
-    else
+  for suff in dev test; do
+    for dset in libri_${suff}_{enrolls,trials_f,trials_m} \
+                vctk_${suff}_{enrolls,trials_f_all,trials_m_all}; do
       local/anon/anonymize_data_dir.sh \
         --nj $nj --anoni-pool $anoni_pool \
         --data-netcdf $data_netcdf \
@@ -227,16 +201,14 @@ if [ $stage -le 9 ]; then
         --anon-xvec-out-dir $anon_xvec_out_dir --plda-dir $plda_dir \
         --pseudo-xvec-rand-level $pseudo_xvec_rand_level --distance $distance \
         --proximity $proximity --cross-gender $cross_gender \
-	      --rand-seed $rand_seed \
         --anon-data-suffix $anon_data_suffix $dset || exit 1;
-    fi
-    if [ -f data/$dset/enrolls ]; then
-      cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1
-    else
-      [ ! -f data/$dset/trials ] && echo "File data/$dset/trials does not exist" && exit 1
-      cp data/$dset/trials data/$dset$anon_data_suffix/ || exit 1
-    fi
-    rand_seed=$((rand_seed+1))
+      if [ -f data/$dset/enrolls ]; then
+        cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1
+      else
+        [ ! -f data/$dset/trials ] && echo "File data/$dset/trials does not exist" && exit 1
+        cp data/$dset/trials data/$dset$anon_data_suffix/ || exit 1
+      fi
+    done
   done
 fi
 
@@ -249,7 +221,6 @@ if [ $stage -le 10 ]; then
     for name in ${dset}_trials_f_all$anon_data_suffix ${dset}_trials_m_all$anon_data_suffix; do
       [ ! -d $name ] && echo "Directory $name does not exist" && exit 1
     done
-
     cut -d' ' -f2 ${dset}_trials_f/trials | sort | uniq > $temp
     utils/subset_data_dir.sh --utt-list $temp ${dset}_trials_f_all$anon_data_suffix ${dset}_trials_f${anon_data_suffix} || exit 1
     cp ${dset}_trials_f/trials ${dset}_trials_f${anon_data_suffix} || exit 1
