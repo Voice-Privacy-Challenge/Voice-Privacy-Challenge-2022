@@ -111,11 +111,10 @@ if [ $stage -le 7 ]; then
   if [ -d "$new_data_dir" ]; then
     rm -rf ${new_data_dir}
   fi
-  cp -r data/${data_dir} ${new_data_dir}
-  # Copy new spk2gender in case cross_gender vc has been done
-  # cp ${anon_xvec_out_dir}/xvectors_${data_dir}/pseudo_xvecs/spk2gender ${new_data_dir}/
-  utils/copy_data_dir.sh ${anon_xvec_out_dir}/xvectors_${data_dir}/pseudo_xvecs/spk2gender ${new_data_dir} || exit 1;
+  utils/copy_data_dir.sh data/${data_dir} ${new_data_dir}
   [ -f ${new_data_dir}/feats.scp ] && rm ${new_data_dir}/feats.scp
   [ -f ${new_data_dir}/vad.scp ] && rm ${new_data_dir}/vad.scp
+    # Copy new spk2gender in case cross_gender vc has been done
+  cp ${anon_xvec_out_dir}/xvectors_${data_dir}/pseudo_xvecs/spk2gender ${new_data_dir}/
   awk -v p="$wav_path" '{print $1, "sox", p"/"$1".wav", "-t wav -R -b 16 - |"}' data/${data_dir}/wav.scp > ${new_data_dir}/wav.scp
 fi

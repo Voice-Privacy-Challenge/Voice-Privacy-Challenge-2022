@@ -204,7 +204,8 @@ if [ $stage -le 9 ]; then
               vctk_dev_{enrolls,trials_f_all,trials_m_all} \
               libri_test_{enrolls,trials_f,trials_m} \
               vctk_test_{enrolls,trials_f_all,trials_m_all}; do
-    if [ $mcadams ]; then
+    if $mcadams; then
+      printf "${GREEN}\nStage 9: Anonymizing using McAdams coefficient...${NC}\n"
       echo $dset
       #copy content of the folder to the new folder
       utils/copy_data_dir.sh data/$dset data/$dset$anon_data_suffix || exit 1
@@ -219,6 +220,7 @@ if [ $stage -le 9 ]; then
       ls data/$dset$anon_data_suffix/wav/*/*.wav | \
         awk -F'[/.]' '{print $5 " sox " $0 " -t wav -R -b 16 - |"}' > data/$dset$anon_data_suffix/wav.scp
     else
+      printf "${GREEN}\nStage 9: Anonymizing using x-vectors and neural wavform models...${NC}\n"
       local/anon/anonymize_data_dir.sh \
         --nj $nj --anoni-pool $anoni_pool \
         --data-netcdf $data_netcdf \
