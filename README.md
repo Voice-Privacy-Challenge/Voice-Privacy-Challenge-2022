@@ -37,7 +37,7 @@ The dataset for anonymization system traing consists of subsets from the followi
 
 ##  Baseline-1: Anonymization  using x-vectors and neural waveform models 
 
-This is the primary (default baseline).
+This is the primary (default) baseline.
 
 ### Models
 
@@ -54,7 +54,7 @@ All the pretrained models are provided as part of this baseline (downloaded by .
 
 ##  Baseline-2: Anonymization using McAdams coefficient
 
-This is an additional secondary baseline.
+This is an additional baseline.
 
 To run: `./run.sh --mcadams true`
 
