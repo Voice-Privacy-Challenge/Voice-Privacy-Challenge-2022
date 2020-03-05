@@ -35,6 +35,9 @@ The dataset for anonymization system traing consists of subsets from the followi
 
 *vctk_test and libri_test will be available to download after the specifed deadline
 
+##  Baseline-1: Anonymization  using x-vectors and neural waveform models 
+
+This is the primary (default baseline).
 
 ### Models
 
@@ -48,11 +51,27 @@ The baseline system uses several independent models:
 
 All the pretrained models are provided as part of this baseline (downloaded by ./baseline/local/download_models.sh)
 
-### Results
+
+##  Baseline-2: Anonymization using McAdams coefficient
+
+This is an additional secondary baseline.
+
+To run: `./run.sh --mcadams true`
+
+It does not require any training data and is based upon simple signal processing techniques using the McAdams coefficient.
+
+
+
+## Results
 
 The result file with all the metrics and all datasets for submission will be generated in: ./baseline/exp/results-`date`-`time`/results.txt
 
-Please see [RESULTS](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_baseline) for the evalation and development data
+Please see 
+* [RESULTS for Baseline-1](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_baseline) 
+* [RESULTS for Baseline-2](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_mcadams) 
+
+for the evalation and development data sets.
+
 
 ## Organizers (in alphabetical order)
 
