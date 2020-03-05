@@ -52,7 +52,7 @@ All the pretrained models are provided as part of this baseline (downloaded by .
 
 The result file with all the metrics and all datasets for submission will be generated in: ./baseline/exp/results-`date`-`time`/results.txt
 
-Please see [RESULTS](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS) for development data
+Please see [RESULTS](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_baseline) for the evalation and development data
 
 ## Organizers (in alphabetical order)
 
