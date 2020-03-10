@@ -226,7 +226,7 @@ if [ $stage -le 9 ]; then
         --data-netcdf $data_netcdf \
         --ppg-model $ppg_model --ppg-dir $ppg_dir \
         --xvec-nnet-dir $xvec_nnet_dir \
-        --anon-xvec-out-dir $anon_xvec_out_dir --plda-dir $plda_dir \
+        --anon-xvec-out-dir $anon_xvec_out_dir --plda-dir $xvec_nnet_dir \
         --pseudo-xvec-rand-level $pseudo_xvec_rand_level --distance $distance \
         --proximity $proximity --cross-gender $cross_gender \
 	      --rand-seed $rand_seed \
