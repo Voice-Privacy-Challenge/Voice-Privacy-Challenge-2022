@@ -1,168 +1,168 @@
 ASV-libri_dev_enrolls-libri_dev_trials_f
   EER: 8.665%
-  Cllr (min/act): 0.304/42.857
-  ROCCH-EER: 8.600%
+  Cllr (min/act): 0.305/42.932
+  ROCCH-EER: 8.618%
 ASV-libri_dev_enrolls-libri_dev_trials_f_anon
-  EER: 49.72%
-  Cllr (min/act): 0.994/144.285
-  ROCCH-EER: 47.929%
+  EER: 42.76%
+  Cllr (min/act): 0.961/134.817
+  ROCCH-EER: 42.647%
 ASV-libri_dev_enrolls-libri_dev_trials_m
   EER: 1.242%
-  Cllr (min/act): 0.034/14.250
-  ROCCH-EER: 1.070%
+  Cllr (min/act): 0.034/14.240
+  ROCCH-EER: 1.062%
 ASV-libri_dev_enrolls-libri_dev_trials_m_anon
-  EER: 57.14%
-  Cllr (min/act): 0.999/164.327
-  ROCCH-EER: 49.907%
+  EER: 43.94%
+  Cllr (min/act): 0.948/145.237
+  ROCCH-EER: 43.250%
 ASV-libri_dev_enrolls_anon-libri_dev_trials_f_anon
-  EER: 35.51%
-  Cllr (min/act): 0.887/15.014
-  ROCCH-EER: 35.232%
+  EER: 41.05%
+  Cllr (min/act): 0.939/19.971
+  ROCCH-EER: 40.442%
 ASV-libri_dev_enrolls_anon-libri_dev_trials_m_anon
-  EER: 32.45%
-  Cllr (min/act): 0.857/23.683
-  ROCCH-EER: 32.205%
+  EER: 41.3%
+  Cllr (min/act): 0.944/33.027
+  ROCCH-EER: 40.890%
 ASV-libri_test_enrolls-libri_test_trials_f
   EER: 7.664%
-  Cllr (min/act): 0.183/26.793
-  ROCCH-EER: 7.165%
+  Cllr (min/act): 0.183/26.765
+  ROCCH-EER: 7.159%
 ASV-libri_test_enrolls-libri_test_trials_f_anon
-  EER: 50%
-  Cllr (min/act): 0.996/149.432
-  ROCCH-EER: 48.727%
+  EER: 41.06%
+  Cllr (min/act): 0.962/141.670
+  ROCCH-EER: 40.898%
 ASV-libri_test_enrolls-libri_test_trials_m
   EER: 1.114%
-  Cllr (min/act): 0.041/15.303
-  ROCCH-EER: 1.046%
+  Cllr (min/act): 0.041/15.302
+  ROCCH-EER: 1.044%
 ASV-libri_test_enrolls-libri_test_trials_m_anon
-  EER: 52.78%
-  Cllr (min/act): 0.998/163.700
-  ROCCH-EER: 49.875%
+  EER: 43.88%
+  Cllr (min/act): 0.962/151.334
+  ROCCH-EER: 42.937%
 ASV-libri_test_enrolls_anon-libri_test_trials_f_anon
-  EER: 33.39%
-  Cllr (min/act): 0.862/16.024
-  ROCCH-EER: 33.148%
+  EER: 37.41%
+  Cllr (min/act): 0.907/20.519
+  ROCCH-EER: 36.833%
 ASV-libri_test_enrolls_anon-libri_test_trials_m_anon
-  EER: 33.63%
-  Cllr (min/act): 0.878/31.056
-  ROCCH-EER: 33.440%
+  EER: 44.32%
+  Cllr (min/act): 0.966/44.565
+  ROCCH-EER: 43.283%
 ASV-vctk_dev_enrolls-vctk_dev_trials_f
-  EER: 2.864%
-  Cllr (min/act): 0.100/1.134
-  ROCCH-EER: 2.858%
+  EER: 2.92%
+  Cllr (min/act): 0.101/1.134
+  ROCCH-EER: 2.870%
 ASV-vctk_dev_enrolls-vctk_dev_trials_f_anon
-  EER: 50.7%
-  Cllr (min/act): 0.982/162.258
-  ROCCH-EER: 47.404%
+  EER: 46.66%
+  Cllr (min/act): 0.972/158.800
+  ROCCH-EER: 45.839%
 ASV-vctk_dev_enrolls-vctk_dev_trials_f_common
   EER: 2.616%
-  Cllr (min/act): 0.088/0.868
-  ROCCH-EER: 2.181%
+  Cllr (min/act): 0.088/0.870
+  ROCCH-EER: 2.194%
 ASV-vctk_dev_enrolls-vctk_dev_trials_f_common_anon
-  EER: 48.55%
-  Cllr (min/act): 0.984/161.083
-  ROCCH-EER: 47.010%
+  EER: 45.06%
+  Cllr (min/act): 0.972/161.230
+  ROCCH-EER: 44.775%
 ASV-vctk_dev_enrolls-vctk_dev_trials_m
   EER: 1.439%
-  Cllr (min/act): 0.052/1.158
-  ROCCH-EER: 1.389%
+  Cllr (min/act): 0.052/1.156
+  ROCCH-EER: 1.385%
 ASV-vctk_dev_enrolls-vctk_dev_trials_m_anon
-  EER: 54.19%
-  Cllr (min/act): 1.000/163.566
-  ROCCH-EER: 49.992%
+  EER: 44.27%
+  Cllr (min/act): 0.986/156.473
+  ROCCH-EER: 43.852%
 ASV-vctk_dev_enrolls-vctk_dev_trials_m_common
   EER: 1.425%
-  Cllr (min/act): 0.050/1.559
-  ROCCH-EER: 1.326%
+  Cllr (min/act): 0.050/1.561
+  ROCCH-EER: 1.323%
 ASV-vctk_dev_enrolls-vctk_dev_trials_m_common_anon
-  EER: 55.27%
-  Cllr (min/act): 0.998/186.612
-  ROCCH-EER: 49.924%
+  EER: 44.16%
+  Cllr (min/act): 0.955/178.543
+  ROCCH-EER: 43.006%
 ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_anon
-  EER: 27.79%
-  Cllr (min/act): 0.793/8.711
-  ROCCH-EER: 27.688%
+  EER: 29.08%
+  Cllr (min/act): 0.823/10.248
+  ROCCH-EER: 29.006%
 ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_common_anon
-  EER: 27.62%
-  Cllr (min/act): 0.769/8.896
-  ROCCH-EER: 27.261%
+  EER: 31.69%
+  Cllr (min/act): 0.819/9.766
+  ROCCH-EER: 31.054%
 ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_anon
-  EER: 29.63%
-  Cllr (min/act): 0.818/21.604
-  ROCCH-EER: 29.461%
+  EER: 32.16%
+  Cllr (min/act): 0.858/23.839
+  ROCCH-EER: 32.012%
 ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_common_anon
-  EER: 30.2%
-  Cllr (min/act): 0.799/21.623
-  ROCCH-EER: 29.769%
+  EER: 34.76%
+  Cllr (min/act): 0.878/24.880
+  ROCCH-EER: 34.309%
 ASV-vctk_test_enrolls-vctk_test_trials_f
   EER: 4.887%
-  Cllr (min/act): 0.169/1.495
-  ROCCH-EER: 4.842%
+  Cllr (min/act): 0.170/1.495
+  ROCCH-EER: 4.858%
 ASV-vctk_test_enrolls-vctk_test_trials_f_anon
-  EER: 49.18%
-  Cllr (min/act): 0.999/141.784
-  ROCCH-EER: 48.951%
+  EER: 44.24%
+  Cllr (min/act): 0.979/138.360
+  ROCCH-EER: 44.141%
 ASV-vctk_test_enrolls-vctk_test_trials_f_common
   EER: 2.89%
-  Cllr (min/act): 0.091/0.866
-  ROCCH-EER: 2.749%
+  Cllr (min/act): 0.091/0.868
+  ROCCH-EER: 2.750%
 ASV-vctk_test_enrolls-vctk_test_trials_f_common_anon
-  EER: 50%
-  Cllr (min/act): 0.995/156.089
-  ROCCH-EER: 48.485%
+  EER: 43.06%
+  Cllr (min/act): 0.966/150.960
+  ROCCH-EER: 42.647%
 ASV-vctk_test_enrolls-vctk_test_trials_m
   EER: 2.067%
-  Cllr (min/act): 0.072/1.817
-  ROCCH-EER: 1.970%
+  Cllr (min/act): 0.072/1.816
+  ROCCH-EER: 1.968%
 ASV-vctk_test_enrolls-vctk_test_trials_m_anon
-  EER: 53.85%
-  Cllr (min/act): 1.000/163.102
-  ROCCH-EER: 49.996%
+  EER: 43%
+  Cllr (min/act): 0.974/158.106
+  ROCCH-EER: 42.834%
 ASV-vctk_test_enrolls-vctk_test_trials_m_common
   EER: 1.13%
-  Cllr (min/act): 0.036/1.041
-  ROCCH-EER: 0.958%
+  Cllr (min/act): 0.036/1.039
+  ROCCH-EER: 0.962%
 ASV-vctk_test_enrolls-vctk_test_trials_m_common_anon
-  EER: 55.37%
-  Cllr (min/act): 0.999/184.863
-  ROCCH-EER: 49.800%
+  EER: 41.53%
+  Cllr (min/act): 0.959/179.635
+  ROCCH-EER: 41.290%
 ASV-vctk_test_enrolls_anon-vctk_test_trials_f_anon
-  EER: 33.8%
-  Cllr (min/act): 0.885/11.707
-  ROCCH-EER: 33.539%
+  EER: 34.62%
+  Cllr (min/act): 0.894/12.487
+  ROCCH-EER: 34.461%
 ASV-vctk_test_enrolls_anon-vctk_test_trials_f_common_anon
-  EER: 32.08%
-  Cllr (min/act): 0.853/10.590
-  ROCCH-EER: 31.813%
+  EER: 34.68%
+  Cllr (min/act): 0.884/11.087
+  ROCCH-EER: 34.497%
 ASV-vctk_test_enrolls_anon-vctk_test_trials_m_anon
-  EER: 28.07%
-  Cllr (min/act): 0.801/20.364
-  ROCCH-EER: 27.896%
+  EER: 37.31%
+  Cllr (min/act): 0.929/25.468
+  ROCCH-EER: 37.160%
 ASV-vctk_test_enrolls_anon-vctk_test_trials_m_common_anon
-  EER: 26.84%
-  Cllr (min/act): 0.744/17.896
-  ROCCH-EER: 26.605%
+  EER: 35.59%
+  Cllr (min/act): 0.900/24.180
+  ROCCH-EER: 35.273%
 ASR-libri_dev_asr
-  %WER 5.25 [ 2089 / 39783, 172 ins, 250 del, 1667 sub ] exp/models/asr_eval/decode_libri_dev_asr_tgsmall/wer_12_0.5
-  %WER 3.83 [ 1522 / 39783, 187 ins, 139 del, 1196 sub ] exp/models/asr_eval/decode_libri_dev_asr_tglarge/wer_13_0.0
+  %WER 5.25 [ 2087 / 39783, 206 ins, 213 del, 1668 sub ] exp/models/asr_eval/decode_libri_dev_asr_tgsmall/wer_12_0.0
+  %WER 3.83 [ 1522 / 39783, 185 ins, 141 del, 1196 sub ] exp/models/asr_eval/decode_libri_dev_asr_tglarge/wer_13_0.0
 ASR-libri_dev_asr_anon
-  %WER 9.49 [ 3775 / 39783, 283 ins, 565 del, 2927 sub ] exp/models/asr_eval/decode_libri_dev_asr_anon_tgsmall/wer_14_0.0
-  %WER 6.96 [ 2769 / 39783, 263 ins, 385 del, 2121 sub ] exp/models/asr_eval/decode_libri_dev_asr_anon_tglarge/wer_14_0.0
+  %WER 8.71 [ 3466 / 39783, 279 ins, 480 del, 2707 sub ] exp/models/asr_eval/decode_libri_dev_asr_anon_tgsmall/wer_14_0.0
+  %WER 6.19 [ 2463 / 39783, 243 ins, 293 del, 1927 sub ] exp/models/asr_eval/decode_libri_dev_asr_anon_tglarge/wer_15_0.0
 ASR-libri_test_asr
-  %WER 5.55 [ 1944 / 35042, 214 ins, 197 del, 1533 sub ] exp/models/asr_eval/decode_libri_test_asr_tgsmall/wer_13_0.0
-  %WER 4.14 [ 1452 / 35042, 172 ins, 158 del, 1122 sub ] exp/models/asr_eval/decode_libri_test_asr_tglarge/wer_12_1.0
+  %WER 5.54 [ 1942 / 35042, 214 ins, 198 del, 1530 sub ] exp/models/asr_eval/decode_libri_test_asr_tgsmall/wer_13_0.0
+  %WER 4.15 [ 1454 / 35042, 174 ins, 158 del, 1122 sub ] exp/models/asr_eval/decode_libri_test_asr_tglarge/wer_12_1.0
 ASR-libri_test_asr_anon
-  %WER 10.44 [ 3659 / 35042, 280 ins, 681 del, 2698 sub ] exp/models/asr_eval/decode_libri_test_asr_anon_tgsmall/wer_14_0.0
-  %WER 7.78 [ 2726 / 35042, 226 ins, 585 del, 1915 sub ] exp/models/asr_eval/decode_libri_test_asr_anon_tglarge/wer_15_0.5
+  %WER 8.66 [ 3036 / 35042, 282 ins, 365 del, 2389 sub ] exp/models/asr_eval/decode_libri_test_asr_anon_tgsmall/wer_14_0.0
+  %WER 6.46 [ 2263 / 35042, 271 ins, 236 del, 1756 sub ] exp/models/asr_eval/decode_libri_test_asr_anon_tglarge/wer_14_0.0
 ASR-vctk_dev_asr
-  %WER 14.00 [ 12127 / 86627, 1148 ins, 1869 del, 9110 sub ] exp/models/asr_eval/decode_vctk_dev_asr_tgsmall/wer_15_0.0
-  %WER 10.79 [ 9349 / 86627, 993 ins, 1354 del, 7002 sub ] exp/models/asr_eval/decode_vctk_dev_asr_tglarge/wer_14_0.5
+  %WER 14.03 [ 12158 / 86627, 1146 ins, 1864 del, 9148 sub ] exp/models/asr_eval/decode_vctk_dev_asr_tgsmall/wer_15_0.0
+  %WER 10.80 [ 9355 / 86627, 997 ins, 1356 del, 7002 sub ] exp/models/asr_eval/decode_vctk_dev_asr_tglarge/wer_14_0.5
 ASR-vctk_dev_asr_anon
-  %WER 19.68 [ 17047 / 86627, 1494 ins, 2758 del, 12795 sub ] exp/models/asr_eval/decode_vctk_dev_asr_anon_tgsmall/wer_16_0.0
-  %WER 15.96 [ 13823 / 86627, 1590 ins, 1949 del, 10284 sub ] exp/models/asr_eval/decode_vctk_dev_asr_anon_tglarge/wer_17_0.0
+  %WER 18.68 [ 16181 / 86627, 1425 ins, 2597 del, 12159 sub ] exp/models/asr_eval/decode_vctk_dev_asr_anon_tgsmall/wer_17_0.0
+  %WER 15.14 [ 13111 / 86627, 1348 ins, 1901 del, 9862 sub ] exp/models/asr_eval/decode_vctk_dev_asr_anon_tglarge/wer_15_0.5
 ASR-vctk_test_asr
-  %WER 16.39 [ 14198 / 86642, 1323 ins, 2242 del, 10633 sub ] exp/models/asr_eval/decode_vctk_test_asr_tgsmall/wer_14_0.0
-  %WER 12.81 [ 11103 / 86642, 1300 ins, 1472 del, 8331 sub ] exp/models/asr_eval/decode_vctk_test_asr_tglarge/wer_14_0.0
+  %WER 16.39 [ 14201 / 86642, 1326 ins, 2245 del, 10630 sub ] exp/models/asr_eval/decode_vctk_test_asr_tgsmall/wer_14_0.0
+  %WER 12.80 [ 11094 / 86642, 1263 ins, 1513 del, 8318 sub ] exp/models/asr_eval/decode_vctk_test_asr_tglarge/wer_15_0.0
 ASR-vctk_test_asr_anon
-  %WER 19.52 [ 16910 / 86642, 1380 ins, 2943 del, 12587 sub ] exp/models/asr_eval/decode_vctk_test_asr_anon_tgsmall/wer_16_0.0
-  %WER 15.74 [ 13636 / 86642, 1536 ins, 1867 del, 10233 sub ] exp/models/asr_eval/decode_vctk_test_asr_anon_tglarge/wer_14_0.0
+  %WER 18.73 [ 16230 / 86642, 1510 ins, 2579 del, 12141 sub ] exp/models/asr_eval/decode_vctk_test_asr_anon_tgsmall/wer_15_0.0
+  %WER 15.13 [ 13112 / 86642, 1283 ins, 2061 del, 9768 sub ] exp/models/asr_eval/decode_vctk_test_asr_anon_tglarge/wer_15_0.5
