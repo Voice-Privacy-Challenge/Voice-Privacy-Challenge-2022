@@ -102,7 +102,7 @@ for spk, gender in src_spk2gender.items():
         for line in f.read().splitlines():
             sp = line.split()
             pool_spk = sp[1]
-            af_score = sp[2]
+            af_score = float(sp[2])
             if pool_spk2gender[pool_spk] == gender:
                 affinity_pool[pool_spk] = af_score
 
