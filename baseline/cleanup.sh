@@ -1,7 +1,8 @@
 #!/bin/bash
 # Script for The First VoicePrivacy Challenge 2020
 #
-# This clean-up script should be used before re-running anonymization system (for example, with different parametrs, models, etc.) in order to delete all the old directories from the previous run of anonymization  and evaluation sripts which should be updated.
+# This clean-up script should be used before re-running anonymization system (for example, with different parametrs, models, etc.) 
+# in order to delete all old directories (in data, exp, ..., which should be updated) from the previous run of anonymization and evaluation sripts.
 #
 #
 
