@@ -65,8 +65,8 @@ vctk_test_trials_m_common_anon'
 
 for name in $names; do
   dir=data/$name
-  [ ! -d $dir ] && echo $dir
-  #if [ -d $dir ]; then echo $dir; rm -r $dir; fi
+  #[ ! -d $dir ] && echo $dir
+  if [ -d $dir ]; then echo $dir; rm -r $dir; fi
 done
 
 names='
@@ -89,8 +89,8 @@ decode_vctk_test_asr_tgsmall'
 
 for name in $names; do
   dir=exp/models/asr_eval/$name
-  [ ! -d $dir ] && echo $dir
-  #if [ -d $dir ]; then echo $dir; rm -r $dir; fi
+  #[ ! -d $dir ] && echo $dir
+  if [ -d $dir ]; then echo $dir; rm -r $dir; fi
 done
 
 names='
@@ -105,8 +105,8 @@ ivect_vctk_test_asr_anon'
 
 for name in $names; do
   dir=exp/models/asr_eval/extractor/$name
-  [ ! -d $dir ] && echo $dir
-  #if [ -d $dir ]; then echo $dir; rm -r $dir; fi
+  #[ ! -d $dir ] && echo $dir
+  if [ -d $dir ]; then echo $dir; rm -r $dir; fi
 done
 
 names='
@@ -137,8 +137,8 @@ ppg_vctk_test_trials_m_all'
 
 for name in $names; do
   dir=exp/models/1_asr_am/exp/nnet3_cleaned/$name
-  [ ! -d $dir ] && echo $dir
-  #if [ -d $dir ]; then echo $dir; rm -r $dir; fi
+  #[ ! -d $dir ] && echo $dir
+  if [ -d $dir ]; then echo $dir; rm -r $dir; fi
 done
 
 names='
@@ -177,8 +177,8 @@ xvect_vctk_test_trials_m_common_anon'
 
 for name in $names; do
   dir=exp/models/asv_eval/xvect_01709_1/$name
-  [ ! -d $dir ] && echo $dir
-  #if [ -d $dir ]; then echo $dir; rm -r $dir; fi
+  #[ ! -d $dir ] && echo $dir
+  if [ -d $dir ]; then echo $dir; rm -r $dir; fi
 done
 
 names='
@@ -197,8 +197,8 @@ xvectors_vctk_test_trials_m_all'
 
 for name in $names; do
   dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a/anon/$name
-  [ ! -d $dir ] && echo $dir
-  #if [ -d $dir ]; then echo $dir; rm -r $dir; fi
+  #[ ! -d $dir ] && echo $dir
+  if [ -d $dir ]; then echo $dir; rm -r $dir; fi
 done
 
 names='
@@ -217,8 +217,8 @@ vctk_test_trials_m_all'
 
 for name in $names; do
   dir=exp/am_nsf_data/$name
-  [ ! -d $dir ] && echo $dir
-  #if [ -d $dir ]; then echo $dir; rm -r $dir; fi
+  #[ ! -d $dir ] && echo $dir
+  if [ -d $dir ]; then echo $dir; rm -r $dir; fi
 done
 
 echo Done
