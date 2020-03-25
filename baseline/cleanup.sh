@@ -222,4 +222,7 @@ for name in $names; do
   if [ -d $dir ]; then echo $dir; rm -r $dir; fi
 done
 
+dir="exp/tmp"
+if [ -d $dir ]; then echo $dir; rm -r $dir; fi
+
 echo Done
