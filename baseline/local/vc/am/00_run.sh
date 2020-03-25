@@ -9,8 +9,8 @@ proj_dir=${nii_scripts}/acoustic-modeling/project-DAR-continuous
 
 
 # preparing the training data
-python ${proj_dir}/../SCRIPTS/01_prepare.py config_libri_am
+python ${proj_dir}/../SCRIPTS/01_prepare.py config_libri_am || exit 1
 
 # training the RNN model
-python ${proj_dir}/../SCRIPTS/02_train.py config_libri_am
+python ${proj_dir}/../SCRIPTS/02_train.py config_libri_am || exit 1
 

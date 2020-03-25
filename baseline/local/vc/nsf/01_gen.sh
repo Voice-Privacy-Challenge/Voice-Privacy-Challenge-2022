@@ -37,7 +37,7 @@ export TEMP_WAVEFORM_MODEL_NETWORK_PATH=exp/models/4_nsf/trained_network.jsn
 export TEMP_WAVEFORM_TEMP_OUTPUT_DIRECTORY="${test_data_dir}/output_tmp"
 
 # generating
-python ${proj_dir}/../SCRIPTS/02_genwaveform.py config_libri_nsf
+python ${proj_dir}/../SCRIPTS/02_genwaveform.py config_libri_nsf || exit 1
 
 rm -r ${TEMP_WAVEFORM_TEMP_OUTPUT_DIRECTORY}
 

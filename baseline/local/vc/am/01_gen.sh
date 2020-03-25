@@ -28,7 +28,7 @@ export TEMP_ACOUSTIC_OUTPUT_DIRECTORY=${output_dir}
 export TEMP_ACOUSTIC_TEMP_OUTPUT_DIRECTORY=${output_tmp_dir}
 
 # 
-python ${proj_dir}/../SCRIPTS/03_syn.py config_libri_am
+python ${proj_dir}/../SCRIPTS/03_syn.py config_libri_am || exit 1
 # after running this scripts, the generated features should be in ${TEMP_ACOUSTIC_OUTPUT_DIRECTORY}
 
 rm -r ${TEMP_ACOUSTIC_TEMP_OUTPUT_DIRECTORY}
