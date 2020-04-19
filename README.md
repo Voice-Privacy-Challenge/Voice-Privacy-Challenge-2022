@@ -92,7 +92,7 @@ for the evalation and development data sets.
 - Xin Wang - NII, Japan
 - Junichi Yamagishi - NII, Japan and University of Edinburgh, UK
 
-Contact : voice.privacy.challenge@gmail.com
+Contact: organisers@lists.voiceprivacychallenge.org
 
 
 ## Acknowledgements
