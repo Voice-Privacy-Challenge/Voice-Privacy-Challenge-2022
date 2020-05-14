@@ -120,22 +120,24 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 ---------------------------------------------------------------------------
 
 ## References
-
+```
 @article{tomashenko2020introducing,
     title={Introducing the VoicePrivacy Initiative},
     author={Natalia Tomashenko and Brij Mohan Lal Srivastava and Xin Wang and Emmanuel Vincent and Andreas Nautsch and Junichi Yamagishi and Nicholas Evans and Jose Patino and Jean-François Bonastre and Paul-Gauthier Noé and Massimiliano Todisco},
     year={2020},
     eprint={2005.01387},
     archivePrefix={arXiv},
+    url={https://arxiv.org/pdf/2005.01387v2.pdf}
 }
-[Introducing the VoicePrivacy Initiative](https://arxiv.org/pdf/2005.01387v2.pdf)
+```
 
+```
 article{tomashenkovoiceprivacy,
   title={The {VoicePrivacy} 2020 {Challenge} Evaluation Plan},
   author={Tomashenko, Natalia and Srivastava, Brij Mohan Lal and Wang, Xin and Vincent, Emmanuel and Nautsch, Andreas and Yamagishi, Junichi and Evans, Nicholas and Patino, Jose and Bonastre, Jean-Fran{\c{c}}ois and No{\'e}, Paul-Gauthier and Todisco, Massimiliano},
   url={https://www.voiceprivacychallenge.org/docs/VoicePrivacy_2020_Eval_Plan_v1_3.pdf},
   year={2020}
 }
-
+```
 
 
