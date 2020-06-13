@@ -388,4 +388,17 @@ if [ $stage -le 14 ]; then
   done
 fi
 
+if [ $stage -le 15 ]; then
+  printf "${GREEN}\nStage 15: Compute the de-indentification and pseudonymization with the confusion matrices based metrics${NC}\n"
+  
+  local/confus_matrices/compute_confusion_matrices_metrics.sh libri_dev_trials_f $results
+  local/confus_matrices/compute_confusion_matrices_metrics.sh libri_dev_trials_m $results
+  local/confus_matrices/compute_confusion_matrices_metrics.sh vctk_dev_trials_f $results
+  local/confus_matrices/compute_confusion_matrices_metrics.sh vctk_dev_trials_m $results
+  local/confus_matrices/compute_confusion_matrices_metrics.sh vctk_dev_trials_f_common $results
+  local/confus_matrices/compute_confusion_matrices_metrics.sh vctk_dev_trials_m_common $results
+
+fi
+
+
 echo Done
