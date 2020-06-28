@@ -21,6 +21,8 @@ For more details about the baseline and data, please see [The VoicePrivacy 2020 
 
 For the latest updates in the baseline and evaluation scripts, please visit [News and updates page](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/wiki/News-and-Updates)
 
+The deadline to submit results has passed. To access the baseline models and development/evaluation data, please send an email to organisers@lists.voiceprivacychallenge.org with “VoicePrivacy-2020" as the subject line. The mail body should include: (i) the name of the contact person; (ii) country; (iii) status (academic/nonacademic).
+
 
 ## Data
 
