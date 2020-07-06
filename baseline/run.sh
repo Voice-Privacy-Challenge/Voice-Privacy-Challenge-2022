@@ -58,10 +58,11 @@ asv_eval_model=exp/models/asv_eval/xvect_01709_1
 plda_dir=${asv_eval_model}/xvect_train_clean_360
 
 # Anonymization configs
-pseudo_xvec_rand_level=spk                # spk (all utterances will have same xvector) or utt (each utterance will have randomly selected xvector)
-cross_gender="false"                      # false, same gender xvectors will be selected; true, other gender xvectors
-distance="plda"                           # cosine or plda
-proximity="farthest"                      # nearest or farthest speaker to be selected for anonymization
+anon_level_trials="spk"                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
+anon_level_enroll="spk"                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
+cross_gender="false"                   # false (same gender xvectors will be selected) or true (other gender xvectors)
+distance="plda"                        # cosine or plda
+proximity="farthest"                   # nearest or farthest speaker to be selected for anonymization
 
 anon_data_suffix=_anon
 
@@ -204,9 +205,15 @@ if [ $stage -le 9 ]; then
               vctk_dev_{enrolls,trials_f_all,trials_m_all} \
               libri_test_{enrolls,trials_f,trials_m} \
               vctk_test_{enrolls,trials_f_all,trials_m_all}; do
+	if [ -z "$(echo $dset | grep enrolls)" ]; then
+      anon_level=$anon_level_trials
+	else
+      anon_level=$anon_level_enroll
+	fi
+	echo "anon_level = $anon_level"
+	echo $dset
     if $mcadams; then
       printf "${GREEN}\nStage 9: Anonymizing using McAdams coefficient...${NC}\n"
-      echo $dset
       #copy content of the folder to the new folder
       utils/copy_data_dir.sh data/$dset data/$dset$anon_data_suffix || exit 1
       #create folder that will contain the anonymised wav files
@@ -227,7 +234,7 @@ if [ $stage -le 9 ]; then
         --ppg-model $ppg_model --ppg-dir $ppg_dir \
         --xvec-nnet-dir $xvec_nnet_dir \
         --anon-xvec-out-dir $anon_xvec_out_dir --plda-dir $xvec_nnet_dir \
-        --pseudo-xvec-rand-level $pseudo_xvec_rand_level --distance $distance \
+        --pseudo-xvec-rand-level $anon_level --distance $distance \
         --proximity $proximity --cross-gender $cross_gender \
 	      --rand-seed $rand_seed \
         --anon-data-suffix $anon_data_suffix $dset || exit 1;
