@@ -10,7 +10,7 @@ pyparsing==2.4.6
 python-dateutil==2.8.1
 pytz==2019.3
 scipy==1.2.2
-seaborn==0.10.0
+seaborn==0.10.1
 six==1.13.0
 subprocess32==3.5.4
 librosa==0.7.1

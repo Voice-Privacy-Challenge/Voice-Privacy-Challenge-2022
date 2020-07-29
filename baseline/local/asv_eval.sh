@@ -87,7 +87,7 @@ if [ ! -f $expo/.done ]; then
     -k data/$trials/trials -s $expo/scores -e | tee $expo/Cllr || exit 1
 
   # Compute linkability
-  PYTHONPATH=$(realpath local/scoring/linkability) python local/scoring/linkability/compute_linkability.py \
+  PYTHONPATH=$(realpath ../anonymization_metrics) python local/scoring/linkability/compute_linkability.py \
     -k data/$trials/trials -s $expo/scores \
     -d -o $expo/linkability | tee $expo/linkability_log || exit 1
 
