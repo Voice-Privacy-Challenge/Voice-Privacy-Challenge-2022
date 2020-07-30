@@ -85,5 +85,11 @@ if [ ! -f $expo/.done ]; then
   echo "minDCF(p-target=0.001): $mindcf2" | tee -a $expo/EER
   PYTHONPATH=$(realpath ../cllr) python ../cllr/compute_cllr.py \
     -k data/$trials/trials -s $expo/scores -e | tee $expo/Cllr || exit 1
+
+  # Compute linkability
+  PYTHONPATH=$(realpath ../anonymization_metrics) python local/scoring/linkability/compute_linkability.py \
+    -k data/$trials/trials -s $expo/scores \
+    -d -o $expo/linkability | tee $expo/linkability_log || exit 1
+
   touch $expo/.done
 fi
