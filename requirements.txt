@@ -4,6 +4,7 @@ Cython==0.29.14
 kaldiio==2.15.1
 kiwisolver==1.1.0
 matplotlib==2.2.4
+numba==0.48
 numpy==1.16.5
 pandas==1.0.1
 pyparsing==2.4.6
