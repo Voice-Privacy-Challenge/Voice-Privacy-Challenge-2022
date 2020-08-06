@@ -68,7 +68,8 @@ anon_data_suffix=_anon
 
 #McAdams anonymisation configs
 n_lpc=20
-mc_coeff=0.8
+mc_coeff_enroll=0.8                    # mc_coeff for enrollment 
+mc_coeff_trials=0.8                    # mc_coeff for trials
 
 #=========== end config ===========
 
@@ -207,8 +208,10 @@ if [ $stage -le 9 ]; then
               vctk_test_{enrolls,trials_f_all,trials_m_all}; do
 	if [ -z "$(echo $dset | grep enrolls)" ]; then
       anon_level=$anon_level_trials
+      mc_coeff=$mc_coeff_trials
 	else
       anon_level=$anon_level_enroll
+      mc_coeff=$mc_coeff_enroll
 	fi
 	echo "anon_level = $anon_level"
 	echo $dset
