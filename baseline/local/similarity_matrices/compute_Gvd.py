@@ -3,7 +3,6 @@
 import argparse
 import numpy as np
 import math
-from scipy.stats.mstats import gmean
 
 
 def Ddiag(X):
@@ -16,15 +15,12 @@ def Ddiag(X):
 if __name__=="__main__":
 
     parser = argparse.ArgumentParser(description='Compute Gain of Voice Uniqueness')
-    parser.add_argument('Coo',help="npy file of the matrix Coo", type=str)
-    parser.add_argument('Caa',help="npy file of the matrix Caa", type=str)
+    parser.add_argument('Soo',help="npy file of the similarity matrix Soo", type=str)
+    parser.add_argument('Spp',help="npy file of the similarity matrix Spp", type=str)
     args = parser.parse_args()
 
-    Coo = np.load(args.Coo)
-    Caa = np.load(args.Caa)
+    Soo = np.load(args.Soo)
+    Spp = np.load(args.Spp)
 
-    Edoo = Ddiag(Coo)
-    Edaa = Ddiag(Caa)
-
-    print(10*np.log10(Edaa/Edoo))
+    print(10*np.log10(Ddiag(Spp)/Ddiag(Soo)))
 

@@ -33,11 +33,11 @@ def getListOfLlrGivenAandB(scores,spk_trial,A,B):
 
 if __name__=="__main__":
 
-    parser = argparse.ArgumentParser(description='Compute the confusion matrix given the PLDA output scores and the speaker id trial file')
+    parser = argparse.ArgumentParser(description='Compute the similarity matrix given the PLDA output scores and the speaker id trial file')
     parser.add_argument('scores',help="PLDA output scores file", type=str)
     parser.add_argument('spk_trial',help="speaker trial file (speaker id corresponding to the trial file)", type=str)
     parser.add_argument('out_dir',help="output directory",type=str)
-    parser.add_argument('name',help="name of the confusion matrix",type=str)
+    parser.add_argument('name',help="name of the similarity matrix",type=str)
     args = parser.parse_args()
 
     scores      = np.array(readMat(args.scores))[:,2]
@@ -50,7 +50,7 @@ if __name__=="__main__":
     spk_list            = getListOfSpk(spk_trial)
     N_spk               = len(spk_list)
 
-    confusion_matrix    = np.zeros((N_spk,N_spk))
+    similarity_matrix    = np.zeros((N_spk,N_spk))
     k = 0
     for i in range(N_spk):
         for j in range(k,N_spk):
@@ -63,13 +63,13 @@ if __name__=="__main__":
             #    c = np.sum(np.log2(1+ LR))/len(LR)
             #c = sum(np.log2(1+LR)/len(LR))
             c = 1/(1 + np.exp(-(np.sum(LLR)/len(LLR))))
-            confusion_matrix[i,j] = c #(sum(LLR)/len(LLR))
-            confusion_matrix[j,i] = c #(sum(LLR)/len(LLR))
+            similarity_matrix[i,j] = c #(sum(LLR)/len(LLR))
+            similarity_matrix[j,i] = c #(sum(LLR)/len(LLR))
         k += 1
 
     #print("sum conf")
-    #print(np.sum(confusion_matrix))
+    #print(np.sum(similarity_matrix))
    
-    #confusion_matrix = confusion_matrix/np.sum(confusion_matrix)
+    #similarity_matrix = similarity_matrix/np.sum(similarity_matrix)
 
-    np.save(out_dir+"/confusion_matrix_"+name,confusion_matrix)
+    np.save(out_dir+"/similarity_matrix_"+name,similarity_matrix)
