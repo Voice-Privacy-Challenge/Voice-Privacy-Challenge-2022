@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-
+#ASR_eval training
 
 # configs for 'chain'
 stage=0
