@@ -389,6 +389,12 @@ if [ $stage -le 14 ]; then
       value=$(echo $value)
       echo "  $value" | tee -a $expo
     done
+    [ ! -f $name/linkability_log ] && echo "Directory $name/linkability_log does not exist" && exit 1
+    for label in 'linkability:'; do
+      value=$(grep "$label" $name/linkability_log)
+      value=$(echo $value)
+      echo "  $value" | tee -a $expo
+    done
   done
   for name in `find $results -type f -name "ASR-*" | sort`; do
     echo "$(basename $name)" | tee -a $expo
