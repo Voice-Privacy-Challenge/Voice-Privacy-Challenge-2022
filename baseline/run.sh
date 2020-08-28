@@ -25,7 +25,7 @@ set -e
 
 nj=$(nproc)
 mcadams=false
-stage=0
+stage=14
 
 download_full=false  # If download_full=true all the data that can be used in the training/development will be dowloaded (except for Voxceleb-1,2 corpus); otherwise - only those subsets that are used in the current baseline (with the pretrained models)
 data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
@@ -36,6 +36,7 @@ anoni_pool="libritts_train_other_500"
 
 printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
 results=exp/results-$results
+results=exp/results-2020-08-15-14-40-07
 
 . utils/parse_options.sh || exit 1;
 
@@ -403,5 +404,18 @@ if [ $stage -le 14 ]; then
     done < $name
   done
 fi
+
+if [ $stage -le 15 ]; then
+  printf "${GREEN}\nStage 15: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
+  
+  local/similarity_matrices/compute_similarity_matrices_metrics.sh libri_dev_trials_f $results
+  local/similarity_matrices/compute_similarity_matrices_metrics.sh libri_dev_trials_m $results
+  local/similarity_matrices/compute_similarity_matrices_metrics.sh vctk_dev_trials_f $results
+  local/similarity_matrices/compute_similarity_matrices_metrics.sh vctk_dev_trials_m $results
+  local/similarity_matrices/compute_similarity_matrices_metrics.sh vctk_dev_trials_f_common $results
+  local/similarity_matrices/compute_similarity_matrices_metrics.sh vctk_dev_trials_m_common $results
+
+fi
+
 
 echo Done
