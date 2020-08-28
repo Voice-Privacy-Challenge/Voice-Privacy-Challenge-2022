@@ -2,7 +2,7 @@
 # Script for The First VoicePrivacy Challenge 2020
 #
 #
-# Copyright (C) 2020  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino,...>
+# Copyright (C) 2020  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino, Paul-Gauthier Noé, ...>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ set -e
 
 nj=$(nproc)
 mcadams=false
-stage=14
+stage=0
 
 download_full=false  # If download_full=true all the data that can be used in the training/development will be dowloaded (except for Voxceleb-1,2 corpus); otherwise - only those subsets that are used in the current baseline (with the pretrained models)
 data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
@@ -36,7 +36,7 @@ anoni_pool="libritts_train_other_500"
 
 printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
 results=exp/results-$results
-results=exp/results-2020-08-15-14-40-07
+
 
 . utils/parse_options.sh || exit 1;
 
@@ -406,15 +406,35 @@ if [ $stage -le 14 ]; then
 fi
 
 if [ $stage -le 15 ]; then
-  printf "${GREEN}\nStage 15: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
-  
-  local/similarity_matrices/compute_similarity_matrices_metrics.sh libri_dev_trials_f $results
-  local/similarity_matrices/compute_similarity_matrices_metrics.sh libri_dev_trials_m $results
-  local/similarity_matrices/compute_similarity_matrices_metrics.sh vctk_dev_trials_f $results
-  local/similarity_matrices/compute_similarity_matrices_metrics.sh vctk_dev_trials_m $results
-  local/similarity_matrices/compute_similarity_matrices_metrics.sh vctk_dev_trials_f_common $results
-  local/similarity_matrices/compute_similarity_matrices_metrics.sh vctk_dev_trials_m_common $results
+   printf "${GREEN}\nStage 15: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
+   for suff in dev test; do
+      for data in libri_${suff}_trials_f libri_${suff}_trials_m vctk_${suff}_trials_f vctk_${suff}_trials_m vctk_${suff}_trials_f_common vctk_${suff}_trials_m_common; do
+         printf "${BLUE}\nStage 15: Compute the de-indentification and the voice-distinctiveness for $data${NC}\n"
+         local/similarity_matrices/compute_similarity_matrices_metrics.sh $data $results || exit 1;
+     done
+   done
+fi
 
+if [ $stage -le 16 ]; then
+   printf "${GREEN}\nStage 16: Collecting results for re-indentification and the voice-distinctiveness preservation${NC}\n"
+  expo=$results/results.txt
+  dir="similarity_matrices_DeID_Gvd"
+  for suff in dev test; do
+     for name in libri_${suff}_trials_f libri_${suff}_trials_m vctk_${suff}_trials_f vctk_${suff}_trials_m vctk_${suff}_trials_f_common vctk_${suff}_trials_m_common; do
+       echo "$name" | tee -a $expo
+	   echo $results/$dir/$name/DeIDentification
+       [ ! -f $results/$dir/$name/DeIDentification ] && echo "File $results/$dir/$name/DeIDentification does not exist" && exit 1
+       label='De-Identification :'
+       value=$(grep "$label" $results/$dir/$name/DeIDentification)
+       value=$(echo $value)
+       echo "  $value" | tee -a $expo
+	   [ ! -f $results/$dir/$name/gain_of_voice_distinctiveness ] && echo "File $name/gain_of_voice_distinctiveness does not exist" && exit 1
+       label='Gain of voice distinctiveness :'
+       value=$(grep "$label" $results/$dir/$name/gain_of_voice_distinctiveness)
+       value=$(echo $value)
+       echo "  $value" | tee -a $expo
+     done
+  done
 fi
 
 
