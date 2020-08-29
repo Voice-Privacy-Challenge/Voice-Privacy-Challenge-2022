@@ -13,3 +13,6 @@
 [submodule "anonymization_metrics"]
 	path = anonymization_metrics
 	url = https://gitlab.inria.fr/magnet/anonymization_metrics.git
+[submodule "zebra"]
+	path = zebra
+	url = https://gitlab.eurecom.fr/nautsch/zebra.git
