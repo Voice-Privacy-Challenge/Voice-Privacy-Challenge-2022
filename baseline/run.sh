@@ -396,6 +396,12 @@ if [ $stage -le 14 ]; then
       value=$(echo $value)
       echo "  $value" | tee -a $expo
     done
+    [ ! -f $name/zebra ] && echo "Directory $name/zebra does not exist" && exit 1
+    for label in 'Population:' 'Individual:'; do
+      value=$(grep "$label" $name/zebra)
+      value=$(echo $value)
+      echo "  $value" | tee -a $expo
+    done
   done
   for name in `find $results -type f -name "ASR-*" | sort`; do
     echo "$(basename $name)" | tee -a $expo

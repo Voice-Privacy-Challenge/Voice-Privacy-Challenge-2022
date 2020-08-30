@@ -91,5 +91,11 @@ if [ ! -f $expo/.done ]; then
     -k data/$trials/trials -s $expo/scores \
     -d -o $expo/linkability | tee $expo/linkability_log || exit 1
 
+  # Zebra
+  label=$enrolls-$trials
+  PYTHONPATH=$(realpath ../zebra) python ../zebra/zero_evidence.py \
+    -k data/$trials/trials -s $expo/scores -l $label | tee $expo/zebra || exit 1
+    #-k data/$trials/trials -s $expo/scores -l $label -e png | tee $expo/zebra || exit 1
+
   touch $expo/.done
 fi

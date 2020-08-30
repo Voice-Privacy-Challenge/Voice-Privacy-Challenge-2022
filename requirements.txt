@@ -16,3 +16,4 @@ six==1.13.0
 subprocess32==3.5.4
 librosa==0.7.1
 tabulate
+tikzplotlib
