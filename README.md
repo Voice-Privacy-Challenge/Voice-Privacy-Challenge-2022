@@ -142,4 +142,12 @@ article{tomashenkovoiceprivacy,
 }
 ```
 
+## New anonymization metrics and post-evaluation
+
+For the post-evaluation analysis *novel anonymization metrics* have been integrated to the baseline evaluation:
+
+- The Privacy ZEBRA: Zero Evidence Biometric Recognition Assessment: https://arxiv.org/pdf/2005.09413.pdf
+- Speech Pseudonymisation Assessment Using Voice Similarity Matrices: https://arxiv.org/pdf/2008.13144.pdf
+
+
 
