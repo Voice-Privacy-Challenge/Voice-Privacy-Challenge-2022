@@ -444,4 +444,9 @@ if [ $stage -le 16 ]; then
 fi
 
 
+if [ $stage -le 17]; then
+  printf "${GREEN}\nStage 17: Summarizing ZEBRA plots for all experiments${NC}\n"
+  PYTHONPATH=$(realpath ../zebra) python ../zebra/demo_voiceprivacy_challenge.py || exit 1
+fi
+
 echo Done
