@@ -2,7 +2,7 @@
 # Script for The First VoicePrivacy Challenge 2020
 #
 #
-# Copyright (C) 2020  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino, Paul-Gauthier Noé, ...>
+# Copyright (C) 2020  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino, Paul-Gauthier Noé, Andreas Nautsch, ...>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -442,7 +442,6 @@ if [ $stage -le 16 ]; then
      done
   done
 fi
-
 
 if [ $stage -le 17 ]; then
   printf "${GREEN}\nStage 17: Summarizing ZEBRA plots for all experiments${NC}\n"
