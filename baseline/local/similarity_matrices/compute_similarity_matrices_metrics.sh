@@ -5,15 +5,27 @@
 
 set -e
 
-set_test=$1
-results=$2
+#===== begin config =======
 
-anon_data_suffix=_anon
+set_test=libri_test_trials_f 
+results=
+
 asv_eval_model=exp/models/asv_eval/xvect_01709_1
 plda_dir=$asv_eval_model/xvect_train_clean_360
+
+#=========== end config ===========
+
+. utils/parse_options.sh
+
+anon_data_suffix=_anon
 osp_set_folder=$asv_eval_model/xvect_$set_test
 psp_set_folder=${osp_set_folder}$anon_data_suffix
 utt2spk=data/$set_test/utt2spk
+
+printf "asv_eval_model = $asv_eval_model\n"
+printf "set_test = $set_test\n"
+printf "plda_dir = $plda_dir\n"
+printf "results = $results\n"
 
 exp_files_dir=$results/similarity_matrices_DeID_Gvd/$set_test/exp_files
 
