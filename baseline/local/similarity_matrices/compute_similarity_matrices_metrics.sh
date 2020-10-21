@@ -33,12 +33,12 @@ if [ ! -d "$exp_files_dir" ]; then
 	mkdir -p $exp_files_dir
 fi
 
-cat $osp_set_folder/xvector.scp | cut -d' ' -f1 > $exp_files_dir/segments_osp_set.scp &
+cat $osp_set_folder/xvector.scp | cut -d' ' -f1 > $exp_files_dir/segments_osp_set.scp 
 cat $psp_set_folder/xvector.scp | cut -d' ' -f1 > $exp_files_dir/segments_psp_set.scp
 
-python3 local/similarity_matrices/create_trial.py $exp_files_dir/segments_osp_set.scp $exp_files_dir/segments_osp_set.scp osp_osp $exp_files_dir/ $utt2spk &
-python3 local/similarity_matrices/create_trial.py $exp_files_dir/segments_osp_set.scp $exp_files_dir/segments_psp_set.scp osp_psp $exp_files_dir/ $utt2spk &
-python3 local/similarity_matrices/create_trial.py $exp_files_dir/segments_psp_set.scp $exp_files_dir/segments_psp_set.scp psp_psp $exp_files_dir/ $utt2spk &
+python3 local/similarity_matrices/create_trial.py $exp_files_dir/segments_osp_set.scp $exp_files_dir/segments_osp_set.scp osp_osp $exp_files_dir/ $utt2spk 
+python3 local/similarity_matrices/create_trial.py $exp_files_dir/segments_osp_set.scp $exp_files_dir/segments_psp_set.scp osp_psp $exp_files_dir/ $utt2spk 
+python3 local/similarity_matrices/create_trial.py $exp_files_dir/segments_psp_set.scp $exp_files_dir/segments_psp_set.scp psp_psp $exp_files_dir/ $utt2spk 
 wait
 
 #Compute scores Osp-Osp
@@ -68,14 +68,14 @@ $train_cmd $exp_files_dir/scores/log/test_scoring.log \
   "cat $exp_files_dir/segments_psp_psp_trial.txt | cut -d\  --fields=1,2 |" $exp_files_dir/scores_output_psp_psp || exit 1;
 
 
-python3 local/similarity_matrices/scores_calibration.py $exp_files_dir/scores_output_osp_osp $exp_files_dir/spk_osp_osp_trial.txt &
-python3 local/similarity_matrices/scores_calibration.py $exp_files_dir/scores_output_osp_psp $exp_files_dir/spk_osp_psp_trial.txt &
-python3 local/similarity_matrices/scores_calibration.py $exp_files_dir/scores_output_psp_psp $exp_files_dir/spk_psp_psp_trial.txt &
+python3 local/similarity_matrices/scores_calibration.py $exp_files_dir/scores_output_osp_osp $exp_files_dir/spk_osp_osp_trial.txt 
+python3 local/similarity_matrices/scores_calibration.py $exp_files_dir/scores_output_osp_psp $exp_files_dir/spk_osp_psp_trial.txt 
+python3 local/similarity_matrices/scores_calibration.py $exp_files_dir/scores_output_psp_psp $exp_files_dir/spk_psp_psp_trial.txt 
 wait
 
-python3 local/similarity_matrices/compute_similarity_matrix.py $exp_files_dir/scores_output_osp_osp.calibrated $exp_files_dir/spk_osp_osp_trial.txt.calibrated $results/similarity_matrices_DeID_Gvd/$set_test osp_osp &
-python3 local/similarity_matrices/compute_similarity_matrix.py $exp_files_dir/scores_output_osp_psp.calibrated $exp_files_dir/spk_osp_psp_trial.txt.calibrated $results/similarity_matrices_DeID_Gvd/${set_test} osp_psp &
-python3 local/similarity_matrices/compute_similarity_matrix.py $exp_files_dir/scores_output_psp_psp.calibrated $exp_files_dir/spk_psp_psp_trial.txt.calibrated $results/similarity_matrices_DeID_Gvd/${set_test} psp_psp &
+python3 local/similarity_matrices/compute_similarity_matrix.py $exp_files_dir/scores_output_osp_osp.calibrated $exp_files_dir/spk_osp_osp_trial.txt.calibrated $results/similarity_matrices_DeID_Gvd/$set_test osp_osp 
+python3 local/similarity_matrices/compute_similarity_matrix.py $exp_files_dir/scores_output_osp_psp.calibrated $exp_files_dir/spk_osp_psp_trial.txt.calibrated $results/similarity_matrices_DeID_Gvd/${set_test} osp_psp 
+python3 local/similarity_matrices/compute_similarity_matrix.py $exp_files_dir/scores_output_psp_psp.calibrated $exp_files_dir/spk_psp_psp_trial.txt.calibrated $results/similarity_matrices_DeID_Gvd/${set_test} psp_psp 
 wait
 
 DeID=$(python3 local/similarity_matrices/compute_DeID.py $results/similarity_matrices_DeID_Gvd/${set_test}/similarity_matrix_osp_osp.npy $results/similarity_matrices_DeID_Gvd/${set_test}/similarity_matrix_osp_psp.npy)
