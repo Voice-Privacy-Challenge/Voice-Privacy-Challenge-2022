@@ -6,7 +6,8 @@ nj=$(nproc)
 
 home=$PWD
 
-conda_url=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+#conda_url=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+conda_url=https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh
 venv_dir=$PWD/venv
 
 netcdf=https://github.com/Unidata/netcdf-c/archive/v4.3.3.1.tar.gz
