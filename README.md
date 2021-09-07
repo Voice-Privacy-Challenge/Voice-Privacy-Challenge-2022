@@ -122,14 +122,16 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 ---------------------------------------------------------------------------
 
 ## References
+
 ```
-@article{tomashenko2020introducing,
-    title={Introducing the VoicePrivacy Initiative},
-    author={Natalia Tomashenko and Brij Mohan Lal Srivastava and Xin Wang and Emmanuel Vincent and Andreas Nautsch and Junichi Yamagishi and Nicholas Evans and Jose Patino and Jean-François Bonastre and Paul-Gauthier Noé and Massimiliano Todisco},
-    year={2020},
-    eprint={2005.01387},
-    archivePrefix={arXiv},
-    url={https://arxiv.org/pdf/2005.01387v2.pdf}
+@inproceedings{tomashenko2020introducing,
+  author={N. Tomashenko and Brij Mohan Lal Srivastava and Xin Wang and Emmanuel Vincent and Andreas Nautsch and Junichi Yamagishi and Nicholas Evans and Jose Patino and Jean-François Bonastre and Paul-Gauthier Noé and Massimiliano Todisco},
+  title={{Introducing the VoicePrivacy Initiative}},
+  year=2020,
+  booktitle={Proc. Interspeech 2020},
+  pages={1693--1697},
+  doi={10.21437/Interspeech.2020-1333},
+  url={http://dx.doi.org/10.21437/Interspeech.2020-1333}
 }
 ```
 
