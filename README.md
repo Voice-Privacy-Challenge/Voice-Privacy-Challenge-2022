@@ -7,7 +7,7 @@ Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for
 
 ## Install
 
-1. `git clone --recurse-submodules https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020.git`
+1. `git clone --recurse-submodules https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022.git`
 2. ./install.sh
 
 ## Running the recipe
