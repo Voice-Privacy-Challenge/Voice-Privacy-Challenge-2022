@@ -106,7 +106,7 @@ CE23-0018), by the European Union’s Horizon 2020 Research and Innovation Progr
 
 ## License
 
-Copyright (C) 2020
+Copyright (C) 2021
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
