@@ -65,6 +65,7 @@ elif [ $baseline_type = 'baseline-1' ] || [ $baseline_type = 'baseline-3' ]; the
 	cross_gender="false"                   # false (same gender xvectors will be selected) or true (other gender xvectors)
 	distance="plda"                        # cosine or plda
 	proximity="farthest"                   # nearest or farthest speaker to be selected for anonymization
+	data_netcdf=$(realpath exp/am_nsf_data)   # directory where features for voice anonymization will be stored
 fi
 
 

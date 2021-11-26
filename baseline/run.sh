@@ -2,7 +2,7 @@
 # Script for The 2022 VoicePrivacy Challenge
 #
 #
-# Copyright (C) 2020  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino, Paul-Gauthier Noé, Andreas Nautsch, ...>
+# Copyright (C) 2022  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino, Paul-Gauthier Noé, Andreas Nautsch, ...>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,58 +21,15 @@
 
 set -e
 
-#===== begin config =======
+. ./config.sh
 
-nj=$(nproc)
-mcadams=false
 stage=0
-
-download_full=false  # If download_full=true all the data that can be used in the training/development will be dowloaded (except for Voxceleb-1,2 corpus); otherwise - only those subsets that are used in the current baseline (with the pretrained models)
-data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
-data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS corpus
-corpora=corpora
-
-anoni_pool="libritts_train_other_500"
-
-printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
-results=exp/results-$results
-
 
 . utils/parse_options.sh || exit 1;
 
 . path.sh
 . cmd.sh
 
-# Chain model for BN extraction
-ppg_model=exp/models/1_asr_am/exp
-ppg_dir=${ppg_model}/nnet3_cleaned
-
-# Chain model for ASR evaluation
-asr_eval_model=exp/models/asr_eval
-
-# x-vector extraction
-xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a
-anon_xvec_out_dir=${xvec_nnet_dir}/anon
-
-# ASV_eval config
-asv_eval_model=exp/models/asv_eval/xvect_01709_1
-plda_dir=${asv_eval_model}/xvect_train_clean_360
-
-# Anonymization configs
-anon_level_trials="spk"                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
-anon_level_enroll="spk"                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
-cross_gender="false"                   # false (same gender xvectors will be selected) or true (other gender xvectors)
-distance="plda"                        # cosine or plda
-proximity="farthest"                   # nearest or farthest speaker to be selected for anonymization
-
-anon_data_suffix=_anon
-
-#McAdams anonymisation configs
-n_lpc=20
-mc_coeff_enroll=0.8                    # mc_coeff for enrollment 
-mc_coeff_trials=0.8                    # mc_coeff for trials
-
-#=========== end config ===========
 
 # Download datasets
 if [ $stage -le 0 ]; then
@@ -89,10 +46,9 @@ if [ $stage -le 1 ]; then
   printf "${GREEN}\nStage 1: Downloading pretrained models...${NC}\n"
   local/download_models.sh || exit 1;
 fi
-data_netcdf=$(realpath exp/am_nsf_data)   # directory where features for voice anonymization will be stored
-mkdir -p $data_netcdf || exit 1;
 
-if ! $mcadams; then
+
+if [ $baseline_type = 'baseline-1' ]; then
 
   # Download  VoxCeleb-1,2 corpus for training anonymization system models
   if $download_full && [[ $stage -le 2 ]]; then
@@ -203,6 +159,7 @@ fi
 if [ $stage -le 9 ]; then
   printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
   rand_seed=0
+  mkdir -p $data_netcdf || exit 1;
   for dset in libri_dev_{enrolls,trials_f,trials_m} \
               vctk_dev_{enrolls,trials_f_all,trials_m_all} \
               libri_test_{enrolls,trials_f,trials_m} \
@@ -216,7 +173,7 @@ if [ $stage -le 9 ]; then
 	fi
 	echo "anon_level = $anon_level"
 	echo $dset
-    if $mcadams; then
+    if [ $baseline_type = 'baseline-2' ]; then
       printf "${GREEN}\nStage 9: Anonymizing using McAdams coefficient...${NC}\n"
       #copy content of the folder to the new folder
       utils/copy_data_dir.sh data/$dset data/$dset$anon_data_suffix || exit 1
