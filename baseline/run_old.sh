@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script for The 2022 VoicePrivacy Challenge
+# Script for The First VoicePrivacy Challenge 2020
 #
 #
 # Copyright (C) 2020  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino, Paul-Gauthier Noé, Andreas Nautsch, ...>
