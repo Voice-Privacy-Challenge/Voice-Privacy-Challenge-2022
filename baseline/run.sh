@@ -1,7 +1,6 @@
 #!/bin/bash
 # Script for The 2022 VoicePrivacy Challenge
-#
-#
+##
 # Copyright (C) 2022  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino, Paul-Gauthier Noé, Andreas Nautsch, ...>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -18,47 +17,43 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-
 set -e
 
+. ./path.sh
+. ./cmd.sh
 . ./config.sh
 
-stage=0
+stage=1
 
-. utils/parse_options.sh || exit 1;
-
-. path.sh
-. cmd.sh
-
+. utils/parse_options.sh || exit 1
 
 # Download datasets
 if [ $stage -le 0 ]; then
-  for dset in libri vctk; do
-    for suff in dev test; do
-      printf "${GREEN}\nStage 0: Downloading ${dset}_${suff} set...${NC}\n"
-      local/download_data.sh ${dset}_${suff} || exit 1;
-    done
-  done
+  printf "${GREEN}\nStage $stage: Downloading data...${NC}\n"
+  local/main_download_data.sh || exit 1
 fi
+
 
 # Download pretrained models
 if [ $stage -le 1 ]; then
-  printf "${GREEN}\nStage 1: Downloading pretrained models...${NC}\n"
+  printf "${GREEN}\nStage $stage: Downloading pretrained models...${NC}\n"
   local/download_models.sh || exit 1;
 fi
 
+echo Done
+exit
 
 if [ $baseline_type = 'baseline-1' ]; then
 
   # Download  VoxCeleb-1,2 corpus for training anonymization system models
   if $download_full && [[ $stage -le 2 ]]; then
-    printf "${GREEN}\nStage 2: In order to download VoxCeleb-1,2 corpus, please go to: http://www.robots.ox.ac.uk/~vgg/data/voxceleb/ ...${NC}\n"
+    printf "${GREEN}\nStage $stage: In order to download VoxCeleb-1,2 corpus, please go to: http://www.robots.ox.ac.uk/~vgg/data/voxceleb/ ...${NC}\n"
     sleep 10; 
   fi
 
   # Download LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) 
   if $download_full && [[ $stage -le 3 ]]; then
-    printf "${GREEN}\nStage 3: Downloading LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100)...${NC}\n"
+    printf "${GREEN}\nStage $stage: Downloading LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100)...${NC}\n"
     for part in train-clean-100 train-other-500; do
       local/download_and_untar.sh $corpora $data_url_librispeech $part LibriSpeech || exit 1;
     done
@@ -66,7 +61,7 @@ if [ $baseline_type = 'baseline-1' ]; then
 
   # Download LibriTTS data sets for training anonymization system (train-clean-100)
   if $download_full && [[ $stage -le 4 ]]; then
-    printf "${GREEN}\nStage 4: Downloading LibriTTS data sets for training anonymization system (train-clean-100)...${NC}\n"
+    printf "${GREEN}\nStage $stage: Downloading LibriTTS data sets for training anonymization system (train-clean-100)...${NC}\n"
     for part in train-clean-100; do
       local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS || exit 1;
     done
@@ -74,7 +69,7 @@ if [ $baseline_type = 'baseline-1' ]; then
    
   # Download LibriTTS data sets for training anonymization system (train-other-500)
   if [ $stage -le 5 ]; then
-    printf "${GREEN}\nStage 5: Downloading LibriTTS data sets for training anonymization system (train-other-500)...${NC}\n"
+    printf "${GREEN}\nStage $stage: Downloading LibriTTS data sets for training anonymization system (train-other-500)...${NC}\n"
     for part in train-other-500; do
       local/download_and_untar.sh $corpora $data_url_libritts $part LibriTTS || exit 1;
     done
@@ -86,12 +81,12 @@ if [ $baseline_type = 'baseline-1' ]; then
   # Extract xvectors from anonymization pool
   if [ $stage -le 6 ]; then
     # Prepare data for libritts-train-other-500
-    printf "${GREEN}\nStage 6: Prepare anonymization pool data...${NC}\n"
+    printf "${GREEN}\nStage $stage: Prepare anonymization pool data...${NC}\n"
     local/data_prep_libritts.sh ${libritts_corpus}/train-other-500 data/${anoni_pool} || exit 1;
   fi
     
   if [ $stage -le 7 ]; then
-    printf "${GREEN}\nStage 7: Extracting xvectors for anonymization pool...${NC}\n"
+    printf "${GREEN}\nStage $stage: Extracting xvectors for anonymization pool...${NC}\n"
     local/featex/01_extract_xvectors.sh --nj $nj data/${anoni_pool} ${xvec_nnet_dir} \
       ${anon_xvec_out_dir} || exit 1;
   fi
@@ -100,7 +95,7 @@ fi # ! $mcadams
 
 # Make evaluation data
 if [ $stage -le 8 ]; then
-  printf "${GREEN}\nStage 8: Making evaluation subsets...${NC}\n"
+  printf "${GREEN}\nStage $stage: Making evaluation subsets...${NC}\n"
   temp=$(mktemp)
   for suff in dev test; do
     for name in data/libri_$suff/{enrolls,trials_f,trials_m} \
@@ -157,7 +152,7 @@ fi
 
 # Anonymization
 if [ $stage -le 9 ]; then
-  printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
+  printf "${GREEN}\nStage $stage: Anonymizing evaluation datasets...${NC}\n"
   rand_seed=0
   mkdir -p $data_netcdf || exit 1;
   for dset in libri_dev_{enrolls,trials_f,trials_m} \
@@ -212,7 +207,7 @@ fi
 
 # Make VCTK anonymized evaluation subsets
 if [ $stage -le 10 ]; then
-  printf "${GREEN}\nStage 10: Making VCTK anonymized evaluation subsets...${NC}\n"
+  printf "${GREEN}\nStage $stage: Making VCTK anonymized evaluation subsets...${NC}\n"
   temp=$(mktemp)
   for suff in dev test; do
     dset=data/vctk_$suff
@@ -240,7 +235,7 @@ if [ $stage -le 10 ]; then
 fi
 
 if [ $stage -le 11 ]; then
-  printf "${GREEN}\nStage 11: Evaluate datasets using speaker verification...${NC}\n"
+  printf "${GREEN}\n Stage $stage: Evaluate datasets using speaker verification...${NC}\n"
   for suff in dev test; do
     printf "${RED}**ASV: libri_${suff}_trials_f, enroll - original, trial - original**${NC}\n"
     local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
@@ -306,7 +301,7 @@ fi
 
 # Make ASR evaluation subsets
 if [ $stage -le 12 ]; then
-  printf "${GREEN}\nStage 12: Making ASR evaluation subsets...${NC}\n"
+  printf "${GREEN}\nStage $stage: Making ASR evaluation subsets...${NC}\n"
   for suff in dev test; do
     for name in data/libri_${suff}_{trials_f,trials_m} data/libri_${suff}_{trials_f,trials_m}$anon_data_suffix \
         data/vctk_${suff}_{trials_f_all,trials_m_all} data/vctk_${suff}_{trials_f_all,trials_m_all}$anon_data_suffix; do
@@ -323,7 +318,7 @@ if [ $stage -le 13 ]; then
   for dset in libri vctk; do
     for suff in dev test; do
       for data in ${dset}_${suff}_asr ${dset}_${suff}_asr$anon_data_suffix; do
-        printf "${GREEN}\nStage 13: Performing intelligibility assessment using ASR decoding on $dset...${NC}\n"
+        printf "${GREEN}\nStage $stage: Performing intelligibility assessment using ASR decoding on $dset...${NC}\n"
         local/asr_eval.sh --nj $nj --dset $data --model $asr_eval_model --results $results || exit 1;
       done
     done
@@ -331,7 +326,7 @@ if [ $stage -le 13 ]; then
 fi
 
 if [ $stage -le 14 ]; then
-  printf "${GREEN}\nStage 14: Collecting results${NC}\n"
+  printf "${GREEN}\nStage $stage: Collecting results${NC}\n"
   expo=$results/results.txt
   for name in `find $results -type d -name "ASV-*" | sort`; do
     echo "$(basename $name)" | tee -a $expo
@@ -369,7 +364,7 @@ if [ $stage -le 14 ]; then
 fi
 
 if [ $stage -le 15 ]; then
-   printf "${GREEN}\nStage 15: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
+   printf "${GREEN}\nStage $stage: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
    for suff in dev test; do
       for data in libri_${suff}_trials_f libri_${suff}_trials_m vctk_${suff}_trials_f vctk_${suff}_trials_m vctk_${suff}_trials_f_common vctk_${suff}_trials_m_common; do
          printf "${BLUE}\nStage 15: Compute the de-indentification and the voice-distinctiveness for $data${NC}\n"
@@ -379,7 +374,7 @@ if [ $stage -le 15 ]; then
 fi
 
 if [ $stage -le 16 ]; then
-   printf "${GREEN}\nStage 16: Collecting results for re-indentification and the voice-distinctiveness preservation${NC}\n"
+   printf "${GREEN}\nStage $stage: Collecting results for re-indentification and the voice-distinctiveness preservation${NC}\n"
   expo=$results/results.txt
   dir="similarity_matrices_DeID_Gvd"
   for suff in dev test; do
@@ -401,7 +396,7 @@ if [ $stage -le 16 ]; then
 fi
 
 if [ $stage -le 17 ]; then
-  printf "${GREEN}\nStage 17: Summarizing ZEBRA plots for all experiments${NC}\n"
+  printf "${GREEN}\nStage $stage: Summarizing ZEBRA plots for all experiments${NC}\n"
   mkdir -p voiceprivacy-challenge-2020
   PYTHONPATH=$(realpath ../zebra) python ../zebra/voiceprivacy_challenge_plots.py || exit 1
 fi

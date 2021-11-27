@@ -5,7 +5,6 @@
 
 nj=$(nproc)
 
-
 baseline_type=baseline-1  # x-vector-kaldi + TTS
 #baseline_type=baseline-2 # mcadams
 #baseline_type=baseline-3 # x-vector-sidekit + TTS
@@ -13,15 +12,11 @@ baseline_type=baseline-1  # x-vector-kaldi + TTS
 
 # if [ $baseline_type = 'baseline-1' ]; then
 
-
 # elif [ $baseline_type = 'baseline-2' ]; then
-
 
 # elif [ $baseline_type = 'baseline-3' ]; then
 
-
 # elif [ $baseline_type = 'baseline-4' ]; then
-
 
 # fi
 
@@ -32,11 +27,17 @@ download_full=false  # If download_full=true all the data that can be used in th
 data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
 data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS corpus
 corpora=corpora
-anoni_pool="libritts_train_other_500"
+anoni_pool=libritts_train_other_500
 
 eval_sets='libri vctk'
 eval_subsets='dev test'
 
+libri_train_clean_100=train-clean-100
+libri_train_other_500=train-other-500
+libri_train_sets="$libri_train_clean_100 $libri_train_other_500"
+
+libritts_train_clean_100=train-clean-100
+libritts_train_sets="$libritts_train_clean_100"
 
 ##########################################################
 # Extract x-vectors
@@ -50,8 +51,8 @@ fi
 ##########################################################
 # Anonymization
 
-anon_level_trials="spk"                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
-anon_level_enroll="spk"                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
+anon_level_trials=spk                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
+anon_level_enroll=spk                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
 anon_data_suffix=_anon
 
 if [ $baseline_type = 'baseline-2' ]; then
@@ -62,18 +63,21 @@ if [ $baseline_type = 'baseline-2' ]; then
 elif [ $baseline_type = 'baseline-1' ] || [ $baseline_type = 'baseline-3' ]; then
 	ppg_model=exp/models/1_asr_am/exp # Chain model for BN extraction
 	ppg_dir=${ppg_model}/nnet3_cleaned # Chain model for BN extraction
-	cross_gender="false"                   # false (same gender xvectors will be selected) or true (other gender xvectors)
-	distance="plda"                        # cosine or plda
-	proximity="farthest"                   # nearest or farthest speaker to be selected for anonymization
-	data_netcdf=$(realpath exp/am_nsf_data)   # directory where features for voice anonymization will be stored
+	cross_gender=false                   # false (same gender xvectors will be selected) or true (other gender xvectors)
+	distance=plda                        # cosine or plda
+	proximity=farthest                   # nearest or farthest speaker to be selected for anonymization
+	# TODO: add realpath in all dependent modules
+	data_netcdf=exp/am_nsf_data  # directory where features for voice anonymization will be stored 
 fi
 
 
 ##########################################################
 # Evaluation settings (common)
-printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
-results=exp/results-$results
-#results=exp/results-$(printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1)
+
+# TODO: fix bug
+#printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
+#results=exp/results-$results
+#results=exp/results-$(printf '%(%Y-%m-%d-%H-%M-%S)T' -1)
 
 ##########################################################
 # ASR evaluation settings

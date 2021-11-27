@@ -2,35 +2,44 @@
 
 . ./config.sh
 
-[ ! -z $nj ] && echo "nj=$nj"
-[ ! -z $baseline_type ] && echo "baseline_type=$baseline_type"
+print_var()
+{
+	[ ! -z $1 ] && echo "$2=$1"
+}
 
-[ ! -z $download_full ] && echo "download_full=$download_full"
-[ ! -z $data_url_librispeech ] && echo "data_url_librispeech=$data_url_librispeech"
-[ ! -z $data_url_libritts ] && echo "data_url_libritts=$data_url_libritts"
-[ ! -z $corpora ] && echo "corpora=$corpora"
-[ ! -z $anoni_pool ] && echo "anoni_pool=$anoni_pool"
+print_var "$nj" nj
+print_var "$baseline_type" baseline_type
+print_var "$download_full" download_full
+print_var "$data_url_librispeech" data_url_librispeech
+print_var "$data_url_libritts" data_url_libritts
+print_var "$corpora" corpora
+print_var "$anoni_pool" anoni_pool
 
-echo "eval_sets=$eval_sets"
-echo "eval_subsets=$eval_subsets"
+[ ! -z "$eval_sets" ] && echo "eval_sets=$eval_sets"
+[ ! -z "$eval_subsets" ] && echo "eval_subsets=$eval_subsets"
 
-[ ! -z $anon_level_trials ] && echo "anon_level_trials=$anon_level_trials"
-[ ! -z $anon_level_enroll ] && echo "anon_level_enroll=$anon_level_enroll"
-[ ! -z $anon_data_suffix ] && echo "anon_data_suffix=$anon_data_suffix"
+print_var "$libri_train_clean_100" libri_train_clean_100
+print_var "$libri_train_other_500" libri_train_other_500
+[ ! -z "$libri_train_sets" ] && echo "libri_train_sets=$libri_train_sets"
+print_var "$libritts_train_clean_100" libritts_train_clean_100
+[ ! -z "$libritts_train_sets" ] && echo "libritts_train_sets=$libritts_train_sets"
 
-[ ! -z $mc_coeff_enroll ] && echo "mc_coeff_enroll=$mc_coeff_enroll"
-[ ! -z $mc_coeff_trials ] && echo "mc_coeff_trials=$mc_coeff_trials"
-[ ! -z $ppg_model ] && echo "ppg_model=$ppg_model"
-[ ! -z $ppg_dir ] && echo "ppg_dir=$ppg_dir"
-[ ! -z $cross_gender ] && echo "cross_gender=$cross_gender"
-[ ! -z $distance ] && echo "distance=$distance"
-[ ! -z $proximity ] && echo "proximity=$proximity"
+print_var "$anon_level_trials" anon_level_trials
+print_var "$anon_level_enroll" anon_level_enroll
+print_var "$anon_data_suffix" anon_data_suffix
 
-[ ! -z $results ] && echo "results=$results"
+print_var "$mc_coeff_enroll" mc_coeff_enroll
+print_var "$mc_coeff_trials" mc_coeff_trials
+print_var "$ppg_model" ppg_model
+print_var "$ppg_dir" ppg_dir
+print_var "$cross_gender" cross_gender
+print_var "$distance" distance
+print_var "$proximity" proximity
 
-[ ! -z $asr_eval_model ] && echo "asr_eval_model=$asr_eval_model"
-[ ! -z $asv_eval_model ] && echo "asv_eval_model=$asv_eval_model"
-[ ! -z $plda_dir ] && echo "plda_dir=$plda_dir"
+print_var "$results" results
 
+print_var "$asr_eval_model" asr_eval_model
+print_var "$asv_eval_model" asv_eval_model
+print_var "$plda_dir" plda_dir
 
 echo Done
