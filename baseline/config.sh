@@ -80,7 +80,7 @@ fi
 # TODO: fix bug
 #printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
 #results=exp/results-$results
-#results=exp/results-$(printf '%(%Y-%m-%d-%H-%M-%S)T' -1)
+results=exp/results-$(printf '%(%Y-%m-%d-%H-%M-%S)T' -1)
 
 ##########################################################
 # ASR evaluation settings
