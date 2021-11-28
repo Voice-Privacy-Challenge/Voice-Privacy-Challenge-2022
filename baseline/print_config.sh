@@ -5,6 +5,7 @@
 export GREEN='\033[0;32m'
 export BLUE='\033[0;34m'
 export RED='\033[0;31m'
+export C='\033[0;36m'
 export NC='\033[0m' # No Color
 
 print_var()
@@ -49,6 +50,8 @@ print_var "$anon_level_trials" anon_level_trials
 print_var "$anon_level_enroll" anon_level_enroll
 print_var "$anon_data_suffix" anon_data_suffix
 
+echo -e "\n${C}Parameters for $baseline_type${NC}"
+echo -e "\n${C}-----------------------${NC}"
 if [ $baseline_type == 'baseline-2' ]; then
   print_var "$n_lpc" n_lpc
   print_var "$mc_coeff_enroll" mc_coeff_enroll
@@ -65,6 +68,7 @@ elif [ $baseline_type = 'baseline-1' ] || [ $baseline_type = 'baseline-3' ]; the
   echo -e "${BLUE}Output:${NC}"
   echo "    Path to the output directory to save anonymized data and intermediate results: $anonym_data"
 fi
+echo -e "\n${C}-----------------------${NC}"
 
 echo -e "\n${GREEN}Common evaluation settings:${NC}"
 print_var "$results" results
