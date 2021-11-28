@@ -14,6 +14,7 @@ print_var "$data_url_librispeech" data_url_librispeech
 print_var "$data_url_libritts" data_url_libritts
 print_var "$corpora" corpora
 print_var "$anoni_pool" anoni_pool
+print_var "$rand_seed_start" rand_seed_start
 
 [ ! -z "$eval_sets" ] && echo "eval_sets=$eval_sets"
 [ ! -z "$eval_subsets" ] && echo "eval_subsets=$eval_subsets"
@@ -22,6 +23,7 @@ print_var "$libri_train_clean_100" libri_train_clean_100
 print_var "$libri_train_other_500" libri_train_other_500
 [ ! -z "$libri_train_sets" ] && echo "libri_train_sets=$libri_train_sets"
 print_var "$libritts_train_clean_100" libritts_train_clean_100
+print_var "$libritts_train_clean_500" libritts_train_clean_500
 [ ! -z "$libritts_train_sets" ] && echo "libritts_train_sets=$libritts_train_sets"
 
 print_var "$anon_level_trials" anon_level_trials

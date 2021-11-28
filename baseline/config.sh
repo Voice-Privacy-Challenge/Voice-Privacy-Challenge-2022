@@ -37,7 +37,8 @@ libri_train_other_500=train-other-500
 libri_train_sets="$libri_train_clean_100 $libri_train_other_500"
 
 libritts_train_clean_100=train-clean-100
-libritts_train_sets="$libritts_train_clean_100"
+libritts_train_other_500=train-other-500
+libritts_train_sets="$libritts_train_clean_100 $libritts_train_other_500"
 
 ##########################################################
 # Extract x-vectors
@@ -54,6 +55,8 @@ fi
 anon_level_trials=spk                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
 anon_level_enroll=spk                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
 anon_data_suffix=_anon
+
+rand_seed_start=0
 
 if [ $baseline_type = 'baseline-2' ]; then
 	#McAdams anonymisation configs
