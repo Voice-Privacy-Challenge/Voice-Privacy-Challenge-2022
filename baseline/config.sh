@@ -44,8 +44,8 @@ eval_subsets='dev test'
 # Extract x-vectors
 
 if [ $baseline_type != 'baseline-2' ]; then
-  xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a # x-vector extraction
-  anon_xvec_out_dir=${xvec_nnet_dir}/anon # x-vector extraction
+  xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a # x-vector extractor
+  anon_xvec_out_dir=${xvec_nnet_dir}/anon # x-vector extraction output dir
 fi
 
 ##########################################################
@@ -59,15 +59,14 @@ anon_data_suffix=_anon
 if [ $baseline_type = 'baseline-2' ]; then
 	#McAdams anonymisation config
 	n_lpc=20
-	mc_coeff_enroll=0.8                    # mc_coeff for enrollment 
-	mc_coeff_trials=0.8                    # mc_coeff for trials
+	mc_coeff_enroll=0.8                  # mc_coeff for enrollment 
+	mc_coeff_trials=0.8                  # mc_coeff for trials
 elif [ $baseline_type = 'baseline-1' ] || [ $baseline_type = 'baseline-3' ]; then
 	ppg_model=exp/models/1_asr_am/exp    # ASR model for BN extraction
 	cross_gender=false                   # false (same gender xvectors will be selected) or true (other gender xvectors)
 	distance=plda                        # cosine or plda
 	proximity=farthest                   # nearest or farthest speaker to be selected for anonymization
-	# TODO: add realpath in all dependent modules
-	data_netcdf=exp/am_nsf_data  # directory where features for voice anonymization will be stored 
+	anonym_data=exp/am_nsf_data          # directory where features for voice anonymization will be stored 
 fi
 
 
@@ -79,10 +78,10 @@ results=exp/results-$(printf '%(%Y-%m-%d-%H-%M-%S)T' -1)
 ##########################################################
 # ASR evaluation settings
 
-asr_eval_model=exp/models/asr_eval # Chain model for ASR evaluation
+asr_eval_model=exp/models/asr_eval # Model for ASR evaluation
 
 ##########################################################
 # ASV evaluation settings
 
-asv_eval_model=exp/models/asv_eval/xvect_01709_1 # ASV_eval model
+asv_eval_model=exp/models/asv_eval/xvect_01709_1 # Model for ASV evaluation
 

@@ -58,12 +58,12 @@ elif [ $baseline_type = 'baseline-1' ] || [ $baseline_type = 'baseline-3' ]; the
   print_var "$cross_gender" cross_gender
   print_var "$distance" distance
   print_var "$proximity" proximity
-  print_var "$data_netcdf" data_netcdf
+  print_var "$anonym_data" anonym_data
   echo -e "${BLUE}Input:${NC}"
   echo "    Path to the x-vector extractor: $xvec_nnet_dir"
   echo "    Path to the BN-feature extractor: $ppg_model"
   echo -e "${BLUE}Output:${NC}"
-  echo "    Path to the output directory to save anonymized data and intermediate results: $data_netcdf"
+  echo "    Path to the output directory to save anonymized data and intermediate results: $anonym_data"
 fi
 
 echo -e "\n${GREEN}Common evaluation settings:${NC}"

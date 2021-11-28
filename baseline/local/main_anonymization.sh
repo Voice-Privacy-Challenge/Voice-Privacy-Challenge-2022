@@ -5,7 +5,11 @@ set -e
 . ./config.sh
 
 rand_seed=$rand_seed_start
+
+data_netcdf=$(realpath $anonym_data)   # directory where features for voice anonymization will be stored
+echo $data_netcdf
 mkdir -p $data_netcdf || exit 1;
+
 for dset in libri_dev_{enrolls,trials_f,trials_m} \
             vctk_dev_{enrolls,trials_f_all,trials_m_all} \
             libri_test_{enrolls,trials_f,trials_m} \
