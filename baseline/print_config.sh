@@ -17,6 +17,9 @@ echo -e "\n${GREEN}\nCommon settings:${NC}"
 print_var "$nj" nj
 print_var "$baseline_type" baseline_type
 
+print_var "$tts_type" tts_type
+print_var "$xvect_type" xvect_type
+
 echo -e "\n${GREEN}Evaluation data sets:${NC}"
 print_var "$eval_sets" eval_sets
 print_var "$eval_subsets" eval_subsets

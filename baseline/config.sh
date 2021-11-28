@@ -5,20 +5,17 @@
 
 nj=$(nproc)
 
-baseline_type=baseline-1  # x-vector-kaldi + TTS
-#baseline_type=baseline-2 # mcadams
-#baseline_type=baseline-3 # x-vector-sidekit + TTS
-#baseline_type=baseline-4 # ...
+tts_type=am_nsf_old  #TTS: SS AM + NSF model (c++) --> baseline-1 from VPC-2020
+#tts_type=am_nsf     #TTS: SS AM + NSF model (python)
+#tts_type=hifi_gan   #TTS: HiFi GAN
+#tts_type=ssl        #TTS: Self-supervised learning features: wav2vec2 (...); hubert; hubert_kmeans
 
-# if [ $baseline_type = 'baseline-1' ]; then
+xvect_type=kaldi     
+#xvect_type=sidekit
 
-# elif [ $baseline_type = 'baseline-2' ]; then
+baseline_type=baseline-1  # x-vect + tts
+#baseline_type=baseline-2 # mcadams 
 
-# elif [ $baseline_type = 'baseline-3' ]; then
-
-# elif [ $baseline_type = 'baseline-4' ]; then
-
-# fi
 
 ##########################################################
 # Evaluation data sets
