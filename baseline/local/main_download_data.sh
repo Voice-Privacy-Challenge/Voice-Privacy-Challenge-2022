@@ -1,4 +1,5 @@
 #!/bin/bash
+# Download development and evaluation datasets
 
 set -e
 
@@ -7,7 +8,7 @@ set -e
 
 for dset in $eval_sets; do
   for suff in $eval_subsets; do
-    printf "${GREEN}\n: Downloading ${dset}_${suff} set...${NC}\n"
+    printf "${GREEN}\n Downloading ${dset}_${suff} set...${NC}\n"
     local/download_data.sh ${dset}_${suff} || exit 1
   done
 done

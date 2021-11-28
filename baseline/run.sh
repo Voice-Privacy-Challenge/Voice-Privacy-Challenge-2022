@@ -27,7 +27,7 @@ stage=0
 
 . utils/parse_options.sh || exit 1
 
-# Download datasets
+# Download development and evaluation datasets
 if [ $stage -le 0 ]; then
   printf "${GREEN}\nStage $stage: Downloading data...${NC}\n"
   local/main_download_data.sh || exit 1
@@ -77,66 +77,66 @@ fi # baseline-1
 
 
 # Make evaluation data
-if [ $stage -le 8 ]; then
+if [ $stage -le 7 ]; then
   printf "${GREEN}\nStage $stage: Making evaluation subsets...${NC}\n"
   local/main_make_eval_data.sh || exit 1
 fi
 
 
 # Anonymization
-if [ $stage -le 9 ]; then
+if [ $stage -le 8 ]; then
   printf "${GREEN}\nStage $stage: Anonymizing evaluation datasets...${NC}\n"
   local/main_anonymization.sh || exit 1
 fi
 
 
 # Make VCTK anonymized evaluation subsets
-if [ $stage -le 10 ]; then
+if [ $stage -le 9 ]; then
   printf "${GREEN}\nStage $stage: Making VCTK anonymized evaluation subsets...${NC}\n"
   local/main_make_vctk_anon_eval_sets.sh || exit 1
 fi
 
 
 # ASV evaluation
-if [ $stage -le 11 ]; then
+if [ $stage -le 10 ]; then
   printf "${GREEN}\n Stage $stage: Evaluate datasets using speaker verification...${NC}\n"
   local/main_eval_asv.sh || exit 1
 fi
 
 
 # Make ASR evaluation subsets
-if [ $stage -le 12 ]; then
+if [ $stage -le 11 ]; then
   printf "${GREEN}\nStage $stage: Making ASR evaluation subsets...${NC}\n"
   local/main_make_asr_eval_sets.sh || exit 1
 fi
 
 
 # ASR evaluation
-if [ $stage -le 13 ]; then
+if [ $stage -le 12 ]; then
   printf "${GREEN}\nStage $stage: Performing intelligibility assessment using ASR decoding...${NC}\n"
   local/main_eval_asr.sh || exit 1
 fi
 
 
-if [ $stage -le 14 ]; then
+if [ $stage -le 13 ]; then
   printf "${GREEN}\nStage $stage: Collecting results${NC}\n"
   local/main_collect_results.sh || exit 1
 fi
 
 
-if [ $stage -le 15 ]; then
+if [ $stage -le 14 ]; then
   printf "${GREEN}\nStage $stage: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
   local/main_compute_deid.sh || exit 1
 fi
 
 
-if [ $stage -le 16 ]; then
+if [ $stage -le 15 ]; then
   printf "${GREEN}\nStage $stage: Collecting results for re-indentification and the voice-distinctiveness preservation${NC}\n"
   local/main_collect_deid_results.sh || exit 1
 fi
 
 # TODO: correct zebra dir 
-if [ $stage -le 17 ]; then
+if [ $stage -le 16 ]; then
   printf "${GREEN}\nStage $stage: Summarizing ZEBRA plots for all experiments${NC}\n"
   mkdir -p voiceprivacy-challenge-2020
   PYTHONPATH=$(realpath ../zebra) python ../zebra/voiceprivacy_challenge_plots.py || exit 1

@@ -59,7 +59,7 @@ anon_data_suffix=_anon
 rand_seed_start=0
 
 if [ $baseline_type = 'baseline-2' ]; then
-	#McAdams anonymisation configs
+	#McAdams anonymisation config
 	n_lpc=20
 	mc_coeff_enroll=0.8                    # mc_coeff for enrollment 
 	mc_coeff_trials=0.8                    # mc_coeff for trials
@@ -77,9 +77,6 @@ fi
 ##########################################################
 # Evaluation settings (common)
 
-# TODO: fix bug
-#printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
-#results=exp/results-$results
 results=exp/results-$(printf '%(%Y-%m-%d-%H-%M-%S)T' -1)
 
 ##########################################################
@@ -92,8 +89,3 @@ asr_eval_model=exp/models/asr_eval # Chain model for ASR evaluation
 
 asv_eval_model=exp/models/asv_eval/xvect_01709_1 # ASV_eval model
 plda_dir=${asv_eval_model}/xvect_train_clean_360 # ASV_eval model (plda)
-
-
-
-
-
