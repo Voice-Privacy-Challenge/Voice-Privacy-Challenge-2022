@@ -62,8 +62,7 @@ if [ $baseline_type = 'baseline-2' ]; then
 	mc_coeff_enroll=0.8                    # mc_coeff for enrollment 
 	mc_coeff_trials=0.8                    # mc_coeff for trials
 elif [ $baseline_type = 'baseline-1' ] || [ $baseline_type = 'baseline-3' ]; then
-	ppg_model=exp/models/1_asr_am/exp # Chain model for BN extraction
-	ppg_dir=${ppg_model}/nnet3_cleaned # Chain model for BN extraction
+	ppg_model=exp/models/1_asr_am/exp    # ASR model for BN extraction
 	cross_gender=false                   # false (same gender xvectors will be selected) or true (other gender xvectors)
 	distance=plda                        # cosine or plda
 	proximity=farthest                   # nearest or farthest speaker to be selected for anonymization
@@ -86,4 +85,4 @@ asr_eval_model=exp/models/asr_eval # Chain model for ASR evaluation
 # ASV evaluation settings
 
 asv_eval_model=exp/models/asv_eval/xvect_01709_1 # ASV_eval model
-plda_dir=${asv_eval_model}/xvect_train_clean_360 # ASV_eval model (plda)
+

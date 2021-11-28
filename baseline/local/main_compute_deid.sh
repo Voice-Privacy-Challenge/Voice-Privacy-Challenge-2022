@@ -4,6 +4,7 @@ set -e
 
 . ./config.sh
 
+plda_dir=${asv_eval_model}/xvect_train_clean_360 # ASV_eval model (plda)
 for suff in $eval_subsets; do
   for data in libri_${suff}_trials_f libri_${suff}_trials_m vctk_${suff}_trials_f vctk_${suff}_trials_m vctk_${suff}_trials_f_common vctk_${suff}_trials_m_common; do
     printf "${BLUE}\n Compute the de-indentification and the voice-distinctiveness for $data${NC}\n"

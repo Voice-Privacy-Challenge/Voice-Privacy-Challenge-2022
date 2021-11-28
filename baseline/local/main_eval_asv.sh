@@ -6,6 +6,7 @@ set -e
 
 for suff in $eval_subsets; do
   echo suff=$suff
+  plda_dir=${asv_eval_model}/xvect_train_clean_360 # ASV_eval model (plda)
   echo plda_dir=$plda_dir
   printf "${RED}**ASV: libri_${suff}_trials_f, enroll - original, trial - original**${NC}\n"
   local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \

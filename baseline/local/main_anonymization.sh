@@ -35,6 +35,7 @@ for dset in libri_dev_{enrolls,trials_f,trials_m} \
       awk -F'[/.]' '{print $5 " sox " $0 " -t wav -R -b 16 - |"}' > data/$dset$anon_data_suffix/wav.scp
   else
     printf "${GREEN}\n Anonymizing using x-vectors and neural wavform models...${NC}\n"
+    ppg_dir=${ppg_model}/nnet3_cleaned
     local/anon/anonymize_data_dir.sh \
       --nj $nj --anoni-pool $anoni_pool \
       --data-netcdf $data_netcdf \

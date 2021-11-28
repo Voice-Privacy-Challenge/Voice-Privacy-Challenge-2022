@@ -37,9 +37,9 @@ if [ $baseline_type != 'baseline-2' ]; then
   echo -e "\n${GREEN}Extract x-vectors for anonymization pool:${NC}"
   print_var "$xvec_nnet_dir" xvec_nnet_dir
   print_var "$anon_xvec_out_dir" anon_xvec_out_dir
-  echo -e "${BLUE}Import:${NC}"
+  echo -e "${BLUE}Input:${NC}"
   echo "    Path to the x-vector extractor: $xvec_nnet_dir"
-  echo -e "${BLUE}Export:${NC}"
+  echo -e "${BLUE}Output:${NC}"
   echo "    Path to the output directory to save x-vectors: $anon_xvec_out_dir"
 fi
   
@@ -49,29 +49,40 @@ print_var "$anon_level_trials" anon_level_trials
 print_var "$anon_level_enroll" anon_level_enroll
 print_var "$anon_data_suffix" anon_data_suffix
 
-
-print_var "$mc_coeff_enroll" mc_coeff_enroll
-print_var "$mc_coeff_trials" mc_coeff_trials
-print_var "$ppg_model" ppg_model
-print_var "$ppg_dir" ppg_dir
-print_var "$cross_gender" cross_gender
-print_var "$distance" distance
-print_var "$proximity" proximity
+if [ $baseline_type == 'baseline-2' ]; then
+  print_var "$n_lpc" n_lpc
+  print_var "$mc_coeff_enroll" mc_coeff_enroll
+  print_var "$mc_coeff_trials" mc_coeff_trials
+elif [ $baseline_type = 'baseline-1' ] || [ $baseline_type = 'baseline-3' ]; then 
+  print_var "$ppg_model" ppg_model
+  print_var "$cross_gender" cross_gender
+  print_var "$distance" distance
+  print_var "$proximity" proximity
+  print_var "$data_netcdf" data_netcdf
+  echo -e "${BLUE}Input:${NC}"
+  echo "    Path to the x-vector extractor: $xvec_nnet_dir"
+  echo "    Path to the BN-feature extractor: $ppg_model"
+  echo -e "${BLUE}Output:${NC}"
+  echo "    Path to the output directory to save anonymized data and intermediate results: $data_netcdf"
+fi
 
 echo -e "\n${GREEN}Common evaluation settings:${NC}"
 print_var "$results" results
 
 echo -e "\n${GREEN}ASR evaluation settings:${NC}"
 print_var "$asr_eval_model" asr_eval_model
-echo -e "${BLUE}Import:${NC}"
+echo -e "${BLUE}Input:${NC}"
 echo "    Path to the ASR_eval model: $asr_eval_model"
+echo -e "${BLUE}Output:${NC}"
+echo "    Path to the directory to save ASR results: $results"
 
 echo -e "\n${GREEN}ASV evaluation settings:${NC}"
 print_var "$asv_eval_model" asv_eval_model
 print_var "$plda_dir" plda_dir
-echo -e "${BLUE}Import:${NC}"
+echo -e "${BLUE}Input:${NC}"
 echo "    Path to the ASV_eval model: $asv_eval_model"
-echo "    Path to the PLDA dir: $plda_dir"
+echo -e "${BLUE}Output:${NC}"
+echo "    Path to the directory to save ASV results: $results"
 
 
 echo Done
