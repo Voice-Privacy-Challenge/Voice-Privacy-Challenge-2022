@@ -2,7 +2,6 @@
 
 set -e
 
-. ./path.sh
 . ./config.sh
 
 for part in libri_train_sets; do

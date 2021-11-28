@@ -3,7 +3,6 @@
 
 set -e
 
-. ./path.sh
 . ./config.sh
 
 for dset in $eval_sets; do

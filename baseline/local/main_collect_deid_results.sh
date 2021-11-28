@@ -2,7 +2,6 @@
 # Collecting results for re-indentification and the voice-distinctiveness preservation
 set -e
 
-. ./path.sh
 . ./config.sh
 
 expo=$results/results.txt

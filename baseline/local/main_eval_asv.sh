@@ -2,7 +2,6 @@
 
 set -e
 
-. ./path.sh
 . ./config.sh
 
 for suff in $eval_subsets; do

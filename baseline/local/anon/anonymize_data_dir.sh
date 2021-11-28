@@ -4,8 +4,8 @@
 # This script anonymizes a kaldi data directory and produces a new 
 # directory with given suffix in the name
 
-. path.sh
-. cmd.sh
+. ./path.sh
+. ./cmd.sh
 
 set -e
 

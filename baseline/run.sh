@@ -135,11 +135,10 @@ if [ $stage -le 15 ]; then
   local/main_collect_deid_results.sh || exit 1
 fi
 
-# TODO: correct zebra dir 
+
 if [ $stage -le 16 ]; then
   printf "${GREEN}\nStage $stage: Summarizing ZEBRA plots for all experiments${NC}\n"
-  mkdir -p voiceprivacy-challenge-2020
-  PYTHONPATH=$(realpath ../zebra) python ../zebra/voiceprivacy_challenge_plots.py || exit 1
+  local/main_zebra_results.sh || exit 1
 fi
 
 echo Done

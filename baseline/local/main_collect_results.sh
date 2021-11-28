@@ -2,7 +2,6 @@
 
 set -e
 
-. ./path.sh
 . ./config.sh
 
 expo=$results/results.txt

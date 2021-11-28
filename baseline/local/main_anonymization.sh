@@ -2,7 +2,6 @@
 
 set -e
 
-. ./path.sh
 . ./config.sh
 
 rand_seed=$rand_seed_start

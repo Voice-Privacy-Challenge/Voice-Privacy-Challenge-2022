@@ -2,7 +2,6 @@
 #Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices
 set -e
 
-. ./path.sh
 . ./config.sh
 
 for suff in $eval_subsets; do

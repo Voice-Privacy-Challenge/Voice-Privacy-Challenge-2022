@@ -2,7 +2,6 @@
 
 set -e
 
-. ./path.sh
 . ./config.sh
 
 libritts_corpus=$(realpath $corpora/LibriTTS)       # Directory for LibriTTS corpus 

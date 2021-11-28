@@ -28,35 +28,33 @@ data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeec
 data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS corpus
 corpora=corpora
 anoni_pool=libritts_train_other_500
-
-eval_sets='libri vctk'
-eval_subsets='dev test'
-
 libri_train_clean_100=train-clean-100
 libri_train_other_500=train-other-500
 libri_train_sets="$libri_train_clean_100 $libri_train_other_500"
-
 libritts_train_clean_100=train-clean-100
 libritts_train_other_500=train-other-500
 libritts_train_sets="$libritts_train_clean_100 $libritts_train_other_500"
 
 ##########################################################
+# Evaluation data sets
+eval_sets='libri vctk'
+eval_subsets='dev test'
+
+##########################################################
 # Extract x-vectors
 
 if [ $baseline_type != 'baseline-2' ]; then
-	xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a # x-vector extraction
-	anon_xvec_out_dir=${xvec_nnet_dir}/anon # x-vector extraction
+  xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a # x-vector extraction
+  anon_xvec_out_dir=${xvec_nnet_dir}/anon # x-vector extraction
 fi
-
 
 ##########################################################
 # Anonymization
 
+rand_seed_start=0
 anon_level_trials=spk                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
 anon_level_enroll=spk                # spk (speaker-level anonymization) or utt (utterance-level anonymization)
 anon_data_suffix=_anon
-
-rand_seed_start=0
 
 if [ $baseline_type = 'baseline-2' ]; then
 	#McAdams anonymisation config
