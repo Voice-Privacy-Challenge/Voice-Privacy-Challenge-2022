@@ -21,13 +21,17 @@ baseline_type=baseline-1  # x-vector-kaldi + TTS
 # fi
 
 ##########################################################
+# Evaluation data sets
+eval_sets='libri vctk'
+eval_subsets='dev test'
+
+##########################################################
 # Download settings
 
-download_full=false  # If download_full=true all the data that can be used in the training/development will be dowloaded (except for Voxceleb-1,2 corpus); otherwise - only those subsets that are used in the current baseline (with the pretrained models)
+download_full=true  # If download_full=true all the data that can be used in the training/development will be dowloaded (except for Voxceleb-1,2 corpus); otherwise - only those subsets that are used in the current baseline (with the pretrained models)
 data_url_librispeech=www.openslr.org/resources/12  # Link to download LibriSpeech corpus
 data_url_libritts=www.openslr.org/resources/60     # Link to download LibriTTS corpus
 corpora=corpora
-anoni_pool=libritts_train_other_500
 libri_train_clean_100=train-clean-100
 libri_train_other_500=train-other-500
 libri_train_sets="$libri_train_clean_100 $libri_train_other_500"
@@ -35,18 +39,19 @@ libritts_train_clean_100=train-clean-100
 libritts_train_other_500=train-other-500
 libritts_train_sets="$libritts_train_clean_100 $libritts_train_other_500"
 
-##########################################################
-# Evaluation data sets
-eval_sets='libri vctk'
-eval_subsets='dev test'
 
 ##########################################################
-# Extract x-vectors
+# Directory to save prepared data for anonymization pool: data/${anoni_pool} 
+anoni_pool=libritts_train_other_500
+
+##########################################################
+# Extract x-vectors for anonymization pool
 
 if [ $baseline_type != 'baseline-2' ]; then
   xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a # x-vector extractor
   anon_xvec_out_dir=${xvec_nnet_dir}/anon # x-vector extraction output dir
 fi
+
 
 ##########################################################
 # Anonymization
