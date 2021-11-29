@@ -63,7 +63,7 @@ if [ $baseline_type = 'baseline-2' ]; then
 	n_lpc=20
 	mc_coeff_enroll=0.8                  # mc_coeff for enrollment 
 	mc_coeff_trials=0.8                  # mc_coeff for trials
-elif [ $baseline_type = 'baseline-1' ] || [ $baseline_type = 'baseline-3' ]; then
+elif [ $baseline_type = 'baseline-1' ]; then
 	ppg_model=exp/models/1_asr_am/exp    # ASR model for BN extraction
 	cross_gender=false                   # false (same gender xvectors will be selected) or true (other gender xvectors)
 	distance=plda                        # cosine or plda
