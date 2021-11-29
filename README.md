@@ -84,11 +84,10 @@ for the evalation and development data sets.
 
 - Jean-François Bonastre - University of Avignon - LIA, France
 - Nicholas Evans - EURECOM, France
-- Fuming Fang - NII, Japan
+- Xiaoxiao Miao - NII, Japan
 - Andreas Nautsch - EURECOM, France
 - Paul-Gauthier Noé - University of Avignon - LIA, France
 - Jose Patino - EURECOM, France
-- Md Sahidullah - Inria, France
 - Brij Mohan Lal Srivastava - Inria, France
 - Natalia Tomashenko - University of Avignon - LIA, France
 - Massimiliano Todisco - EURECOM, France
