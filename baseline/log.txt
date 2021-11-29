@@ -1,0 +1,5 @@
+[0;32m
+Stage 4: Downloading LibriTTS data sets for training anonymization system libritts_train_sets...[0m
+www.openslr.org/resources/60
+/data/coros4/ntomashenko/work/Challenge/basline-2022/baseline/corpora /data/coros4/ntomashenko/work/Challenge/basline-2022/baseline
+local/download_and_untar.sh: downloading data from www.openslr.org/resources/60/train-clean-100.tar.gz.  This may take some time, please be patient.
