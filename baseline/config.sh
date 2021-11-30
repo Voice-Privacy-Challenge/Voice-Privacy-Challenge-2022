@@ -87,3 +87,9 @@ asr_eval_model=exp/models/asr_eval # Model for ASR evaluation
 
 asv_eval_model=exp/models/asv_eval/xvect_01709_1 # Model for ASV evaluation
 
+##########################################################
+# Settings for training of evaluation (original or anonymized) models 
+
+train_data=train-clean-360                      # training dataset for evaluation models
+asr_eval_model_train=exp/models/asr_eval_anon   # directory to save the ASR evaluation model 
+data_proc=orig                                  # anonymized (anon) or original(orig)  

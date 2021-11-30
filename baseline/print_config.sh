@@ -153,5 +153,13 @@ echo "                                                 data/vctk_test_{enrolls,t
 echo -e "${BLUE}Output:${NC}"
 echo "    Path to the directory to save ASV results: $results"
 
+echo -e "\n${GREEN}Training ASR evaluation model:${NC}"
+print_var "$train_data" train_data
+print_var "$asr_eval_model_train" asr_eval_model_train
+print_var "$data_proc" data_proc
+echo -e "${BLUE}Input:${NC}"
+echo "    Training dataset for evaluation models: $train_data"
+echo -e "${BLUE}Output:${NC}"
+echo "    Directory to save the ASR evaluation model: $asr_eval_model_train"
 
 echo Done

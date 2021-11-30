@@ -2,18 +2,20 @@
 
 set -e
 
-
-
-stage=6
+stage=0
 
 . ./cmd.sh
 . ./path.sh
+. ./config.sh
 
 nj=10
 
 . parse_options.sh
 
-train="train_clean_360"
+
+if [ $stage -le 0 ]; then
+  local/get_train_data.sh
+fi
 
 if [ $stage -le 6 ]; then
   for part in dev_clean test_clean $train; do
@@ -31,13 +33,11 @@ if [ $stage -le 8 ]; then
     --boost-silence 1.25 --nj $nj --cmd "$train_cmd" \
     data/train_5k data/lang_nosp exp/mono
   (
-    utils/mkgraph.sh \
-	  data/lang_nosp_test_tgsmall \
-      exp/mono exp/mono/graph_nosp_tgsmall
+    utils/mkgraph.sh data/lang_nosp_test_tgsmall exp/mono exp/mono/graph_nosp_tgsmall
     for test in test_clean dev_clean; do
       steps/decode.sh \
-	    --nj $nj --cmd "$decode_cmd" \
-		exp/mono/graph_nosp_tgsmall \
+        --nj $nj --cmd "$decode_cmd" \
+        exp/mono/graph_nosp_tgsmall \
         data/$test exp/mono/decode_nosp_tgsmall_$test
     done
   )&
@@ -50,10 +50,10 @@ if [ $stage -le 9 ]; then
   steps/train_deltas.sh \
     --boost-silence 1.25 --cmd "$train_cmd" \
     2000 20000 data/$train data/lang_nosp \
-	exp/mono_ali exp/tri1
+    exp/mono_ali exp/tri1
   (
     utils/mkgraph.sh \
-	  data/lang_nosp_test_tgsmall \
+      data/lang_nosp_test_tgsmall \
       exp/tri1 exp/tri1/graph_nosp_tgsmall
     for test in test_clean dev_clean; do
       steps/decode.sh --nj $nj --cmd "$decode_cmd" exp/tri1/graph_nosp_tgsmall \
@@ -115,19 +115,9 @@ if [ $stage -le 19 ]; then
   local/run_cleanup_segmentation.sh --data "data/$train"
 fi
 
-if [ $stage -le 20 ]; then
-  # train and test nnet3 tdnn models on the entire data with data-cleaning.
-  # set "--stage 11" if you have already run local/nnet3/run_tdnn.sh
-
- 
-#  local/chain/run_tdnn_1d__360.sh
+if [ $stage -le 20 ]; then 
   local/chain/run_tdnn_1d__360.sh
-
-#  --stage 15 --train_stage 563
-
-#  local/chain/run_tdnn.sh \
-#    --stage 3 \
-#	--train_stage -10
+#    --stage 3 --train_stage -10
 fi
 
 # The nnet3 TDNN recipe:
