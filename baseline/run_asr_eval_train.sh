@@ -4,17 +4,15 @@ set -e
 
 stage=0
 
-. ./cmd.sh
-. ./path.sh
 . ./config.sh
 
 nj=10
 
-. parse_options.sh
+. utils/parse_options.sh || exit 1
 
 
 if [ $stage -le 0 ]; then
-  local/get_train_data.sh
+  local/get_train_data.sh || exit 1
 fi
 
 if [ $stage -le 6 ]; then
