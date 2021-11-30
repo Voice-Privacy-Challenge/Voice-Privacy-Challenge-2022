@@ -14,7 +14,7 @@ Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for
 
 The recipe uses the pre-trained models of anonymization. To run the baseline system with evaluation:
 
-1. `cd baseline` 
+1. `cd baseline`
 2. run `./run.sh`. In run.sh, to download models and data the user will be requested the password which is provided during the Challenge registration.
 
 ## General information
@@ -86,11 +86,8 @@ for the evalation and development data sets.
 - Nicholas Evans - EURECOM, France
 - Pierre Champion - Inria, France
 - Xiaoxiao Miao - NII, Japan
-- Andreas Nautsch - EURECOM, France
 - Hubert Nourtel - Inria, France
 - Paul-Gauthier Noé - University of Avignon - LIA, France
-- Jose Patino - EURECOM, France
-- Brij Mohan Lal Srivastava - Inria, France
 - Natalia Tomashenko - University of Avignon - LIA, France
 - Massimiliano Todisco - EURECOM, France
 - Emmanuel Vincent - Inria, France
@@ -102,12 +99,12 @@ Contact: organisers@lists.voiceprivacychallenge.org
 
 ## Acknowledgements
 
-This work was supported in part by the French National Research Agency under projects HARPOCRATES (ANR-19-DATA-0008) and DEEP-PRIVACY (ANR-18-
-CE23-0018), by the European Union’s Horizon 2020 Research and Innovation Program under Grant Agreement No. 825081 COMPRISE (https://www.compriseh2020.eu/), and jointly by the French National Research Agency and the Japan Science and Technology Agency under project VoicePersonae. 
+This work was supported in part by the French National Research Agency under project DEEP-PRIVACY (ANR-18-
+CE23-0018) and by the European Union’s Horizon 2020 Research and Innovation Program under Grant Agreement No. 825081 COMPRISE (https://www.compriseh2020.eu/), and jointly by the French National Research Agency and the Japan Science and Technology Agency under project VoicePersonae. 
 
 ## License
 
-Copyright (C) 2021
+Copyright (C) 2022
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -147,12 +144,10 @@ article{tomashenkovoiceprivacy,
 }
 ```
 
-## New anonymization metrics and post-evaluation
+## Anonymization metrics
 
-For the post-evaluation analysis *novel anonymization metrics* have been integrated to the baseline evaluation:
-
-- The Privacy ZEBRA: Zero Evidence Biometric Recognition Assessment: https://arxiv.org/pdf/2005.09413.pdf
-- Speech Pseudonymisation Assessment Using Voice Similarity Matrices: https://arxiv.org/pdf/2008.13144.pdf
-
-
-
+- Equal error rate (EER)
+- Log-likelihood-ratio cost function (Cllr and Cllr-min)
+- [The Privacy ZEBRA: Zero Evidence Biometric Recognition Assessment (expected privacy disclosure (population) and worst case privacy disclosure (individual))](https://www.isca-speech.org/archive_v0/Interspeech_2020/pdfs/1815.pdf)
+- [Speech Pseudonymisation Assessment Using Voice Similarity Matrices (de-identification and voice distinctiveness preservation)](https://www.isca-speech.org/archive_v0/Interspeech_2020/pdfs/2720.pdf)
+- Linkability
