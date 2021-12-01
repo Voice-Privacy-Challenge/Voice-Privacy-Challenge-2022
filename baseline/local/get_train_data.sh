@@ -3,7 +3,7 @@
 
 set -e
 
-stage=0
+stage=1
 
 . ./cmd.sh
 #. ./path.sh
@@ -28,7 +28,6 @@ if [ $stage -le 1 ]; then
   printf "${GREEN}\nStage 1: Download LM and lang...${NC}\n"
   # TODO: ...
   # local/download_lm.sh || exit 1
-  done
 fi
 
 if [ $stage -le 2 ]; then
@@ -38,7 +37,7 @@ if [ $stage -le 2 ]; then
   # format the data as Kaldi data directories
   for part in $train_data; do
     # use underscore-separated names in data directories.
-    local/data_prep_libri.sh $data/LibriSpeech/$part data/$(echo $part | sed s/-/_/g) || exit 1
+    local/data_prep_libri.sh $corpora/LibriSpeech/$part data/$(echo $part | sed s/-/_/g) || exit 1
   done
 fi
 

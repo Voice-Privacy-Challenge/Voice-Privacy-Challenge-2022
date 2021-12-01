@@ -2,21 +2,25 @@
 
 set -e
 
-stage=0
+stage=1
 
 . ./config.sh
+. ./cmd.sh
 
 nj=10
 
 . utils/parse_options.sh || exit 1
 
+train=$data_train
+dev=libri_dev_asr
+test=libri_test_asr
 
 if [ $stage -le 0 ]; then
   local/get_train_data.sh || exit 1
 fi
 
 if [ $stage -le 6 ]; then
-  for part in dev_clean test_clean $train; do
+  for part in $dev $test $train; do
     steps/make_mfcc.sh --cmd "$train_cmd" --nj $nj data/$part exp/make_mfcc/$part $mfccdir
     steps/compute_cmvn_stats.sh data/$part exp/make_mfcc/$part $mfccdir
   done
@@ -32,7 +36,7 @@ if [ $stage -le 8 ]; then
     data/train_5k data/lang_nosp exp/mono
   (
     utils/mkgraph.sh data/lang_nosp_test_tgsmall exp/mono exp/mono/graph_nosp_tgsmall
-    for test in test_clean dev_clean; do
+    for test in $dev $test; do
       steps/decode.sh \
         --nj $nj --cmd "$decode_cmd" \
         exp/mono/graph_nosp_tgsmall \
@@ -53,7 +57,7 @@ if [ $stage -le 9 ]; then
     utils/mkgraph.sh \
       data/lang_nosp_test_tgsmall \
       exp/tri1 exp/tri1/graph_nosp_tgsmall
-    for test in test_clean dev_clean; do
+    for test in $dev $test; do
       steps/decode.sh --nj $nj --cmd "$decode_cmd" exp/tri1/graph_nosp_tgsmall \
                       data/$test exp/tri1/decode_nosp_tgsmall_$test
       steps/lmrescore.sh --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tgmed} \
@@ -74,7 +78,7 @@ if [ $stage -le 10 ]; then
   (
     utils/mkgraph.sh data/lang_nosp_test_tgsmall \
                      exp/tri2b exp/tri2b/graph_nosp_tgsmall
-    for test in test_clean dev_clean; do
+    for test in $dev $test; do
       steps/decode.sh --nj $nj --cmd "$decode_cmd" exp/tri2b/graph_nosp_tgsmall \
                       data/$test exp/tri2b/decode_nosp_tgsmall_$test
       steps/lmrescore.sh --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tgmed} \
@@ -94,7 +98,7 @@ if [ $stage -le 11 ]; then
   (
     utils/mkgraph.sh data/lang_nosp_test_tgsmall \
                      exp/tri3b exp/tri3b/graph_nosp_tgsmall
-    for test in test_clean dev_clean; do
+    for test in $dev $test; do
       steps/decode_fmllr.sh --nj $nj --cmd "$decode_cmd" \
                             exp/tri3b/graph_nosp_tgsmall data/$test \
                             exp/tri3b/decode_nosp_tgsmall_$test

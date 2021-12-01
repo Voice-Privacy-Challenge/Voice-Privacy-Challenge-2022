@@ -23,7 +23,7 @@ set -e
 . ./cmd.sh
 . ./config.sh
 
-stage=4
+stage=0
 
 . utils/parse_options.sh || exit 1
 
