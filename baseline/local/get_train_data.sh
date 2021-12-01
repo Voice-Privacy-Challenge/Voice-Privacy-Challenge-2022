@@ -24,14 +24,28 @@ if [ $stage -le 0 ]; then
 fi
 
 if [ $stage -le 1 ]; then
-  # Prepare data for training evaluation models (train-clean-360) 
-  printf "${GREEN}\nStage 1: Preparing data $train_data for training evaluation models...${NC}\n"
+  # Download language model and directory lang
+  printf "${GREEN}\nStage 1: Download LM and lang...${NC}\n"
   # TODO: ...
+  # local/download_lm.sh || exit 1
+  done
 fi
 
-if [[ $data_proc == 'anon' ]] && [[ $stage -le 2 ]]; then
+if [ $stage -le 2 ]; then
+  # Prepare data for training evaluation models (train-clean-360) 
+  printf "${GREEN}\nStage 2: Preparing data $train_data for training evaluation models...${NC}\n"
+  # TODO: ...
+  # format the data as Kaldi data directories
+  for part in $train_data; do
+    # use underscore-separated names in data directories.
+    local/data_prep_libri.sh $data/LibriSpeech/$part data/$(echo $part | sed s/-/_/g) || exit 1
+  done
+fi
+
+
+if [[ $data_proc == 'anon' ]] && [[ $stage -le 3 ]]; then
   # Anonymize data for training evaluation models (train-clean-360)
-  printf "${GREEN}\nStage 2: Anonymizing data $train_data for training evaluation models...${NC}\n"
+  printf "${GREEN}\nStage 3: Anonymizing data $train_data for training evaluation models...${NC}\n"
   # TODO: ...
 fi
 
