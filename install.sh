@@ -143,6 +143,16 @@ if [ ! -f $mark ]; then
   cd $home
   touch $mark
 fi
+
+# Installing sidekit
+mark=.done-sidekit
+if [ ! -f $mark ]; then
+  echo "== Building sidekit =="
+  pip3 install -e ./sidekit
+  cd $home
+  touch $mark
+fi
+
 echo "export PATH=$currennt_dir/build:\$PATH" >> env.sh
 echo "export PYTHONPATH=$currennt_dir:$nii_dir/pyTools:$PWD/nii_scripts:\$PYTHONPATH" >> env.sh
 echo "export nii_scripts=$PWD/nii_scripts" >> env.sh

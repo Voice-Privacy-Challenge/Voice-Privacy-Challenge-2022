@@ -10,8 +10,8 @@ tts_type=am_nsf_old  #TTS: SS AM + NSF model (c++) --> baseline-1 from VPC-2020
 #tts_type=hifi_gan   #TTS: HiFi GAN
 #tts_type=ssl        #TTS: Self-supervised learning features: wav2vec2 (...); hubert; hubert_kmeans
 
-xvect_type=kaldi     
-#xvect_type=sidekit
+#xvect_type=kaldi
+xvect_type=sidekit
 
 baseline_type=baseline-1  # x-vect + tts
 #baseline_type=baseline-2 # mcadams 
@@ -45,7 +45,14 @@ anoni_pool=libritts_train_other_500
 # Extract x-vectors for anonymization pool
 
 if [ $baseline_type != 'baseline-2' ]; then
-  xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a # x-vector extractor
+  if [ $xvect_type = "kaldi" ]; then
+    xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a # x-vector extractor
+  elif [ $xvect_type = "sidekit" ]; then
+    xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_sidekit
+    xvec_model_name=sidekit_model.pt
+  else
+    >&2 echo "Xvector-type not supported : " $xvect_type
+  fi
   anon_xvec_out_dir=${xvec_nnet_dir}/anon # x-vector extraction output dir
 fi
 
@@ -85,7 +92,14 @@ asr_eval_model=exp/models/asr_eval # Model for ASR evaluation
 ##########################################################
 # ASV evaluation settings
 
-asv_eval_model=exp/models/asv_eval/xvect_01709_1 # Model for ASV evaluation
+if [ $xvect_type = "kaldi" ]; then
+  asv_eval_model=exp/models/asv_eval/xvect_01709_1 # Model for ASV evaluation
+elif [ $xvect_type = "sidekit" ]; then
+  asv_eval_model=exp/models/asv_eval/sidekit_model.pt
+else
+  >&2 echo "Xvector-type not supported : " $xvect_type
+fi
+
 
 ##########################################################
 # Settings for training of evaluation (original or anonymized) models 
