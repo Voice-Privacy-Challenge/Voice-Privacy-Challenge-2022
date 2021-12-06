@@ -3,7 +3,7 @@
 
 set -e
 
-stage=1
+stage=0
 
 . ./cmd.sh
 #. ./path.sh

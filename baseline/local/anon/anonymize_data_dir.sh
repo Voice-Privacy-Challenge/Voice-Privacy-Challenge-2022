@@ -6,6 +6,7 @@
 
 . ./path.sh
 . ./cmd.sh
+. ./config.sh
 
 set -e
 
@@ -59,8 +60,12 @@ num_spk=$(wc -l < $spk2utt)
 # Extract xvectors from data which has to be anonymized
 if [ $stage -le 0 ]; then
   printf "${RED}\nStage a.0: Extracting xvectors for ${data_dir}.${NC}\n"
-  local/featex/01_extract_xvectors.sh --nj $nj data/${data_dir} ${xvec_nnet_dir} \
-	  ${anon_xvec_out_dir} || exit 1;
+  if [ $xvect_type = "kaldi" ]; then
+    local/featex/01_extract_xvectors_kaldi.sh --nj $nj data/${data_dir} ${xvec_nnet_dir} \
+	    ${anon_xvec_out_dir} || exit 1;
+  elif [ $xvect_type = "sidekit" ]; then
+    local/featex/01_extract_xvectors_sidekit.sh data/${data_dir} ${xvec_nnet_dir} ${anon_xvec_out_dir} || exit 1;
+	fi
 fi
 
 # Generate pseudo-speakers for source data
