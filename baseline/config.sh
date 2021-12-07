@@ -5,9 +5,11 @@
 
 nj=$(nproc)
 
-tts_type=am_nsf_old  #TTS: SS AM + NSF model (c++) --> baseline-1 from VPC-2020
-#tts_type=am_nsf     #TTS: SS AM + NSF model (python)
-#tts_type=hifi_gan   #TTS: HiFi GAN
+#tts_type=am_nsf_old          #TTS: SS AM + NSF model (c++)m baseline-1 from VPC-2020
+tts_type=am_nsf_pytorch     #TTS: SS AM + NSF model (pytorch)
+#tts_type=joint_hifigan      #TTS: Single joint TTS model based on HiFi GAN
+#tts_type=joint_nsf_hifigan  #TTS: Single joint TTS model bsaed on NSF with GAN
+
 #tts_type=ssl        #TTS: Self-supervised learning features: wav2vec2 (...); hubert; hubert_kmeans
 
 xvect_type=kaldi     
@@ -15,6 +17,9 @@ xvect_type=kaldi
 
 baseline_type=baseline-1  # x-vect + tts
 #baseline_type=baseline-2 # mcadams 
+
+#name of this experiment
+exp_name_suffix=trial1-2021-12-08
 
 
 ##########################################################
@@ -75,7 +80,7 @@ fi
 ##########################################################
 # Evaluation settings (common)
 
-results=exp/results-$(printf '%(%Y-%m-%d-%H-%M-%S)T' -1)
+results=exp/results-${exp_name_suffix}
 
 ##########################################################
 # ASR evaluation settings
