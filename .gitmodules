@@ -16,3 +16,6 @@
 [submodule "zebra"]
 	path = zebra
 	url = https://gitlab.eurecom.fr/nautsch/zebra.git
+[submodule "sidekit"]
+	path = sidekit
+	url = https://github.com/deep-privacy/sidekit.git
