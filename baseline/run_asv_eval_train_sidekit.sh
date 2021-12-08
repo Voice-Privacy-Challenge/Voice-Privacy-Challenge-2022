@@ -32,7 +32,7 @@ fi
 # Apply Voice Activation Detector to input data
 mark=.done-sidekit-train-vad
 if [ ! -f $mark ]; then
-  /apply_vad_on_csv.py --nj $nj \
+  apply_vad_on_csv.py --nj $nj \
                       --in-csv list/libri_train_clean_360.csv \
                       --out-csv list/libri_train_clean_360_vad.csv \
                       --out-audio-dir ./data/libri_train_clean_360_vad \

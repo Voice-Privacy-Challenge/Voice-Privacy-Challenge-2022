@@ -23,6 +23,9 @@ nii_cmake=$PWD/nii_cmake/CMakeLists.txt
 nii_dir=$PWD/nii
 currennt_dir=$nii_dir/CURRENNT_codes
 
+sox_dir=$PWD/sox-14.4.2
+sox_src_dir=$sox_dir/src
+
 mark=.done-venv
 if [ ! -f $mark ]; then
   echo 'Making python virtual environment'
@@ -39,6 +42,35 @@ if [ ! -f $mark ]; then
   touch $mark
 fi
 echo "if [ \"\$(which python)\" != $venv_dir/bin/python ]; then source $venv_dir/bin/activate; fi" > env.sh
+
+mark=.done-python-2.7.10
+if [ ! -f $mark ]; then
+  curl -o Python-2.7.10.tgz https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz
+  tar -zxf Python-2.7.10.tgz
+  cd Python-2.7.10
+  ./configure --prefix=$venv_dir/lib/python-2.7.10 --enable-shared --enable-unicode=ucs4 LDFLAGS="-Wl,-rpath=$venv_dir/lib/python-2.7.10/lib"
+  make
+  make install
+  ln -s $(realpath $venv_dir/lib/python-2.7.10/bin/python2.7) $venv_dir/bin/python2.7
+  cd $home
+  touch $mark
+fi
+source $venv_dir/bin/activate
+
+mark=.done-sox
+if [ ! -f $mark ]; then
+  wget https://nchc.dl.sourceforge.net/project/sox/sox/14.4.2/sox-14.4.2.tar.gz
+  tar xvfz sox-14.4.2.tar.gz
+  cd $sox_dir
+  ./configure --prefix=$home
+  make -s
+  make install
+  cd $home
+  touch $mark
+fi
+# Adding sox to PATH
+export PATH=$PATH:$sox_src_dir
+echo "export PATH=$sox_src_dir:\$PATH" >> env.sh
 
 mark=.done-kaldi-tools
 if [ ! -f $mark ]; then
