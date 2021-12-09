@@ -74,8 +74,9 @@ fi
 
 ##########################################################
 # Evaluation settings (common)
-
-results=exp/results-$(printf '%(%Y-%m-%d-%H-%M-%S)T' -1)
+if [ -z "$results" ]; then
+    export results=exp/results-$(printf '%(%Y-%m-%d-%H-%M-%S)T' -1)
+fi
 
 ##########################################################
 # ASR evaluation settings
