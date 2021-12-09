@@ -2,7 +2,7 @@
 
 . ./cmd.sh
 . ./path.sh
-
+. ./config.sh
 set -e
 
 #===== begin config =======
@@ -17,7 +17,7 @@ plda_dir=$asv_eval_model/xvect_train_clean_360
 
 . utils/parse_options.sh
 
-anon_data_suffix=_anon
+#anon_data_suffix=_anon
 osp_set_folder=$asv_eval_model/xvect_$set_test
 psp_set_folder=${osp_set_folder}$anon_data_suffix
 utt2spk=data/$set_test/utt2spk
