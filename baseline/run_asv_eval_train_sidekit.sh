@@ -13,9 +13,14 @@ cd ../sidekit/egs/libri360_train
 back_to_sidekit_root=../..
 
 # Create csv file from dataset for sidekit input
-sidekit_csv_from_kaldi.py --kaldi-data-path $back_to_sidekit_root/../baseline/data/train_clean_360 \
-                          --out-csv list/libri_train_clean_360.csv \
-                          --database-name libri_train_clean_360
+mark=.done-sidekit-train-csv
+if [ ! -f $mark ]; then
+  sidekit_csv_from_kaldi.py --kaldi-data-path $back_to_sidekit_root/../baseline/data/train_clean_360 \
+                            --out-csv list/libri_train_clean_360.csv \
+                            --database-name libri_train_clean_360
+  sed -i 's|corpora|/srv/storage/talc3@talc-data.nancy/multispeech/calcul/users/hnourtel/Voice-Privacy-Challenge-2022/baseline/corpora|g' list/libri_train_clean_360.csv
+  touch $mark
+fi
 
 # Prepare data augmentation
 mkdir -p data
@@ -36,7 +41,7 @@ if [ ! -f $mark ]; then
                       --in-csv list/libri_train_clean_360.csv \
                       --out-csv list/libri_train_clean_360_vad.csv \
                       --out-audio-dir ./data/libri_train_clean_360_vad \
-                      --extension-name flac
+                      --extension-name flac || exit 1
   touch $mark
 fi
 
