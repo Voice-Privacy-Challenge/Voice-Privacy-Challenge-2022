@@ -18,9 +18,6 @@ xvect_type=kaldi
 baseline_type=baseline-1  # x-vect + tts
 #baseline_type=baseline-2 # mcadams 
 
-#name of this experiment
-exp_name_suffix=trial1-2021-12-08
-
 
 ##########################################################
 # Evaluation data sets
@@ -80,7 +77,9 @@ fi
 ##########################################################
 # Evaluation settings (common)
 
-results=exp/results-${exp_name_suffix}
+if [ -z "$results" ]; then
+    export results=exp/results-$(printf '%(%Y-%m-%d-%H-%M-%S)T' -1)
+fi
 
 ##########################################################
 # ASR evaluation settings
