@@ -9,7 +9,7 @@
 proj_dir=${nii_scripts}/acoustic-modeling/project-DAR-continuous
 test_data_dir=$1
 
-output_dir=${test_data_dir}/am_out_mel
+output_dir=${test_data_dir}/$2
 output_tmp_dir=${test_data_dir}/am_out_tmp
 export TEMP_ACOUSTIC_MODEL_INPUT_DIRS=${test_data_dir}/ppg,${test_data_dir}/xvector,${test_data_dir}/f0
 

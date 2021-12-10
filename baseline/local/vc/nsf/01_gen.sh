@@ -19,7 +19,7 @@ test_data_dir=$1
 
 proj_dir=${nii_scripts}/waveform-modeling/project-NSF
 
-test_mel=${test_data_dir}/am_out_mel
+test_mel=${test_data_dir}/$2
 test_xvector=${test_data_dir}/xvector
 test_f0=${test_data_dir}/f0
 export TEMP_WAVEFORM_MODEL_INPUT_DIRS=${test_mel},${test_xvector},${test_f0}
@@ -28,7 +28,7 @@ export TEMP_WAVEFORM_MODEL_INPUT_DIRS=${test_mel},${test_xvector},${test_f0}
 export TEMP_WAVEFORM_MODEL_DIRECTORY=${proj_dir}/MODELS/h-sinc-NSF
 
 # Path to the directory that will save the generated waveforms
-export TEMP_WAVEFORM_OUTPUT_DIRECTORY="${test_data_dir}/nsf_output_wav"
+export TEMP_WAVEFORM_OUTPUT_DIRECTORY="${test_data_dir}/$3"
 
 # Path to the trained_network.jsn (or epoch*.autosave)
 export TEMP_WAVEFORM_MODEL_NETWORK_PATH=exp/models/4_nsf/trained_network.jsn

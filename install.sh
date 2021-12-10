@@ -23,6 +23,9 @@ nii_cmake=$PWD/nii_cmake/CMakeLists.txt
 nii_dir=$PWD/nii
 currennt_dir=$nii_dir/CURRENNT_codes
 
+nii_pytorchdir=$PWD/nii_pytorch
+
+
 mark=.done-venv
 if [ ! -f $mark ]; then
   echo 'Making python virtual environment'
@@ -143,9 +146,11 @@ if [ ! -f $mark ]; then
   cd $home
   touch $mark
 fi
+
+
 echo "export PATH=$currennt_dir/build:\$PATH" >> env.sh
-echo "export PYTHONPATH=$currennt_dir:$nii_dir/pyTools:$PWD/nii_scripts:\$PYTHONPATH" >> env.sh
+echo "export PYTHONPATH=$nii_pytorchdir:$currennt_dir:$nii_dir/pyTools:$PWD/nii_scripts:\$PYTHONPATH" >> env.sh
 echo "export nii_scripts=$PWD/nii_scripts" >> env.sh
 echo "export nii_dir=$nii_dir" >> env.sh
-
+echo "export nii_pt_scripts=$PWD/nii_pytorch" >> env.sh
 echo Done

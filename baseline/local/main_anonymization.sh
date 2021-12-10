@@ -49,7 +49,8 @@ for dset in libri_dev_{enrolls,trials_f,trials_m} \
       --pseudo-xvec-rand-level $anon_level --distance $distance \
       --proximity $proximity --cross-gender $cross_gender \
       --rand-seed $rand_seed \
-      --anon-data-suffix $anon_data_suffix $dset || exit 1
+      --anon-data-suffix $anon_data_suffix \
+      --model-type $tts_type $dset || exit 1
   fi
   if [ -f data/$dset/enrolls ]; then
     cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1

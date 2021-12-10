@@ -22,6 +22,9 @@ ppg_type=
 
 ppg_dir=exp/nnet3_cleaned # change this to the dir where PPGs will be stored
 
+# Type of the TTS for baseline 1
+model_type=
+
 # x-vector extraction
 xvec_nnet_dir= # change this to pretrained xvector model downloaded from Kaldi website
 anon_xvec_out_dir=${xvec_nnet_dir}/anon
@@ -55,6 +58,7 @@ spk2utt=data/$data_dir/spk2utt
 [ ! -f $spk2utt ] && echo "File $spk2utt does not exist" && exit 1
 num_spk=$(wc -l < $spk2utt)
 [ $nj -gt $num_spk ] && nj=$num_spk
+
 
 # Extract xvectors from data which has to be anonymized
 if [ $stage -le 0 ]; then
@@ -94,19 +98,56 @@ if [ $stage -le 4 ]; then
 	  ${data_netcdf}/${data_dir} || exit 1;
 fi
 
+
+# Decide the output folder name based on the model type
+case $model_type in
+    
+    am_nsf_old)
+	am_output_dir_name=am_out_mel
+	wav_output_dir_name=nsf_output_wav
+	script_am_dir=am
+	script_wav_dir=nsf
+	;;
+    am_nsf_pytorch)
+	am_output_dir_name=am_pt_out_mel
+	wav_output_dir_name=nsf_pt_output_wav
+	script_am_dir=am_pytorch
+	script_wav_dir=nsf_pytorch
+	;;
+    joint_hifigan)
+	am_output_dir_name="None"
+	wav_output_dir_name=hifigan_output_wav
+	script_am_dir="None"
+	script_wav_dir=joint_tts_hifigan
+	;;
+    joint_nsf_hifigan)
+	am_output_dir_name="None"
+	wav_output_dir_name=nsf_hifigan_output_wav
+	script_am_dir="None"
+	script_wav_dir=joint_tts_nsf_hifigan
+	;;
+    *)
+	printf "${RED}\nUnknown ${model_type}${NC}\n" 
+	exit 1;
+esac
+
 if [ $stage -le 5 ]; then
-  printf "${RED}\nStage a.5: Extract melspec from acoustic model for ${data_dir}.${NC}\n"
-  local/vc/am/01_gen.sh ${data_netcdf}/${data_dir} ${ppg_type} || exit 1;
+  if [ "$script_am_dir" == "None" ];then   
+      printf "${RED}\nStage a.5: Skip this step for model ${model_type}.${NC}\n"
+  else
+      printf "${RED}\nStage a.5: Extract melspec from acoustic model for ${data_dir}.${NC}\n"
+      local/vc/${script_am_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} || exit 1;
+  fi
 fi
 
 if [ $stage -le 6 ]; then
-  printf "${RED}\nStage a.6: Generate waveform from NSF model for ${data_dir}.${NC}\n"
-  local/vc/nsf/01_gen.sh ${data_netcdf}/${data_dir} || exit 1;
+  printf "${RED}\nStage a.6: Generate waveform from ${model_type} for ${data_dir}.${NC}\n"
+  local/vc/${script_wav_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${wav_output_dir_name} || exit 1;
 fi
 
 if [ $stage -le 7 ]; then
   printf "${RED}\nStage a.7: Creating new data directories corresponding to anonymization.${NC}\n"
-  wav_path=${data_netcdf}/${data_dir}/nsf_output_wav
+  wav_path=${data_netcdf}/${data_dir}/${wav_output_dir_name}
   new_data_dir=data/${data_dir}${anon_data_suffix}
   if [ -d "$new_data_dir" ]; then
     rm -rf ${new_data_dir}
