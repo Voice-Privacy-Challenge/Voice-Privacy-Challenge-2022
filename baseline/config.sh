@@ -48,7 +48,7 @@ if [ $baseline_type != 'baseline-2' ]; then
   if [ $xvect_type = "kaldi" ]; then
     xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_nnet_1a # x-vector extractor
   elif [ $xvect_type = "sidekit" ]; then
-    xvec_nnet_dir=exp/models/2_xvect_extr/exp/xvector_sidekit
+    xvec_nnet_dir=exp/models/2_xvect_extr_sidekit
     xvec_model_name=sidekit_model_xvector.pt
   else
     >&2 echo "Xvector-type not supported : " $xvect_type
@@ -95,7 +95,7 @@ asr_eval_model=exp/models/asr_eval # Model for ASR evaluation
 if [ $xvect_type = "kaldi" ]; then
   asv_eval_model=exp/models/asv_eval/xvect_01709_1 # Model for ASV evaluation
 elif [ $xvect_type = "sidekit" ]; then
-  asv_eval_model=exp/models/asv_eval/sidekit_model
+  asv_eval_model=exp/models/asv_eval_sidekit
 else
   >&2 echo "Xvector-type not supported : " $xvect_type
 fi
