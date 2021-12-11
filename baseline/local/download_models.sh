@@ -22,17 +22,4 @@ EOF
   cd $home
 fi
 
-check=$expo/models/3_ss_am_pt
-if [ ! -e $check ]; then
-    cd $expo
-    if [ -f models-b1-app.tar.gz ];
-    then
-	rm models-b1-app.tar.gz
-    fi
-    wget --quiet https://www.dropbox.com/sh/bua2vks8clnl2ha/AABcSLp_WBtCeYT-7O3NcDbda/models-b1-app.tar.gz
-    tar -xzvf models-b1-app.tar.gz
-    cd $home
-fi
-
-
 echo '  Done'
