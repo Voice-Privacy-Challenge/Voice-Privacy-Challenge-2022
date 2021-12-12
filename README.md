@@ -23,7 +23,7 @@ For more details about the baseline and data, please see [The VoicePrivacy 2020 
 
 For the latest updates in the baseline and evaluation scripts, please visit [News and updates page](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/wiki/News-and-Updates)
 
-The deadline to submit results has passed. To access the baseline models and development/evaluation data, please send an email to organisers@lists.voiceprivacychallenge.org with “VoicePrivacy-2020" as the subject line. The mail body should include: (i) the name of the contact person; (ii) country; (iii) status (academic/nonacademic).
+To participate in the **VoicePrivacy 2022 Challenge** and get access to evaluation datasets and models, please send an email to organisers@lists.voiceprivacychallenge.org with “VoicePrivacy-2022" as the subject line. The mail body should include: (i) the name of the contact person; (ii) country; (iii) status (academic/nonacademic).
 
 
 ## Data
@@ -104,7 +104,7 @@ CE23-0018) and by the European Union’s Horizon 2020 Research and Innovation Pr
 
 ## License
 
-Copyright (C) 2022
+Copyright (C) 2021
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
