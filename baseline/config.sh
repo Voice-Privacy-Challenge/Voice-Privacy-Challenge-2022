@@ -97,3 +97,10 @@ asv_eval_model=exp/models/asv_eval/xvect_01709_1 # Model for ASV evaluation
 train_data=train-clean-360                      # training dataset for evaluation models
 asr_eval_model_train=exp/models/asr_eval_anon   # directory to save the ASR evaluation model 
 data_proc=orig                                  # anonymized (anon) or original(orig)  
+
+##########################################################
+# Settings for training TTS model
+
+data_train_tts=$libritts_train_clean_100
+tts_model_name=tts_joint_hifigan
+tts_model=exp/models/$tts_model_name
