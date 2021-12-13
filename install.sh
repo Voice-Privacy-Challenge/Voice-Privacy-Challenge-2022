@@ -37,6 +37,7 @@ if [ ! -f $mark ]; then
   echo 'Installing python dependencies'
   pip install -r requirements.txt || exit 1
   yes | conda install -c conda-forge sox
+  python3 -c "import torch;torch.hub.load(repo_or_dir='snakers4/silero-vad:a345715', model='silero_vad_mini')"
   touch $mark
 fi
 echo "if [ \"\$(which python)\" != $venv_dir/bin/python ]; then source $venv_dir/bin/activate; fi" > env.sh
@@ -53,7 +54,6 @@ if [ ! -f $mark ]; then
   cd $home
   touch $mark
 fi
-source $venv_dir/bin/activate
 
 mark=.done-kaldi-tools
 if [ ! -f $mark ]; then
