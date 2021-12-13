@@ -75,12 +75,13 @@ The result file with all the metrics and all datasets for submission will be gen
 Please see 
 * [RESULTS for Baseline-1](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_baseline) 
 * [RESULTS for Baseline-2](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_mcadams) 
+
   **new baselies 2022**:
 * [RESULTS_for Baseline TTS-pytorch](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_pytorch)
 * [RESULTS_for Baseline TTS-pytorch, HIFI-GAN](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_joint_hifigan)
 * [RESULTS_for Baseline TTS-pytorch, NSF+HIFI-GAN](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_joint_nsf_hifigan)
-for the evalation and development data sets.
 
+for the evalation and development data sets.
 
 
 ## Organizers (in alphabetical order)
