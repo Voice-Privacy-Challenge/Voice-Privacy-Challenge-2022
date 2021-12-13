@@ -8,12 +8,12 @@
 set -e
 
 nj=20
-stage=1
+stage=6
 
 . ./utils/parse_options.sh
 
 data=$data_train_tts
-data_out=data/${data_train_tts}_tts #Directory to save prepared data (x-vectors, BN, pitch, ...) for training TTS model 
+data_out=data/$data_train_tts_out #Directory to save prepared data (x-vectors, BN, pitch, ...) for training TTS model 
 
 libritts_corpus=$(realpath $corpora/LibriTTS)
 xvec_out_dir=${xvec_nnet_dir}/$data
@@ -54,12 +54,12 @@ if [ $stage -le 4 ]; then
 	  ${data} ${ppg_model} ${ppg_dir}/ppg_${data} || exit 1
 fi
 
-#TODO: add mel spectrograms
+#TODO: add mel spectrogram extration
 if [ $stage -le 5 ]; then
   printf "${GREEN}\nStage 5: Make netcdf data (${data}) for VC...${NC}\n"
   local/anon/make_netcdf.sh --stage 0 data/${data} ${ppg_dir}/ppg_${data}/phone_post.scp \
 	  ${xvec_out_dir}/xvectors_${data}/xvector.scp \
-	  ${data_netcdf}/${data} || exit 1
+	  ${data_out}/${data} || exit 1
 fi
 
 

@@ -56,7 +56,7 @@ test_out=${feat_out_dir}/am_nsf_test # change this to dir where test data will b
 # Extract PPG using chain model
 if [ $stage -le 0 ]; then
   echo "Stage 0: PPG extraction."
-  local/featex/extract_ppg.sh --nj $nj --stage 0 data/${train_data} \
+  local/featex/extract_ppg.sh --nj $nj --stage 0 ${train_data} \
 	  ${ppg_model} ${ppg_dir}/ppg_${train_data}
 fi
 

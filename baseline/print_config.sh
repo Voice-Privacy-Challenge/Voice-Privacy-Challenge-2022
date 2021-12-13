@@ -162,15 +162,28 @@ echo "    Training dataset for evaluation models: $train_data"
 echo -e "${BLUE}Output:${NC}"
 echo "    Directory to save the ASR evaluation model: $asr_eval_model_train"
 
+
 ##########################################################
 echo -e "\n${GREEN}Training TTS model:${NC}"
+
+echo -e "${C}Prepare data for training TTS model:${NC}"
 print_var "$data_train_tts" data_train_tts
+print_var "$data_train_tts_out" data_train_tts_out
+print_var "$tts_model_name" tts_model_name
+print_var "$tts_model" tts_model
+
 echo -e "${BLUE}Input:${NC}"
 echo "    Training dataset for TTS model: $data_train_tts"
 echo "    TTS model type: $tts_type"
 echo "    x-vector type: $xvect_type"
 echo "    x-vector extractor: $xvec_nnet_dir"
 echo "    BN-feature extractor: $ppg_model"
+echo -e "${BLUE}Output:${NC}"
+echo "    Directory to save data for training TTS model (BN-features, F0, x-vectors,...): data/$data_train_tts"
+
+echo -e "\n${C}Training TTS model: $tts_model: ${NC}"
+echo -e "${BLUE}Input:${NC}"
+echo "    Directory with the data (BN-features, F0, x-vectors,...): data/$data_train_tts_out"
 echo -e "${BLUE}Output:${NC}"
 echo "    Directory to save TTS model: $tts_model"
 

@@ -101,6 +101,7 @@ data_proc=orig                                  # anonymized (anon) or original(
 ##########################################################
 # Settings for training TTS model
 
-data_train_tts=$libritts_train_clean_100
-tts_model_name=tts_joint_hifigan
-tts_model=exp/models/$tts_model_name
+data_train_tts=$libritts_train_clean_100            # training set 
+data_train_tts_out=${libritts_train_clean_100}_tts  # directory name to save the prepared data in the format to train TTS models
+tts_model_name=tts_joint_hifigan                    # name of the TTS model
+tts_model=exp/models/$tts_model_name                # path to save the TTS model
