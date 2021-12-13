@@ -53,7 +53,7 @@ for reader_dir in $(find -L $src -mindepth 1 -maxdepth 1 -type d | sed -e "s/$/_
 
     find -L $chapter_dir/ -iname "*.wav" | sort | while read -r wav_file; do
        id="$reader"-$(basename $wav_file .wav)
-       echo "$id $wav_file" >>$wav_scp
+       echo "$id sox $wav_file -r 16000 -t wav - downsample |" >>$wav_scp
 
        txt=$(cat $(echo $wav_file | sed -e "s/\.wav$/.normalized.txt/"))
        echo "$id $txt" >>$trans
