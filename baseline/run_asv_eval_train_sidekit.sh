@@ -11,14 +11,15 @@ nj=20
 
 cd ../sidekit/egs/libri360_train
 back_to_sidekit_root=../..
+baseline_data=$back_to_sidekit_root/../baseline/data
 
 # Create csv file from dataset for sidekit input
 mark=.done-sidekit-train-csv
 if [ ! -f $mark ]; then
-  sidekit_csv_from_kaldi.py --kaldi-data-path $back_to_sidekit_root/../baseline/data/train_clean_360 \
+  sidekit_csv_from_kaldi.py --kaldi-data-path $baseline_data/train_clean_360 \
                             --out-csv list/libri_train_clean_360.csv \
                             --database-name libri_train_clean_360
-  sed -i 's|corpora|/srv/storage/talc3@talc-data.nancy/multispeech/calcul/users/hnourtel/Voice-Privacy-Challenge-2022/baseline/corpora|g' list/libri_train_clean_360.csv
+  sed -i s|corpora|$(pwd -P $back_to_sidekit_root/../baseline)/corpora|g list/libri_train_clean_360.csv
   touch $mark
 fi
 
@@ -27,8 +28,8 @@ mkdir -p data
 mark=.done-sidekit-train-augment
 if [ ! -f $mark ]; then
   python3 dataprep.py --save-path data --download-augment
-  python3 dataprep.py --from ./data/RIRS_NOISES --make-csv-augment-reverb
-  python3 dataprep.py --from ./data/musan_split --make-csv-augment-noise
+  python3 dataprep.py --from $baseline_data/RIRS_NOISES --make-csv-augment-reverb
+  python3 dataprep.py --from $baseline_data/musan_split --make-csv-augment-noise
   touch $mark
 fi
 
@@ -52,13 +53,17 @@ fi
 #export NODE_RANK=0
 #export WORLD_SIZE=$(($NUM_NODES * $NUM_GPUS_PER_NODE))
 
-dataset_file="egs/libri360_train/cfg/Librispeech.yaml"
-model_file="egs/libri360_train/cfg/model.yaml"
-training_file="egs/libri360_train/cfg/training.yaml"
-
-train_xtractor.py --dataset $dataset_file --model $model_file --training $training_file
+dataset_file="cfg/Librispeech.yaml"
+model_file="cfg/model.yaml"
+training_file="cfg/training.yaml"
+mkdir -p log
+python3 -m torch.distributed.launch \
+       --nproc_per_node=$NUM_GPUS_PER_NODE \
+       --nnodes=$NUM_NODES \
+       --node_rank $NODE_RANK \
+       ../../tools/train_xtractor.py --dataset $dataset_file --model $model_file --training $training_file
 
 # Copy output sidekit model to final location in baseline tree
-cp model/best_libri_train_clean_360.pt  $xvec_nnet_dir/$xvec_model_name
+cp $(readlink model/best_libri_train_clean_360.pt)  $xvec_nnet_dir/
 
 echo Done

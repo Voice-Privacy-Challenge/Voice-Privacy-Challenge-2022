@@ -51,8 +51,13 @@ if [ $baseline_type = 'baseline-1' ]; then
 
   # Download LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) 
   if $download_full && [[ $stage -le 3 ]]; then
-    printf "${GREEN}\nStage 3: Downloading LibriSpeech data sets for training anonymization system $libri_train_sets...${NC}\n"
+    printf "${GREEN}\nStage 3.1: Downloading LibriSpeech data sets for training anonymization system $libri_train_sets...${NC}\n"
     local/main_download_and_untar_libri.sh || exit 1
+
+    printf "${GREEN}\nStage 3.2: Downloading Augmentation data for training anonymization system...${NC}\n"
+    cd ../sidekit/egs/libri360_train
+    python3 dataprep.py --save-path data --download-augment
+    cd -
   fi
 
   # Download LibriTTS data sets for training anonymization system (train-other-500, train-clean-100)
