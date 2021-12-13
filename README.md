@@ -75,6 +75,7 @@ The result file with all the metrics and all datasets for submission will be gen
 Please see 
 * [RESULTS for Baseline-1](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_baseline) 
 * [RESULTS for Baseline-2](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_mcadams) 
+* ...
 
 for the evalation and development data sets.
 
@@ -87,7 +88,6 @@ for the evalation and development data sets.
 - Pierre Champion - Inria, France
 - Xiaoxiao Miao - NII, Japan
 - Hubert Nourtel - Inria, France
-- Paul-Gauthier Noé - University of Avignon - LIA, France
 - Natalia Tomashenko - University of Avignon - LIA, France
 - Massimiliano Todisco - EURECOM, France
 - Emmanuel Vincent - Inria, France
