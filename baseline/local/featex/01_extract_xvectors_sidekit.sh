@@ -2,9 +2,9 @@
 
 set -e
 
-. path.sh
-. cmd.sh
-. config.sh
+. path.sh ""
+. cmd.sh ""
+. config.sh ""
 
 if [ $# != 3 ]; then
   echo "Usage: "
@@ -20,6 +20,8 @@ dataname=$(basename $data_dir)
 mkdir -p $out_dir
 extract_xvectors.py \
     --vad \
-    --model ${nnet_dir}/${xvec_model_name} \
-    --wav-scp ${data_dir}/wav.scp \
-    --out-scp ${out_dir}/xvectors_$dataname
+    --model $(pwd)/${nnet_dir}/${xvec_model_name} \
+    --wav-scp $(pwd)/${data_dir}/wav.scp \
+    --out-scp $(pwd)/${out_dir}/xvectors_$dataname/xvector.scp \
+    --out-spk-scp $(pwd)/${out_dir}/xvectors_$dataname/spk_xvector.scp \
+    --spk2utt-file $(pwd)/${data_dir}/spk2utt
