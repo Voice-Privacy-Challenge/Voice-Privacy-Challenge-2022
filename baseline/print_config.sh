@@ -153,15 +153,38 @@ echo "                                                 data/vctk_test_{enrolls,t
 echo -e "${BLUE}Output:${NC}"
 echo "    Path to the directory to save ASV results: $results"
 
+
+##########################################################
+echo -e "\n${GREEN}Anonymizing data to train ASR/ASV evaluation models:${NC}"
+print_var "$data_to_train_eval_models" data_to_train_eval_models
+print_var "$data_proc" data_proc
+print_var "$train_anon_level" train_anon_level
+print_var "$data_to_train_eval_models_anon" data_to_train_eval_models_anon
+
+echo -e "${BLUE}Input:${NC}"
+echo "    Training dataset for evaluation models: $data_to_train_eval_models"
+echo "    Anonymization level: $train_anon_level"
+echo -e "${BLUE}Output:${NC}"
+echo "    Directory where the anonymized data for training will be saved: data/$data_to_train_eval_models_anon"
+
+
+##########################################################
 echo -e "\n${GREEN}Training ASR evaluation model:${NC}"
-print_var "$train_data" train_data
-print_var "$asr_eval_model_train" asr_eval_model_train
+print_var "$data_to_train_eval_models_anon" data_to_train_eval_models_anon
 print_var "$data_proc" data_proc
 echo -e "${BLUE}Input:${NC}"
-echo "    Training dataset for evaluation models: $train_data"
+echo "    Directory with the sata for training ASR evaluation model: data/$data_to_train_eval_models_anon"
 echo -e "${BLUE}Output:${NC}"
-echo "    Directory to save the ASR evaluation model: $asr_eval_model_train"
+echo "    Directory to save the ASR evaluation model: $asr_eval_model_trained"
 
+##########################################################
+echo -e "\n${GREEN}Training ASV evaluation model:${NC}"
+print_var "$data_to_train_eval_models_anon" data_to_train_eval_models_anon
+print_var "$data_proc" data_proc
+echo -e "${BLUE}Input:${NC}"
+echo "    Directory with the sata for training ASV evaluation model: data/$data_to_train_eval_models_anon"
+echo -e "${BLUE}Output:${NC}"
+echo "    Directory to save the ASV evaluation model: $asv_eval_model_trained"
 
 ##########################################################
 echo -e "\n${GREEN}Training TTS model:${NC}"

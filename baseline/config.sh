@@ -94,9 +94,14 @@ asv_eval_model=exp/models/asv_eval/xvect_01709_1 # Model for ASV evaluation
 ##########################################################
 # Settings for training of evaluation (original or anonymized) models 
 
-train_data=train-clean-360                      # training dataset for evaluation models
-asr_eval_model_train=exp/models/asr_eval_anon   # directory to save the ASR evaluation model 
-data_proc=orig                                  # anonymized (anon) or original(orig)  
+data_to_train_eval_models=train-clean-360                         # training dataset for evaluation models 
+data_proc=anon                                                    # anonymized (anon) or original(orig) 
+train_anon_level=spk                                              # spk (speaker-level anonymiz.) or utt (utterance-level anonymiz.) - used if data_proc=anon;
+
+data_to_train_eval_models_anon=${data_to_train_eval_models}_anon  # directory name with anonymized training dataset for evaluation models 
+asr_eval_model_trained=exp/models/asr_eval_${data_proc}           # directory to save the ASR evaluation model 
+asv_eval_model_trained=exp/models/asv_eval_${data_proc}           # directory to save the ASV evaluation model 
+
 
 ##########################################################
 # Settings for training TTS model
