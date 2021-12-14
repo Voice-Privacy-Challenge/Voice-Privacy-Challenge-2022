@@ -39,7 +39,7 @@ def select_random_xvec(top500, pool_xvectors):
     random100mask = random.sample(range(WORLD), REGION)
     pseudo_spk_list = [x for i, x in enumerate(top500) if i in
                            random100mask]
-    pseudo_spk_matrix = np.zeros((REGION, 512), dtype='float64')
+    pseudo_spk_matrix = np.zeros((REGION, len(list(pool_xvectors.values())[0][0])), dtype='float64')
     for i, spk_aff in enumerate(pseudo_spk_list):
         pseudo_spk_matrix[i, :] = pool_xvectors[spk_aff[0]]
     # Take mean of 100 randomly selected xvectors
