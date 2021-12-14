@@ -75,24 +75,27 @@ The result file with all the metrics and all datasets for submission will be gen
 Please see 
 * [RESULTS for Baseline-1](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_baseline) 
 * [RESULTS for Baseline-2](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_mcadams) 
-* ...
+
+  **new baselies 2022**:
+* [RESULTS for Baseline TTS-pytorch](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_pytorch)
+* [RESULTS for Baseline TTS-pytorch, HIFI-GAN](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_joint_hifigan)
+* [RESULTS for Baseline TTS-pytorch, NSF+HIFI-GAN](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_joint_nsf_hifigan)
 
 for the evalation and development data sets.
 
 
-
 ## Organizers (in alphabetical order)
 
-- Jean-François Bonastre - University of Avignon - LIA, France
-- Nicholas Evans - EURECOM, France
-- Pierre Champion - Inria, France
-- Xiaoxiao Miao - NII, Japan
-- Hubert Nourtel - Inria, France
-- Natalia Tomashenko - University of Avignon - LIA, France
-- Massimiliano Todisco - EURECOM, France
-- Emmanuel Vincent - Inria, France
-- Xin Wang - NII, Japan
-- Junichi Yamagishi - NII, Japan and University of Edinburgh, UK
+- **Jean-François Bonastre** - University of Avignon - LIA, France
+- **Nicholas Evans** - EURECOM, France
+- **Pierre Champion** - Inria, France
+- **Xiaoxiao Miao** - NII, Japan
+- **Hubert Nourtel** - Inria, France
+- **Natalia Tomashenko** - University of Avignon - LIA, France
+- **Massimiliano Todisco** - EURECOM, France
+- **Emmanuel Vincent** - Inria, France
+- **Xin Wang** - NII, Japan
+- **Junichi Yamagishi** - NII, Japan and University of Edinburgh, UK
 
 Contact: organisers@lists.voiceprivacychallenge.org
 
