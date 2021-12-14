@@ -1,12 +1,11 @@
 #!/bin/bash
+#ASV_eval training on LibriSpeech train_clean_360 corpus
 
 . ./cmd.sh
 . ./path.sh
+. ./config.sh
 
 set -e
-
-#ASV_eval training on LibriSpeech train_clean_360 corpus
-
 
 nj=20
 voxceleb1_trials=data/voxceleb1_test/trials

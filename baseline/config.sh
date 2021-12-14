@@ -6,11 +6,11 @@
 nj=$(nproc)
 
 #tts_type=am_nsf_old          #TTS: SS AM + NSF model (c++)m baseline-1 from VPC-2020
-tts_type=am_nsf_pytorch     #TTS: SS AM + NSF model (pytorch)
-#tts_type=joint_hifigan      #TTS: Single joint TTS model based on HiFi GAN
-#tts_type=joint_nsf_hifigan  #TTS: Single joint TTS model bsaed on NSF with GAN
+tts_type=am_nsf_pytorch       #TTS: SS AM + NSF model (pytorch)
+#tts_type=joint_hifigan       #TTS: Single joint TTS model based on HiFi GAN
+#tts_type=joint_nsf_hifigan   #TTS: Single joint TTS model based on NSF with GAN
 
-#tts_type=ssl        #TTS: Self-supervised learning features: wav2vec2 (...); hubert; hubert_kmeans
+#tts_type=ssl                 #TTS: Self-supervised learning features: wav2vec2 (...); hubert; hubert_kmeans
 
 xvect_type=kaldi     
 #xvect_type=sidekit
@@ -98,7 +98,7 @@ data_to_train_eval_models=train-clean-360                         # training dat
 data_proc=anon                                                    # anonymized (anon) or original(orig) 
 train_anon_level=spk                                              # spk (speaker-level anonymiz.) or utt (utterance-level anonymiz.) - used if data_proc=anon;
 
-data_to_train_eval_models_anon=${data_to_train_eval_models}_anon  # directory name with anonymized training dataset for evaluation models 
+data_to_train_eval_models_anon=${data_to_train_eval_models}_anon  # directory name with anonymized training data for evaluation models 
 asr_eval_model_trained=exp/models/asr_eval_${data_proc}           # directory to save the ASR evaluation model 
 asv_eval_model_trained=exp/models/asv_eval_${data_proc}           # directory to save the ASV evaluation model 
 

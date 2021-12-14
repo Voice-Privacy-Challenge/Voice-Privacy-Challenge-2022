@@ -182,7 +182,7 @@ echo -e "\n${GREEN}Training ASV evaluation model:${NC}"
 print_var "$data_to_train_eval_models_anon" data_to_train_eval_models_anon
 print_var "$data_proc" data_proc
 echo -e "${BLUE}Input:${NC}"
-echo "    Directory with the sata for training ASV evaluation model: data/$data_to_train_eval_models_anon"
+echo "    Directory with the data for training ASV evaluation model: data/$data_to_train_eval_models_anon"
 echo -e "${BLUE}Output:${NC}"
 echo "    Directory to save the ASV evaluation model: $asv_eval_model_trained"
 

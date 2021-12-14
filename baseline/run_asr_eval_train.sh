@@ -1,23 +1,26 @@
 #!/bin/bash
+#ASR_eval training on LibriSpeech train_clean_360 corpus
+
+. ./cmd.sh
+. ./path.sh
+. ./config.sh
 
 set -e
 
-stage=1
-
-. ./config.sh
-. ./cmd.sh
-
+stage=0
 nj=10
 
 . utils/parse_options.sh || exit 1
 
-train=$data_train
+train=$data_to_train_eval_models
 dev=libri_dev_asr
 test=libri_test_asr
 
 if [ $stage -le 0 ]; then
+  printf "${GREEN}\nStage 0: Download and prepare data for training evaluation models...${NC}\n"
   local/get_train_data.sh || exit 1
 fi
+
 
 if [ $stage -le 6 ]; then
   for part in $dev $test $train; do
