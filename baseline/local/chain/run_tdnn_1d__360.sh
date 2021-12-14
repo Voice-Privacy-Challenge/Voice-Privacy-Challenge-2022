@@ -1,12 +1,11 @@
+#ASR_eval training
 #!/bin/bash
 set -e
-
-#ASR_eval training
 
 # configs for 'chain'
 stage=0
 decode_nj=10 #40
-train_set=train_clean_360
+train_set=train-clean-360
 gmm=tri3b_cleaned
 nnet3_affix=_cleaned
 
@@ -24,8 +23,6 @@ remove_egs=true
 common_egs_dir=
 xent_regularize=0.1
 dropout_schedule='0,0@0.20,0.5@0.50,0'
-
-test_online_decoding=true  # if true, it will run the last decoding stage.
 
 # End configuration section.
 echo "$0 $@"  # Print the command line for logging
@@ -70,8 +67,7 @@ for f in $gmm_dir/final.mdl $train_data_dir/feats.scp $train_ivector_dir/ivector
   [ ! -f $f ] && echo "$0: expected file $f to exist" && exit 1
 done
 
-# Please take this as a reference on how to specify all the options of
-# local/chain/run_chain_common.sh
+
 local/chain/run_chain_common.sh --stage $stage \
                                 --gmm-dir $gmm_dir \
                                 --ali-dir $ali_dir \
@@ -182,56 +178,19 @@ if [ ! -z $decode_iter ]; then
   iter_opts=" --iter $decode_iter "
 fi
 if [ $stage -le 17 ]; then
-  rm $dir/.error 2>/dev/null || true
   for decode_set in test_clean test_other dev_clean dev_other; do
-      (
       steps/nnet3/decode.sh --acwt 1.0 --post-decode-acwt 10.0 \
           --nj $decode_nj --cmd "$decode_cmd" $iter_opts \
           --online-ivector-dir exp/nnet3${nnet3_affix}/ivectors_${decode_set}_hires \
-          $graph_dir data/${decode_set}_hires $dir/decode_${decode_set}${decode_iter:+_$decode_iter}_tgsmall || exit 1
-      steps/lmrescore.sh --cmd "$decode_cmd" --self-loop-scale 1.0 data/lang_test_{tgsmall,tgmed} \
-          data/${decode_set}_hires $dir/decode_${decode_set}${decode_iter:+_$decode_iter}_{tgsmall,tgmed} || exit 1
-      steps/lmrescore_const_arpa.sh \
+          $graph_dir data/${decode_set}_hires $dir/decode_${decode_set}${decode_iter:+_$decode_iter}_tgsmall || exit 1	  
+	  steps/lmrescore_const_arpa.sh \
           --cmd "$decode_cmd" data/lang_test_{tgsmall,tglarge} \
           data/${decode_set}_hires $dir/decode_${decode_set}${decode_iter:+_$decode_iter}_{tgsmall,tglarge} || exit 1
-      steps/lmrescore_const_arpa.sh \
-          --cmd "$decode_cmd" data/lang_test_{tgsmall,fglarge} \
-          data/${decode_set}_hires $dir/decode_${decode_set}${decode_iter:+_$decode_iter}_{tgsmall,fglarge} || exit 1
-      ) || touch $dir/.error &
+      # steps/lmrescore_const_arpa.sh \
+          # --cmd "$decode_cmd" data/lang_test_{tgsmall,fglarge} \
+          # data/${decode_set}_hires $dir/decode_${decode_set}${decode_iter:+_$decode_iter}_{tgsmall,fglarge} || exit 1
   done
-  wait
-  if [ -f $dir/.error ]; then
-    echo "$0: something went wrong in decoding"
-    exit 1
-  fi
+
 fi
-
-if $test_online_decoding && [ $stage -le 18 ]; then
-  # note: if the features change (e.g. you add pitch features), you will have to
-  # change the options of the following command line.
-  steps/online/nnet3/prepare_online_decoding.sh \
-       --mfcc-config conf/mfcc_hires.conf \
-       $lang exp/nnet3${nnet3_affix}/extractor $dir ${dir}_online
-
-  rm $dir/.error 2>/dev/null || true
-  for data in test_clean test_other dev_clean dev_other; do
-    (
-      nspk=$(wc -l <data/${data}_hires/spk2utt)
-      # note: we just give it "data/${data}" as it only uses the wav.scp, the
-      # feature type does not matter.
-      steps/online/nnet3/decode.sh \
-          --acwt 1.0 --post-decode-acwt 10.0 \
-          --nj $nspk --cmd "$decode_cmd" \
-          $graph_dir data/${data} ${dir}_online/decode_${data}_tgsmall || exit 1
-
-    ) || touch $dir/.error &
-  done
-  wait
-  if [ -f $dir/.error ]; then
-    echo "$0: something went wrong in decoding"
-    exit 1
-  fi
-fi
-
 
 exit 0;
