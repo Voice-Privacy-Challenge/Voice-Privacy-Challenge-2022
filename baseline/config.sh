@@ -107,6 +107,8 @@ asv_eval_model_trained=exp/models/asv_eval_${data_proc}           # directory to
 # Settings for training TTS model
 
 data_train_tts=$libritts_train_clean_100            # training set 
-data_train_tts_out=${libritts_train_clean_100}_tts  # directory name to save the prepared data in the format to train TTS models
-tts_model_name=tts_joint_hifigan                    # name of the TTS model
-tts_model=exp/models/$tts_model_name                # path to save the TTS model
+data_train_tts_out=${libritts_train_clean_100}_tts  # directory name to save the prepared data for TTS models
+tts_model_name=user_trained_tts_${tts_type}         # name of the TTS model
+tts_model_save=exp/models/$tts_model_name           # path to save the TTS model
+tts_sampling_rate=16000                             # sampling rate, fixed, don't change
+tts_use_predefined_trn_dev="True"                   # Whether use pre-defined train and dev split

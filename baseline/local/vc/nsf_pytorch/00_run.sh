@@ -4,11 +4,8 @@
 # 
 . path.sh
 
-# no need to load this init.sh
-#. local/vc/am/init.sh
-
 # original scripts
-proj_dir=${nii_pt_scripts}/projects/am
+proj_dir=${nii_pt_scripts}/projects/nsf
 # a temporary name for the dataset
 tmp_dataset_name=$1
 # path to the feature directory
@@ -40,10 +37,10 @@ export TEMP_DEVSET_NAME=${tmp_dataset_name}_dev
 export TEMP_TRNSET_LIST=${tmp_data_dir}/scp/train.lst
 export TEMP_DEVSET_LIST=${tmp_data_dir}/scp/dev.lst
 #  path to the data (train and dev should be in the same folder)
-export TEMP_TRNDEV_PPG=${tmp_data_dir}/ppg
+export TEMP_TRNDEV_MEL=${tmp_data_dir}/mel
 export TEMP_TRNDEV_XVEC=${tmp_data_dir}/xvector
 export TEMP_TRNDEV_F0=${tmp_data_dir}/f0
-export TEMP_TRNDEV_MEL=${tmp_data_dir}/mel
+export TEMP_TRNDEV_WAV=${tmp_data_dir}/wav_tts
 
 
 ####
@@ -55,18 +52,14 @@ log_train_name=log_train
 log_err_name=log_err
 
 printf "${GREEN}Training started... ${NC}\n"
-printf "Please monitor the training log \n  $PWD/${log_train_name}\n"
-printf "Training error per utterance is in \n  $PWD/${log_err_name}\n"
+printf "Please monitor the training log $PWD/${log_train_name}\n"
+printf "Training error per utterance is in $PWD/${log_err_name}\n"
 
-python3 main.py --sampler block_shuffle_by_length --model-forward-with-target \
-	--num-workers 5 --epochs 200 --no-best-epochs 50 --batch-size 32 \
-	--optimizer AdamW --lr 0.0001 --shuffle --seed 1000 \
-	--model-forward-with-file-name \
-	--ignore-length-invalid-data \
+python3 main.py --lr 0.0001 --epochs 50 --no-best-epochs 20 --batch-size 5 \
+	--num-workers 5  --ignore-length-invalid-data \
 	--ignore-cached-file-infor \
-	--cudnn-deterministic-toggle \
+	--cudnn-deterministic-toggle  \
 	--cudnn-benchmark-toggle >${log_train_name} 2>${log_err_name}
-
 
 if [ -e trained_network.pt ];
 then

@@ -4,7 +4,7 @@
 #  here, we use features in ../TESTDATA/vctk_vctk_anonymize for demonstration
 # 
 . path.sh
-. local/vc/am/init.sh
+#. local/vc/am/init.sh
 
 model_name=joint_tts_nsf_hifigan
 proj_dir=${nii_pt_scripts}/projects/${model_name}

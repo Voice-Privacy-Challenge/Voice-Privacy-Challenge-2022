@@ -424,7 +424,7 @@ def f_train_wrapper(args, pt_model, loss_wrapper, device, \
             flag_new_best, optimizer_wrapper.get_lr_info())
 
         # save the best model
-        if flag_new_best:
+        if flag_new_best or args.force_save_lite_trained_network_per_epoch:
             tmp_best_name = nii_nn_tools.f_save_trained_name(args)
             torch.save(pt_model.state_dict(), tmp_best_name)
             

@@ -23,6 +23,9 @@ nii_cmake=$PWD/nii_cmake/CMakeLists.txt
 nii_dir=$PWD/nii
 currennt_dir=$nii_dir/CURRENNT_codes
 
+sv56=https://github.com/openitu/STL/archive/refs/tags/v2009.tar.gz
+sv56_dir=$PWD/STL-2009
+
 nii_pytorchdir=$PWD/nii_pytorch
 
 
@@ -129,6 +132,30 @@ if [ ! -f $mark ]; then
 fi
 [ -f $flac_dir/install/bin/flac ] && \
   echo "export PATH=$flac_dir/install/bin:\$PATH" >> env.sh
+
+
+mark=.done-sv56
+if [ ! -f $mark ]; then
+  if [ -z "$(which sv56demo)" ]; then
+    if [ ! -f $(basename $sv56) ]; then
+      wget -q $sv56 || exit 1
+    fi
+    echo 'Unpacking sv56 source files'
+    [ -d $sv56_dir ] && rm -r $sv56_dir
+    tar -xf $(basename $sv56) || exit 1
+    echo 'Building sv56'
+    cd $sv56_dir/src/sv56
+    make -f makefile.unx || exit 1
+    if [ ! -e $sv56_dir/src/sv56/sv56demo ]; then
+	echo 'fail to compile sv56'
+	exit 1
+    fi
+  fi
+  cd $home
+  touch $mark
+fi
+[ -f $sv56_dir/src/sv56/sv56demo ] && \
+  echo "export PATH=$sv56_dir/src/sv56:\$PATH" >> env.sh
 
 mark=.done-nii
 if [ ! -f $mark ]; then
