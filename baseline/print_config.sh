@@ -153,13 +153,61 @@ echo "                                                 data/vctk_test_{enrolls,t
 echo -e "${BLUE}Output:${NC}"
 echo "    Path to the directory to save ASV results: $results"
 
+
+##########################################################
+echo -e "\n${GREEN}Anonymizing data to train ASR/ASV evaluation models:${NC}"
+print_var "$data_to_train_eval_models" data_to_train_eval_models
+print_var "$data_proc" data_proc
+print_var "$train_anon_level" train_anon_level
+print_var "$data_to_train_eval_models_anon" data_to_train_eval_models_anon
+
+echo -e "${BLUE}Input:${NC}"
+echo "    Training dataset for evaluation models: $data_to_train_eval_models"
+echo "    Anonymization level: $train_anon_level"
+echo -e "${BLUE}Output:${NC}"
+echo "    Directory where the anonymized data for training will be saved: data/$data_to_train_eval_models_anon"
+
+
+##########################################################
 echo -e "\n${GREEN}Training ASR evaluation model:${NC}"
-print_var "$train_data" train_data
-print_var "$asr_eval_model_train" asr_eval_model_train
+print_var "$data_to_train_eval_models_anon" data_to_train_eval_models_anon
 print_var "$data_proc" data_proc
 echo -e "${BLUE}Input:${NC}"
-echo "    Training dataset for evaluation models: $train_data"
+echo "    Directory with the sata for training ASR evaluation model: data/$data_to_train_eval_models_anon"
 echo -e "${BLUE}Output:${NC}"
-echo "    Directory to save the ASR evaluation model: $asr_eval_model_train"
+echo "    Directory to save the ASR evaluation model: $asr_eval_model_trained"
+
+##########################################################
+echo -e "\n${GREEN}Training ASV evaluation model:${NC}"
+print_var "$data_to_train_eval_models_anon" data_to_train_eval_models_anon
+print_var "$data_proc" data_proc
+echo -e "${BLUE}Input:${NC}"
+echo "    Directory with the data for training ASV evaluation model: data/$data_to_train_eval_models_anon"
+echo -e "${BLUE}Output:${NC}"
+echo "    Directory to save the ASV evaluation model: $asv_eval_model_trained"
+
+##########################################################
+echo -e "\n${GREEN}Training TTS model:${NC}"
+
+echo -e "${C}Prepare data for training TTS model:${NC}"
+print_var "$data_train_tts" data_train_tts
+print_var "$data_train_tts_out" data_train_tts_out
+print_var "$tts_model_name" tts_model_name
+print_var "$tts_model" tts_model
+
+echo -e "${BLUE}Input:${NC}"
+echo "    Training dataset for TTS model: $data_train_tts"
+echo "    TTS model type: $tts_type"
+echo "    x-vector type: $xvect_type"
+echo "    x-vector extractor: $xvec_nnet_dir"
+echo "    BN-feature extractor: $ppg_model"
+echo -e "${BLUE}Output:${NC}"
+echo "    Directory to save data for training TTS model (BN-features, F0, x-vectors,...): data/$data_train_tts"
+
+echo -e "\n${C}Training TTS model: $tts_model: ${NC}"
+echo -e "${BLUE}Input:${NC}"
+echo "    Directory with the data (BN-features, F0, x-vectors,...): data/$data_train_tts_out"
+echo -e "${BLUE}Output:${NC}"
+echo "    Directory to save TTS model: $tts_model"
 
 echo Done

@@ -6,6 +6,7 @@
 
 . ./cmd.sh
 . ./path.sh
+. ./config.sh
 
 set -e
 

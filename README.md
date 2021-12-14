@@ -23,7 +23,7 @@ For more details about the baseline and data, please see [The VoicePrivacy 2020 
 
 For the latest updates in the baseline and evaluation scripts, please visit [News and updates page](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/wiki/News-and-Updates)
 
-The deadline to submit results has passed. To access the baseline models and development/evaluation data, please send an email to organisers@lists.voiceprivacychallenge.org with “VoicePrivacy-2020" as the subject line. The mail body should include: (i) the name of the contact person; (ii) country; (iii) status (academic/nonacademic).
+To participate in the **VoicePrivacy 2022 Challenge** and get access to evaluation datasets and models, please send an email to organisers@lists.voiceprivacychallenge.org with “VoicePrivacy-2022" as the subject line. The mail body should include: (i) the name of the contact person; (ii) country; (iii) status (academic/nonacademic).
 
 
 ## Data
@@ -76,23 +76,26 @@ Please see
 * [RESULTS for Baseline-1](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_baseline) 
 * [RESULTS for Baseline-2](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_mcadams) 
 
-for the evalation and development data sets.
+  **new baselies 2022**:
+* [RESULTS for Baseline TTS-pytorch](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_pytorch)
+* [RESULTS for Baseline TTS-pytorch, HIFI-GAN](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_joint_hifigan)
+* [RESULTS for Baseline TTS-pytorch, NSF+HIFI-GAN](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_joint_nsf_hifigan)
 
+for the evalation and development data sets.
 
 
 ## Organizers (in alphabetical order)
 
-- Jean-François Bonastre - University of Avignon - LIA, France
-- Nicholas Evans - EURECOM, France
-- Pierre Champion - Inria, France
-- Xiaoxiao Miao - NII, Japan
-- Hubert Nourtel - Inria, France
-- Paul-Gauthier Noé - University of Avignon - LIA, France
-- Natalia Tomashenko - University of Avignon - LIA, France
-- Massimiliano Todisco - EURECOM, France
-- Emmanuel Vincent - Inria, France
-- Xin Wang - NII, Japan
-- Junichi Yamagishi - NII, Japan and University of Edinburgh, UK
+- **Jean-François Bonastre** - University of Avignon - LIA, France
+- **Nicholas Evans** - EURECOM, France
+- **Pierre Champion** - Inria, France
+- **Xiaoxiao Miao** - NII, Japan
+- **Hubert Nourtel** - Inria, France
+- **Natalia Tomashenko** - University of Avignon - LIA, France
+- **Massimiliano Todisco** - EURECOM, France
+- **Emmanuel Vincent** - Inria, France
+- **Xin Wang** - NII, Japan
+- **Junichi Yamagishi** - NII, Japan and University of Edinburgh, UK
 
 Contact: organisers@lists.voiceprivacychallenge.org
 
@@ -104,7 +107,7 @@ CE23-0018) and by the European Union’s Horizon 2020 Research and Innovation Pr
 
 ## License
 
-Copyright (C) 2022
+Copyright (C) 2021
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

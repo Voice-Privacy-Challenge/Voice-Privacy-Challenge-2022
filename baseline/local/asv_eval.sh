@@ -4,6 +4,7 @@ set -e
 
 . ./cmd.sh
 . ./path.sh
+. ./config.sh
 
 nj=$(nproc)
 asv_eval_model=exp/models/asv_eval/xvect_01709_1
@@ -15,8 +16,6 @@ plda_dir=$asv_eval_model/xvect_train_clean_360
 enrolls=libri_dev_enrolls
 trials=libri_dev_trials_f
 
-printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
-results=exp/results-$results
 
 . ./utils/parse_options.sh
 

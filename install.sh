@@ -23,6 +23,9 @@ nii_cmake=$PWD/nii_cmake/CMakeLists.txt
 nii_dir=$PWD/nii
 currennt_dir=$nii_dir/CURRENNT_codes
 
+nii_pytorchdir=$PWD/nii_pytorch
+
+
 mark=.done-venv
 if [ ! -f $mark ]; then
   echo 'Making python virtual environment'
@@ -54,6 +57,7 @@ if [ ! -f $mark ]; then
   cd $home
   touch $mark
 fi
+echo "if [ \$(which python) != $venv_dir/bin/python ]; then source $venv_dir/bin/activate; fi" > env.sh
 
 mark=.done-kaldi-tools
 if [ ! -f $mark ]; then

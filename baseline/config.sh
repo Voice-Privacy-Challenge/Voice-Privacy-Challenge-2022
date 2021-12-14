@@ -5,10 +5,12 @@
 
 nj=$(nproc)
 
-tts_type=am_nsf_old  #TTS: SS AM + NSF model (c++) --> baseline-1 from VPC-2020
-#tts_type=am_nsf     #TTS: SS AM + NSF model (python)
-#tts_type=hifi_gan   #TTS: HiFi GAN
-#tts_type=ssl        #TTS: Self-supervised learning features: wav2vec2 (...); hubert; hubert_kmeans
+#tts_type=am_nsf_old          #TTS: SS AM + NSF model (c++)m baseline-1 from VPC-2020
+tts_type=am_nsf_pytorch       #TTS: SS AM + NSF model (pytorch)
+#tts_type=joint_hifigan       #TTS: Single joint TTS model based on HiFi GAN
+#tts_type=joint_nsf_hifigan   #TTS: Single joint TTS model based on NSF with GAN
+
+#tts_type=ssl                 #TTS: Self-supervised learning features: wav2vec2 (...); hubert; hubert_kmeans
 
 #xvect_type=kaldi
 xvect_type=sidekit
@@ -82,7 +84,9 @@ fi
 ##########################################################
 # Evaluation settings (common)
 
-results=exp/results-$(printf '%(%Y-%m-%d-%H-%M-%S)T' -1)
+if [ -z "$results" ]; then
+    export results=exp/results-$(printf '%(%Y-%m-%d-%H-%M-%S)T' -1)
+fi
 
 ##########################################################
 # ASR evaluation settings
@@ -104,6 +108,19 @@ fi
 ##########################################################
 # Settings for training of evaluation (original or anonymized) models 
 
-train_data=train-clean-360                      # training dataset for evaluation models
-asr_eval_model_train=exp/models/asr_eval_anon   # directory to save the ASR evaluation model 
-data_proc=orig                                  # anonymized (anon) or original(orig)  
+data_to_train_eval_models=train-clean-360                         # training dataset for evaluation models 
+data_proc=anon                                                    # anonymized (anon) or original(orig) 
+train_anon_level=spk                                              # spk (speaker-level anonymiz.) or utt (utterance-level anonymiz.) - used if data_proc=anon;
+
+data_to_train_eval_models_anon=${data_to_train_eval_models}_anon  # directory name with anonymized training data for evaluation models 
+asr_eval_model_trained=exp/models/asr_eval_${data_proc}           # directory to save the ASR evaluation model 
+asv_eval_model_trained=exp/models/asv_eval_${data_proc}           # directory to save the ASV evaluation model 
+
+
+##########################################################
+# Settings for training TTS model
+
+data_train_tts=$libritts_train_clean_100            # training set 
+data_train_tts_out=${libritts_train_clean_100}_tts  # directory name to save the prepared data in the format to train TTS models
+tts_model_name=tts_joint_hifigan                    # name of the TTS model
+tts_model=exp/models/$tts_model_name                # path to save the TTS model

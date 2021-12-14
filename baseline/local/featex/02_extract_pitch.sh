@@ -18,5 +18,6 @@ fi
 data_dir=$1
 pitch_dir=${data_dir}/pitch
 
+#TODO: remove kaldi pith extraction: it should not be used (only f0_yaapt is used in VC)
 local/featex/make_pitch.sh --nj $nj --cmd "$train_cmd" ${data_dir} \
 	exp/make_pitch ${pitch_dir}

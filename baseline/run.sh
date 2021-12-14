@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script for The 2022 VoicePrivacy Challenge
 ##
-# Copyright (C) 2022  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino, Paul-Gauthier Noé, Andreas Nautsch, ...>
+# Copyright (C) 2021  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino, Paul-Gauthier Noé, Andreas Nautsch, ...>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,6 +26,9 @@ set -e
 stage=0
 
 . utils/parse_options.sh || exit 1
+
+mkdir -p $results
+print_config.sh | sed 's/\[.;..m//g' | sed 's/\[0m//g' >> $results/config.info
 
 # Download development and evaluation datasets
 if [ $stage -le 0 ]; then

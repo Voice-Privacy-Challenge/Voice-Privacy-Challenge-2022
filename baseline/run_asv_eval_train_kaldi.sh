@@ -2,16 +2,13 @@
 
 . ./cmd.sh
 . ./path.sh
-. ./config.sh
 
 set -e
 
-#ASV_eval training on LibriSpeech train_clean_360 corpus
 nj=20
-
 voxceleb1_trials=data/voxceleb1_test/trials
 
-lrate=01709
+lrate=01709  
 epochs=1
 shrink=10
 egs_dir=exp/xvect_egs

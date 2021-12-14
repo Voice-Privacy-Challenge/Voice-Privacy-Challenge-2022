@@ -2,14 +2,14 @@
 
 set -e
 
-. path.sh
-. cmd.sh
+. ./path.sh
+. ./cmd.sh
+. ./config.sh
 
 nj=$(nproc)
 dset=vctk_dev_trials_f_all
 model=exp/models/asr_eval
-printf -v results '%(%Y-%m-%d-%H-%M-%S)T' -1
-results=exp/results-$results
+
 
 . utils/parse_options.sh
 
