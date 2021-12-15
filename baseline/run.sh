@@ -66,7 +66,6 @@ if [ $baseline_type = 'baseline-1' ]; then
 
   if $download_full && [[ $stage -le 5 ]]; then
     printf "${GREEN}\nStage 5: Downloading Augmentation data (noise + reverb) for training asv system...${NC}\n"
-
   fi
    
   # Prepare data for anonymization pool data (libritts-train-other-500)
