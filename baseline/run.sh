@@ -54,13 +54,8 @@ if [ $baseline_type = 'baseline-1' ]; then
 
   # Download LibriSpeech data sets for training anonymization system (train-other-500, train-clean-100) 
   if $download_full && [[ $stage -le 3 ]]; then
-    printf "${GREEN}\nStage 3.1: Downloading LibriSpeech data sets for training anonymization system $libri_train_sets...${NC}\n"
+    printf "${GREEN}\nStage 3: Downloading LibriSpeech data sets for training anonymization system $libri_train_sets...${NC}\n"
     local/main_download_and_untar_libri.sh || exit 1
-
-    printf "${GREEN}\nStage 3.2: Downloading Augmentation data for training anonymization system...${NC}\n"
-    cd ../sidekit/egs/libri360_train
-    python3 dataprep.py --save-path data --download-augment
-    cd -
   fi
 
   # Download LibriTTS data sets for training anonymization system (train-other-500, train-clean-100)
@@ -68,16 +63,21 @@ if [ $baseline_type = 'baseline-1' ]; then
     printf "${GREEN}\nStage 4: Downloading LibriTTS data sets for training anonymization system libritts_train_sets...${NC}\n"
     local/main_download_and_untar_libritts.sh || exit 1
   fi
+
+  if $download_full && [[ $stage -le 5 ]]; then
+    printf "${GREEN}\nStage 5: Downloading Augmentation data (noise + reverb) for training asv system...${NC}\n"
+
+  fi
    
   # Prepare data for anonymization pool data (libritts-train-other-500)
-  if [ $stage -le 5 ]; then
-    printf "${GREEN}\nStage 5: Prepare anonymization pool data...${NC}\n"
+  if [ $stage -le 6 ]; then
+    printf "${GREEN}\nStage 6: Prepare anonymization pool data...${NC}\n"
     local/main_data_prep_libritts.sh || exit 1
   fi
     
   # Extract xvectors from anonymization pool
-  if [ $stage -le 6 ]; then
-    printf "${GREEN}\nStage 6: Extracting xvectors for anonymization pool...${NC}\n"
+  if [ $stage -le 7 ]; then
+    printf "${GREEN}\nStage 7: Extracting xvectors for anonymization pool...${NC}\n"
     local/main_extract_xvectors_pool.sh || exit 1
   fi
 
@@ -85,67 +85,67 @@ fi # baseline-1
 
 
 # Make evaluation data
-if [ $stage -le 7 ]; then
-  printf "${GREEN}\nStage 7: Making evaluation subsets...${NC}\n"
+if [ $stage -le 8 ]; then
+  printf "${GREEN}\nStage 8: Making evaluation subsets...${NC}\n"
   local/main_make_eval_data.sh || exit 1
 fi
 
 
 # Anonymization
-if [ $stage -le 8 ]; then
-  printf "${GREEN}\nStage 8: Anonymizing evaluation datasets...${NC}\n"
+if [ $stage -le 9 ]; then
+  printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
   local/main_anonymization.sh || exit 1
 fi
 
 
 # Make VCTK anonymized evaluation subsets
-if [ $stage -le 9 ]; then
-  printf "${GREEN}\nStage 9: Making VCTK anonymized evaluation subsets...${NC}\n"
+if [ $stage -le 10 ]; then
+  printf "${GREEN}\nStage 10: Making VCTK anonymized evaluation subsets...${NC}\n"
   local/main_make_vctk_anon_eval_sets.sh || exit 1
 fi
 
 
 # ASV evaluation
-if [ $stage -le 10 ]; then
-  printf "${GREEN}\n Stage 10: Evaluate datasets using speaker verification...${NC}\n"
+if [ $stage -le 11 ]; then
+  printf "${GREEN}\n Stage 11: Evaluate datasets using speaker verification...${NC}\n"
   local/main_eval_asv.sh || exit 1
 fi
 
 
 # Make ASR evaluation subsets
-if [ $stage -le 11 ]; then
-  printf "${GREEN}\nStage 11: Making ASR evaluation subsets...${NC}\n"
+if [ $stage -le 12 ]; then
+  printf "${GREEN}\nStage 12: Making ASR evaluation subsets...${NC}\n"
   local/main_make_asr_eval_sets.sh || exit 1
 fi
 
 
 # ASR evaluation
-if [ $stage -le 12 ]; then
-  printf "${GREEN}\nStage 12: Performing intelligibility assessment using ASR decoding...${NC}\n"
+if [ $stage -le 13 ]; then
+  printf "${GREEN}\nStage 13: Performing intelligibility assessment using ASR decoding...${NC}\n"
   local/main_eval_asr.sh || exit 1
 fi
 
 
-if [ $stage -le 13 ]; then
-  printf "${GREEN}\nStage 13: Collecting results${NC}\n"
+if [ $stage -le 14 ]; then
+  printf "${GREEN}\nStage 14: Collecting results${NC}\n"
   local/main_collect_results.sh || exit 1
 fi
 
 
-if [ $stage -le 14 ]; then
-  printf "${GREEN}\nStage 14: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
+if [ $stage -le 15 ]; then
+  printf "${GREEN}\nStage 15: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
   local/main_compute_deid.sh || exit 1
 fi
 
 
-if [ $stage -le 15 ]; then
-  printf "${GREEN}\nStage 15: Collecting results for re-indentification and the voice-distinctiveness preservation${NC}\n"
+if [ $stage -le 16 ]; then
+  printf "${GREEN}\nStage 16: Collecting results for re-indentification and the voice-distinctiveness preservation${NC}\n"
   local/main_collect_deid_results.sh || exit 1
 fi
 
 
-if [ $stage -le 16 ]; then
-  printf "${GREEN}\nStage 16: Summarizing ZEBRA plots for all experiments${NC}\n"
+if [ $stage -le 17 ]; then
+  printf "${GREEN}\nStage 17: Summarizing ZEBRA plots for all experiments${NC}\n"
   local/main_zebra_results.sh || exit 1
 fi
 
