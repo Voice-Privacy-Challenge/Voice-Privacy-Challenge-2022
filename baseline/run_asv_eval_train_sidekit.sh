@@ -35,6 +35,7 @@ if [ ! -f $mark ]; then
   mkdir -p data/$data_to_train_eval_models/vad
   apply_vad_on_csv.py --nj $nj \
                       --in-csv data/$data_to_train_eval_models/sidekit_$data_to_train_eval_models.csv \
+                      --audio-dir $(pwd) \
                       --out-csv data/$data_to_train_eval_models/sidekit_vad_$data_to_train_eval_models.csv \
                       --out-audio-dir data/$data_to_train_eval_models/vad \
                       --extension-name flac || exit 1
