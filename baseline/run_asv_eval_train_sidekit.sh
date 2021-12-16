@@ -9,12 +9,11 @@ set -e
 #ASV_eval training on LibriSpeech train_clean_360 corpus
 nj=20
 
-data_to_train_eval_models=$(echo "$data_to_train_eval_models" | sed -r 's/-/_/g')
 # Create csv file from dataset for sidekit input
 mark=.done-sidekit-train-csv
 if [ ! -f $mark ]; then
   sidekit_csv_from_kaldi.py --kaldi-data-path data/$data_to_train_eval_models \
-                            --out-csv $data_to_train_eval_models/sidekit_$data_to_train_eval_models.csv \
+                            --out-csv data/$data_to_train_eval_models/sidekit_$data_to_train_eval_models.csv \
                             --database-name $data_to_train_eval_models
   touch $mark
 fi
