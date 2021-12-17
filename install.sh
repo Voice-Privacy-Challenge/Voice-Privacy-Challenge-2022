@@ -57,7 +57,6 @@ if [ ! -f $mark ]; then
   cd $home
   touch $mark
 fi
-echo "if [ \$(which python) != $venv_dir/bin/python ]; then source $venv_dir/bin/activate; fi" > env.sh
 
 mark=.done-kaldi-tools
 if [ ! -f $mark ]; then

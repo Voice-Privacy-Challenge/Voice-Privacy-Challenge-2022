@@ -4,7 +4,7 @@ export PATH=$PWD/utils/:$KALDI_ROOT/tools/openfst/bin:$KALDI_ROOT/tools/sph2pipe
 . $KALDI_ROOT/tools/config/common_path.sh
 export LC_ALL=C
 
-. ../env.sh
+. ../env.sh ""
 
 # based on https://stackoverflow.com/a/5947802/12499892
 export GREEN='\033[0;32m'
