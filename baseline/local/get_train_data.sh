@@ -3,7 +3,7 @@
 
 set -e
 
-stage=0
+stage=1
 
 . ./cmd.sh
 . ./path.sh
@@ -38,7 +38,8 @@ if [ $stage -le 2 ]; then
   # format the data as Kaldi data directories
   for part in $train; do
     # use underscore-separated names in data directories.
-    local/data_prep_libri.sh $corpora/LibriSpeech/$part data/$(echo $part | sed s/-/_/g) || exit 1
+    #local/data_prep_libri.sh $corpora/LibriSpeech/$part data/$(echo $part | sed s/-/_/g) || exit 1
+    local/data_prep_libri.sh $corpora/LibriSpeech/$part data/$part || exit 1
   done
 fi
 
