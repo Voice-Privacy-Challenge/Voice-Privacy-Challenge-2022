@@ -50,6 +50,11 @@ def f_args_parsed(argument_input = None):
     mes = 'number of no-best epochs for early stopping (default: 5)'
     parser.add_argument('--no-best-epochs', type=int, default=5, help=mes)
 
+    mes = 'force to save trained-network.pt per epoch, '
+    mes += 'no matter whether the epoch is currently the best.'
+    parser.add_argument('--force-save-lite-trained-network-per-epoch', 
+                        action='store_true', default=False, help=mes)
+
     mes = 'sampler (default: None). Default sampler is random shuffler. '
     mes += 'Option 1: block_shuffle_by_length, shuffle data by length'
     parser.add_argument('--sampler', type=str, default='None', help=mes)

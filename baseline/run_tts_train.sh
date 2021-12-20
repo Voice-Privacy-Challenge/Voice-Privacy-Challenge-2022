@@ -8,12 +8,13 @@
 set -e
 
 nj=20
-stage=6
+stage=0
 
 . ./utils/parse_options.sh
 
 data=$data_train_tts
-data_out=data/$data_train_tts_out #Directory to save prepared data (x-vectors, BN, pitch, ...) for training TTS model 
+#Directory to save prepared data (x-vectors, BN, pitch, ...) for training TTS model 
+data_out=data/$data_train_tts_out 
 
 libritts_corpus=$(realpath $corpora/LibriTTS)
 xvec_out_dir=${xvec_nnet_dir}/$data
@@ -54,7 +55,7 @@ if [ $stage -le 4 ]; then
 	  ${data} ${ppg_model} ${ppg_dir}/ppg_${data} || exit 1
 fi
 
-#TODO: add mel spectrogram extration
+
 if [ $stage -le 5 ]; then
   printf "${GREEN}\nStage 5: Make netcdf data (${data}) for VC...${NC}\n"
   local/anon/make_netcdf.sh --stage 0 data/${data} ${ppg_dir}/ppg_${data}/phone_post.scp \
@@ -63,10 +64,24 @@ if [ $stage -le 5 ]; then
 fi
 
 
-#TODO: add script to train TTS models train_tts_model.sh 
 if [ $stage -le 6 ]; then
-  printf "${GREEN}\nStage 6: Training TTS models...${NC}\n"
-  local/train_tts_model.sh || exit 1
+    printf "${GREEN}\nStage 6: prepare waveform data for TTS training...${NC}\n"
+    local/featex/04_create_wav_downsample_norm.sh --nj $nj data/${data}/wav.scp \
+	  ${data_out}/${data}/wav_tts ${tts_sampling_rate} || exit 1
+fi
+
+
+if [ $stage -le 7 ]; then
+    printf "${GREEN}\nStage 7: extract mel-spectrogram for TTS AM training${NC}\n"
+    local/featex/05_extract_mel_for_am.sh --nj $nj data/${data}/wav.scp \
+	  ${data_out}/${data}/wav_tts ${data_out}/${data}/mel || exit 1
+fi
+
+
+if [ $stage -le 8 ]; then
+  printf "${GREEN}\nStage 8: Training TTS models...${NC}\n"
+  local/train_tts_model.sh --nj $nj --stage 0 \
+	  --model-type ${tts_type} --data-dir ${data_out}/${data} || exit 1
 fi
 
 echo Done

@@ -759,7 +759,7 @@ class NIIDataSet(torch.utils.data.Dataset):
                 nii_warn.f_die("%s not found" % (file_path))
             else:        
                 t_len  = self.f_length_data(file_path) // t_dim
-                print("%s, length %d, dim %d, reso: %d" % \
+                nii_warn.f_eprint("%s, length %d, dim %d, reso: %d" % \
                       (file_path, t_len, t_dim, t_res))
         return
 
@@ -801,17 +801,18 @@ class NIIDataSet(torch.utils.data.Dataset):
                 if self.m_data_length[file_name] > tmp_len:
                     self.m_data_length[file_name] = tmp_len
             else:
-                nii_warn.f_print("Sequence length mismatch:", 'error')
+                nii_warn.f_eprint("Sequence length mismatch:")
                 self.f_check_specific_data(file_name)
-                nii_warn.f_print("Please check the above features", 'error')
+                
 
                 if self.m_ignore_length_invalid:
-                    nii_warn.f_print("ignore-length-invalid-data is on")
-                    nii_warn.f_print("ignore {:s}".format(file_name))
+                    nii_warn.f_eprint("ignore-length-invalid-data is on")
+                    nii_warn.f_eprint("ignore {:s}".format(file_name))
                     return False
                 else:
-                    nii_warn.f_print("Or remove them from data list", 'error')
-                    nii_warn.f_print("Or --ignore-length-invalid-data",'error')
+                    nii_warn.f_eprint("Please check the above features")
+                    nii_warn.f_eprint("Or remove them from data list")
+                    nii_warn.f_eprint("Or --ignore-length-invalid-data")
                     nii_warn.f_die("Possible invalid data %s" % (file_name))
 
             # adjust the length so that, when reso is used,
