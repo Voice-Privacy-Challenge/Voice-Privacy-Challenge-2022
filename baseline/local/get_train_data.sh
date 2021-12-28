@@ -21,19 +21,14 @@ if [ $stage -le 0 ]; then
   for part in $train; do
     printf "${GREEN}\nStage 0: Downloading LibriSpeech data set $train for training evaluatio models...${NC}\n"
     local/download_and_untar.sh --remove-archive $corpora $data_url_librispeech $part LibriSpeech || exit 1
+	# TODO: download spk data for asv
   done
 fi
 
-if [ $stage -le 1 ]; then
-  # Download language model and directory lang
-  printf "${GREEN}\nStage 1: Download LM and lang...${NC}\n"
-  # TODO: ...
-  # local/download_lm.sh || exit 1
-fi
 
-if [ $stage -le 2 ]; then
+if [ $stage -le 1 ]; then
   # Prepare data for training evaluation models (train-clean-360) 
-  printf "${GREEN}\nStage 2: Preparing data $train for training evaluation models...${NC}\n"
+  printf "${GREEN}\nStage 1: Preparing data $train for training evaluation models...${NC}\n"
   # TODO: ...
   # format the data as Kaldi data directories
   for part in $train; do
@@ -44,10 +39,10 @@ if [ $stage -le 2 ]; then
 fi
 
 
-if [[ $data_proc == 'anon' ]] && [[ $stage -le 3 ]]; then
+if [[ $data_proc == 'anon' ]] && [[ $stage -le 2 ]]; then
   # Anonymize data for training evaluation models (train-clean-360)
-  printf "${GREEN}\nStage 3: Anonymizing data $train for training evaluation models...${NC}\n"
-  # TODO: ...
+  printf "${GREEN}\nStage 2: Anonymizing data $train for training evaluation models...${NC}\n"
+  local/main_anonymization_train_data.sh || exit 1
 fi
 
 echo '  Done'
