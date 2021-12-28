@@ -14,7 +14,7 @@ epochs=1
 shrink=10
 egs_dir=exp/xvect_egs
 
-stage=0
+stage=1
 train_stage=-1
 
 train=$data_to_train_eval_models-asv  
@@ -25,7 +25,13 @@ nnet_dir=exp/xvect_${lrate}_${epochs}
 
 
 if [ $stage -le -1 ]; then
-
+  utils/copy_data_dir.sh data/$data_to_train_eval_models data/$train || exit 1
+  cp -p data/$data_to_train_eval_models-spk/utt2spk data/$train
+  utils/utt2spk_to_spk2utt.pl data/$train/utt2spk > data/$train/spk2utt || exit 1
+  cp -p data/$data_to_train_eval_models-spk/spk2gender data/$train 
+  rm data/$train/cmvn.scp
+  utils/fix_data_dir.sh data/$train || exit 1
+  utils/validate_data_dir.sh data/$train || exit 1
 fi
 
 if [ $stage -le 0 ]; then
