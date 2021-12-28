@@ -89,6 +89,8 @@ if [ $baseline_type == 'baseline-2' ]; then
   print_var "$n_lpc" n_lpc
   print_var "$mc_coeff_enroll" mc_coeff_enroll
   print_var "$mc_coeff_trials" mc_coeff_trials
+  print_var "$mc_coeff_min" mc_coeff_min
+  print_var "$mc_coeff_max" mc_coeff_max
 elif [ $baseline_type = 'baseline-1' ]; then 
   print_var "$ppg_model" ppg_model
   print_var "$cross_gender" cross_gender

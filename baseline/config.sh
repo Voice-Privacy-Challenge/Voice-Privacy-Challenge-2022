@@ -63,8 +63,11 @@ anon_data_suffix=_anon
 if [ $baseline_type = 'baseline-2' ]; then
 	#McAdams anonymisation config
 	n_lpc=20
+	#TODO: replace mc_coeff_enroll,mc_coeff_trials --> random
 	mc_coeff_enroll=0.8                  # mc_coeff for enrollment 
 	mc_coeff_trials=0.8                  # mc_coeff for trials
+	mc_coeff_min=0.5                     # min possible value for McAdams coefficient (sampled randomly for each speaker or uteerance (depending on anon_level) in interval [mc_coeff_min,mc_coeff_max])
+	mc_coeff_max=0.8                     # max possible value for McAdams coefficient 
 elif [ $baseline_type = 'baseline-1' ]; then
 	ppg_model=exp/models/1_asr_am/exp    # ASR model for BN extraction
 	cross_gender=false                   # false (same gender xvectors will be selected) or true (other gender xvectors)
@@ -99,8 +102,8 @@ data_proc=anon                                                    # anonymized (
 train_anon_level=spk                                              # spk (speaker-level anonymiz.) or utt (utterance-level anonymiz.) - used if data_proc=anon;
 
 data_to_train_eval_models_anon=${data_to_train_eval_models}_anon  # directory name with anonymized training data for evaluation models 
-asr_eval_model_trained=exp/models/asr_eval_${data_proc}           # directory to save the ASR evaluation model 
-asv_eval_model_trained=exp/models/asv_eval_${data_proc}           # directory to save the ASV evaluation model 
+asr_eval_model_trained=exp/models/user_asr_eval_${data_proc}           # directory to save the ASR evaluation model 
+asv_eval_model_trained=exp/models/user_asv_eval_${data_proc}           # directory to save the ASV evaluation model 
 
 
 ##########################################################
