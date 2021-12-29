@@ -14,25 +14,20 @@ epochs=1
 shrink=10
 egs_dir=exp/xvect_egs
 
-stage=1
+stage=11
 train_stage=-1
-
-train=$data_to_train_eval_models-asv  
 
 . ./utils/parse_options.sh
 
-nnet_dir=exp/xvect_${lrate}_${epochs}
+train=$data_to_train_eval_models-asv  
 
-
-if [ $stage -le -1 ]; then
-  utils/copy_data_dir.sh data/$data_to_train_eval_models data/$train || exit 1
-  cp -p data/$data_to_train_eval_models-spk/utt2spk data/$train
-  utils/utt2spk_to_spk2utt.pl data/$train/utt2spk > data/$train/spk2utt || exit 1
-  cp -p data/$data_to_train_eval_models-spk/spk2gender data/$train 
-  rm data/$train/cmvn.scp
-  utils/fix_data_dir.sh data/$train || exit 1
-  utils/validate_data_dir.sh data/$train || exit 1
+if [[ $data_proc == 'anon' ]]; then
+  printf "${GREEN} Training evaluation models on anonymized data...${NC}\n"
+  train=$train$anon_data_suffix
+else
+  printf "${GREEN} Training evaluation models on original data...${NC}\n"
 fi
+nnet_dir=$asv_eval_model_trained    #asv_eval_model_trained=exp/models/user_asv_eval_${data_proc}
 
 if [ $stage -le 0 ]; then
   for name in $train; do
@@ -121,6 +116,19 @@ if [ $stage -le 10 ]; then
     ivector-compute-plda ark:data/$train/spk2utt \
     "ark:ivector-subtract-global-mean scp:$nnet_dir/xvect_$train/xvector.scp ark:- | transform-vec $nnet_dir/xvect_$train/transform.mat ark:- ark:- | ivector-normalize-length ark:-  ark:- |" \
     $nnet_dir/xvect_$train/plda || exit 1
+fi
+
+if [ $stage -le 11 ]; then
+  printf "${GREEN}\n Coping the final model/links to the user directory...${NC}\n"
+  if [ -f "$nnet_dir/plda" ]; then
+    echo "$nnet_dir/plda already exists"
+  else
+    cd $nnet_dir
+    ln -s xvect_$train/plda plda
+	ln -s xvect_$train/mean.vec mean.vec
+    ln -s xvect_$train/transform.mat transform.mat
+	cd ../../..
+  fi
 fi
 
 echo Done

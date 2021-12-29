@@ -5,7 +5,8 @@ set -e
 . ./config.sh
 
 rand_seed=$rand_seed_start
-dset=$data_to_train_eval_models #train-clean-360-asv
+dset=${data_to_train_eval_models}-asv #train-clean-360-asv
+
 
 echo "anon_level = $anon_level"
 echo $dset
