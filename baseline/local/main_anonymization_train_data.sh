@@ -7,6 +7,10 @@ set -e
 rand_seed=$rand_seed_start
 dset=${data_to_train_eval_models}-asv #train-clean-360-asv
 
+train=$data_to_train_eval_models
+train_asv=$data_to_train_eval_models-asv
+train_anon=${data_to_train_eval_models}$anon_data_suffix
+train_asv_anon=$data_to_train_eval_models-asv$anon_data_suffix
 
 echo "anon_level = $anon_level"
 echo $dset
@@ -49,5 +53,16 @@ else
     --anon-data-suffix $anon_data_suffix \
     --model-type $tts_type $dset || exit 1
 fi  
+
+
+# Copy train_anon from train_asv_anon and replace spk2utt with session-speaker ids
+printf "${GREEN}\n: Copy  $train_anon from $train_asv_anon and modication of spk2utt...${NC}\n"
+utils/copy_data_dir.sh data/$train_asv_anon data/$train_anon || exit 1
+cp data/$train/utt2spk data/$train_anon
+utils/utt2spk_to_spk2utt.pl data/$train_asv/utt2spk > data/$train_anon/spk2utt || exit 1
+cp data/$train/spk2gender data/$train_anon 
+rm data/$train_anon/cmvn.scp
+utils/fix_data_dir.sh data/$train_anon || exit 1
+utils/validate_data_dir.sh data/$train_anon || exit 1
 
 echo '  Done'

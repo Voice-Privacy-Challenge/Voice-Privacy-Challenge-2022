@@ -79,68 +79,96 @@ if [ $baseline_type = 'baseline-1' ]; then
 fi # baseline-1
 
 
+# Download and prepare LibriSpeech data sets for training evaluation models (train-other-360)
+if  [ $train_asv || $train_asr ] && [ $stage -le 7 ]; then 
+  printf "${GREEN}\nStage 7: Downloading LibriSpeech data set for training evaluation models...${NC}\n"
+  local/main_get_train_data.sh || exit 1
+fi
+
+
 # Make evaluation data
-if [ $stage -le 7 ]; then
-  printf "${GREEN}\nStage 7: Making evaluation subsets...${NC}\n"
+if [ $stage -le 8 ]; then
+  printf "${GREEN}\nStage 8: Making evaluation subsets...${NC}\n"
   local/main_make_eval_data.sh || exit 1
 fi
 
 
-# Anonymization
-if [ $stage -le 8 ]; then
-  printf "${GREEN}\nStage 8: Anonymizing evaluation datasets...${NC}\n"
+# Anonymization of evaluation datasets
+if [ $stage -le 9 ]; then
+  printf "${GREEN}\nStage 9: Anonymizing evaluation datasets...${NC}\n"
   local/main_anonymization.sh || exit 1
 fi
 
 
+# Anonymization of the training dataset (train-clean-360) for ASR_eval^anon and ASV_eval^anon
+if [ $train_asv || $train_asr ] && [ $data_proc == 'anon' ] && [ $stage -le 9 ]; then
+  printf "${GREEN}\nStage 9: Anonymizing data for training evaluation models...${NC}\n"
+  local/main_anonymization_train_data.sh || exit 1
+fi
+
+
+# Train ASV_eval^anon
+if [ $train_asv ] && [ $stage -le 10 ]; then
+  printf "${GREEN}\nStage 10: Train ASV_eval...${NC}\n"
+  local/main_asv_eval_train.sh || exit 1
+fi
+
+
+# Train ASR_eval^anon 
+if [ $train_asr ] && [ $stage -le 11 ]; then
+  printf "${GREEN}\nStage 11: Train ARV_eval...${NC}\n"
+  local/main_asr_eval_train.sh || exit 1
+fi
+
+
 # Make VCTK anonymized evaluation subsets
-if [ $stage -le 9 ]; then
-  printf "${GREEN}\nStage 9: Making VCTK anonymized evaluation subsets...${NC}\n"
+if [ $stage -le 12 ]; then
+  printf "${GREEN}\nStage 12: Making VCTK anonymized evaluation subsets...${NC}\n"
   local/main_make_vctk_anon_eval_sets.sh || exit 1
 fi
 
 
 # ASV evaluation
-if [ $stage -le 10 ]; then
-  printf "${GREEN}\n Stage 10: Evaluate datasets using speaker verification...${NC}\n"
+if [ $stage -le 13 ]; then
+  printf "${GREEN}\n Stage 13: Evaluate datasets using speaker verification...${NC}\n"
   local/main_eval_asv.sh || exit 1
 fi
 
 
 # Make ASR evaluation subsets
-if [ $stage -le 11 ]; then
-  printf "${GREEN}\nStage 11: Making ASR evaluation subsets...${NC}\n"
+if [ $stage -le 14 ]; then
+  printf "${GREEN}\nStage 14: Making ASR evaluation subsets...${NC}\n"
   local/main_make_asr_eval_sets.sh || exit 1
 fi
 
 
 # ASR evaluation
-if [ $stage -le 12 ]; then
-  printf "${GREEN}\nStage 12: Performing intelligibility assessment using ASR decoding...${NC}\n"
+if [ $stage -le 15 ]; then
+  printf "${GREEN}\nStage 15: Performing intelligibility assessment using ASR decoding...${NC}\n"
   local/main_eval_asr.sh || exit 1
 fi
 
 
-if [ $stage -le 13 ]; then
-  printf "${GREEN}\nStage 13: Collecting results${NC}\n"
+if [ $stage -le 16 ]; then
+  printf "${GREEN}\nStage 16: Collecting results${NC}\n"
   local/main_collect_results.sh || exit 1
 fi
 
 
-if [ $stage -le 14 ]; then
-  printf "${GREEN}\nStage 14: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
+if [ $stage -le 17 ]; then
+  printf "${GREEN}\nStage 17: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
   local/main_compute_deid.sh || exit 1
 fi
 
 
-if [ $stage -le 15 ]; then
-  printf "${GREEN}\nStage 15: Collecting results for re-indentification and the voice-distinctiveness preservation${NC}\n"
+if [ $stage -le 18 ]; then
+  printf "${GREEN}\nStage 18: Collecting results for re-indentification and the voice-distinctiveness preservation${NC}\n"
   local/main_collect_deid_results.sh || exit 1
 fi
 
 
-if [ $stage -le 16 ]; then
-  printf "${GREEN}\nStage 16: Summarizing ZEBRA plots for all experiments${NC}\n"
+if [ $stage -le 19 ]; then
+  printf "${GREEN}\nStage 19: Summarizing ZEBRA plots for all experiments${NC}\n"
   local/main_zebra_results.sh || exit 1
 fi
 

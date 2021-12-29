@@ -158,6 +158,8 @@ echo "    Path to the directory to save ASV results: $results"
 
 ##########################################################
 echo -e "\n${GREEN}Anonymizing data to train ASR/ASV evaluation models:${NC}"
+print_var "$train_asr_eval" train_asr_eval
+print_var "$train_asv_eval" train_asv_eval
 print_var "$data_to_train_eval_models" data_to_train_eval_models
 print_var "$data_proc" data_proc
 print_var "$train_anon_level" train_anon_level

@@ -4,9 +4,14 @@ set -e
 
 . ./config.sh
 
+if [ $train_asv ]; then
+  asv_eval_model=$asv_eval_model_trained
+  echo "The user trained ASV model $asv_eval_model will be used in evaluation"
+fi
+
 for suff in $eval_subsets; do
   echo suff=$suff
-  plda_dir=${asv_eval_model}/xvect_train_clean_360 # ASV_eval model (plda)
+  plda_dir=${asv_eval_model} # ASV_eval model (plda)
   echo plda_dir=$plda_dir
   printf "${RED}**ASV: libri_${suff}_trials_f, enroll - original, trial - original**${NC}\n"
   local/asv_eval.sh --plda_dir $plda_dir --asv_eval_model $asv_eval_model \
