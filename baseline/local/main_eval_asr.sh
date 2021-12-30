@@ -4,6 +4,13 @@ set -e
 
 . ./config.sh
 
+if [ $train_asr_eval ]; then
+  asv_eval_model=$asr_eval_model_trained
+  echo "The user trained ASR model $asr_eval_model will be used in evaluation"
+else
+  echo "The pretrained (downloaded) ASR model $asr_eval_model will be used in evaluation"
+fi
+
 for dset in $eval_sets; do
   for suff in $eval_subsets; do
     for data in ${dset}_${suff}_asr ${dset}_${suff}_asr$anon_data_suffix; do

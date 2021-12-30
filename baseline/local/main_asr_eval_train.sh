@@ -7,7 +7,7 @@
 
 set -e
 
-stage=7
+stage=0
 nj=$(nproc)
 [ $nj -gt 40 ] && nj=40
 
@@ -18,8 +18,6 @@ dev=libri_dev_asr
 test=libri_test_asr
 lang=exp/models/asr_eval/lang_nosp #data/lang_nosp
 lang_test_tgsmall=exp/models/asr_eval/lang_test_tgsmall #data/lang_nosp_test_tgsmall
-#model=$asr_eval_model_trained #directory to save the trained model
-
 
 if [ $stage -le 0 ]; then
   for part in $dev $test $train; do
@@ -83,7 +81,7 @@ if [ $stage -le 7 ]; then
 fi
 
 if [ $stage -le 8 ]; then
-  printf "${GREEN}\n Coping the final model/links for ASR model to the user directory...${NC}\n"
+  printf "${GREEN}\n Coping the final $asr_eval_model_trained/links for ASR model to the user directory...${NC}\n"
   if [ -d "$asr_eval_model_trained/extractor" ]; then
     echo "$asr_eval_model_trained/extractor already exists, skipping link creation"
   else

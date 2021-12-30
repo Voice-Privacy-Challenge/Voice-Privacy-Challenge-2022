@@ -4,14 +4,14 @@
 
 set -e
 
-model=$asr_eval_model_trained #directory to save the trained model
+exp=$asr_eval_model_trained #directory to save the trained model (defined in config.sh) exp/models/user_asr_eval_${data_proc}
 
 # configs for 'chain'
 stage=0
 decode_nj=10 #40
 train_set=train-clean-360
 gmm=tri3b_cleaned
-nnet3_affix=_cleaned.$model
+nnet3_affix=_cleaned
 
 dev=libri_dev_asr
 test=libri_test_asr
@@ -61,13 +61,13 @@ local/nnet3/run_ivector_common.sh --stage $stage \
 
 gmm_dir=exp/$gmm
 ali_dir=exp/${gmm}_ali_${train_set}_sp
-tree_dir=exp/chain${nnet3_affix}/tree_sp${tree_affix:+_$tree_affix}
+tree_dir=$exp/chain${nnet3_affix}/tree_sp${tree_affix:+_$tree_affix}
 lang=data/lang_chain
-lat_dir=exp/chain${nnet3_affix}/${gmm}_${train_set}_sp_lats
-dir=exp/chain${nnet3_affix}/tdnn${affix:+_$affix}_sp
+lat_dir=$exp/chain${nnet3_affix}/${gmm}_${train_set}_sp_lats
+dir=$exp/chain${nnet3_affix}/tdnn${affix:+_$affix}_sp
 train_data_dir=data/${train_set}_sp_hires
 lores_train_data_dir=data/${train_set}_sp
-train_ivector_dir=exp/nnet3${nnet3_affix}/ivectors_${train_set}_sp_hires
+train_ivector_dir=$exp/nnet3${nnet3_affix}/ivectors_${train_set}_sp_hires
 
 # if we are using the speed-perturbed data we need to generate
 # alignments for it.

@@ -116,7 +116,7 @@ fi
 
 # Train ASR_eval^anon 
 if $train_asr_eval && [[ $stage -le 12 ]]; then
-  printf "${GREEN}\nStage 12: Train ARV_eval...${NC}\n"
+  printf "${GREEN}\nStage 12: Train ASR_eval...${NC}\n"
   local/main_asr_eval_train.sh || exit 1
 fi
 
@@ -147,7 +147,7 @@ if [ $stage -le 16 ]; then
   printf "${GREEN}\nStage 16: Performing intelligibility assessment using ASR decoding...${NC}\n"
   local/main_eval_asr.sh || exit 1
 fi
-
+#TODO: add 2 ASR evaluations: orig. and anon.
 
 if [ $stage -le 17 ]; then
   printf "${GREEN}\nStage 17: Collecting results${NC}\n"
