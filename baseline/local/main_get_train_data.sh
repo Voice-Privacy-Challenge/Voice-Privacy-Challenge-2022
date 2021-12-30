@@ -38,7 +38,6 @@ if [ $stage -le 0 ]; then
   if [ -d "data/lang_test_tglarge" ]; then
     echo "data/lang_test_tglarge already exists"
   else
-  else
     ln -s ../exp/models/asr_eval/lang_test_tglarge data/lang_test_tglarge || exit 1
   fi  
 fi
