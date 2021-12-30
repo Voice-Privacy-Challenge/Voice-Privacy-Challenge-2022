@@ -38,6 +38,7 @@ if [ $stage -le 0 ]; then
   if [ -d "data/lang_test_tglarge" ]; then
     echo "data/lang_test_tglarge already exists"
   else
+  else
     ln -s ../exp/models/asr_eval/lang_test_tglarge data/lang_test_tglarge || exit 1
   fi  
 fi
@@ -56,13 +57,15 @@ if [ $stage -le 1 ]; then
 fi
 
 
-if [ $stage -le -2 ]; then
+if [ $stage -le 2 ]; then
 # Prepare data for training ASV evaluation model:  spk2utt with real speaker ids
+  printf "${GREEN}Preparing data data for training ASV evaluation model:  spk2utt with real speaker ids...${NC}\n"
+  echo "$data_to_train_eval_models --> $train_asv"
   utils/copy_data_dir.sh data/$data_to_train_eval_models data/$train_asv || exit 1
-  cp data/$data_to_train_eval_models-spk/utt2spk data/$train_asv
+  cp data/$data_to_train_eval_models-spk/$data_to_train_eval_models-spk/utt2spk data/$train_asv
   utils/utt2spk_to_spk2utt.pl data/$train_asv/utt2spk > data/$train_asv/spk2utt || exit 1
-  cp data/$data_to_train_eval_models-spk/spk2gender data/$train_asv 
-  rm data/$train_asv/cmvn.scp
+  cp data/$data_to_train_eval_models-spk/$data_to_train_eval_models-spk/spk2gender data/$train_asv 
+  rm -f data/$train_asv/cmvn.scp
   utils/fix_data_dir.sh data/$train_asv || exit 1
   utils/validate_data_dir.sh data/$train_asv || exit 1
 fi

@@ -6,6 +6,7 @@ set -e
 
 rand_seed=$rand_seed_start
 dset=${data_to_train_eval_models}-asv #train-clean-360-asv
+anon_level=$train_anon_level
 
 train=$data_to_train_eval_models
 train_asv=$data_to_train_eval_models-asv
@@ -39,8 +40,21 @@ if [ $baseline_type = 'baseline-2' ]; then
     awk -F'[/.]' '{print $5 " sox " $0 " -t wav -R -b 16 - |"}' > data/$dset$anon_data_suffix/wav.scp
 else
   printf "${GREEN}\n Anonymizing using x-vectors and neural wavform models...${NC}\n"
-	
   ppg_dir=${ppg_model}/nnet3_cleaned
+  echo "Dataset:     $dset"
+ 
+  echo "local/anon/anonymize_data_dir.sh \
+    --nj $nj --anoni-pool $anoni_pool \
+    --data-netcdf $data_netcdf \
+    --ppg-model $ppg_model --ppg-dir $ppg_dir \
+    --xvec-nnet-dir $xvec_nnet_dir \
+    --anon-xvec-out-dir $anon_xvec_out_dir --plda-dir $xvec_nnet_dir \
+    --pseudo-xvec-rand-level $anon_level --distance $distance \
+    --proximity $proximity --cross-gender $cross_gender \
+    --rand-seed $rand_seed \
+    --anon-data-suffix $anon_data_suffix \
+    --model-type $tts_type ${dset} || exit 1"
+ 
   local/anon/anonymize_data_dir.sh \
     --nj $nj --anoni-pool $anoni_pool \
     --data-netcdf $data_netcdf \
@@ -51,7 +65,7 @@ else
     --proximity $proximity --cross-gender $cross_gender \
     --rand-seed $rand_seed \
     --anon-data-suffix $anon_data_suffix \
-    --model-type $tts_type $dset || exit 1
+    --model-type $tts_type ${dset} || exit 1
 fi  
 
 
@@ -61,7 +75,7 @@ utils/copy_data_dir.sh data/$train_asv_anon data/$train_anon || exit 1
 cp data/$train/utt2spk data/$train_anon
 utils/utt2spk_to_spk2utt.pl data/$train_asv/utt2spk > data/$train_anon/spk2utt || exit 1
 cp data/$train/spk2gender data/$train_anon 
-rm data/$train_anon/cmvn.scp
+rm -f data/$train_anon/cmvn.scp
 utils/fix_data_dir.sh data/$train_anon || exit 1
 utils/validate_data_dir.sh data/$train_anon || exit 1
 

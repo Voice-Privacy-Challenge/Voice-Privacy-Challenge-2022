@@ -44,6 +44,8 @@ rand_seed=2020
 
 . utils/parse_options.sh
 
+echo "param=$1"
+
 if [ $# != 1 ]; then
   echo "Usage: "
   echo "  $0 [options] <data-dir>"
