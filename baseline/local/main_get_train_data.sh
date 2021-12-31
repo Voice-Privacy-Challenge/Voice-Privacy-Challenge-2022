@@ -66,7 +66,7 @@ if [ $stage -le 2 ]; then
   cp data/$data_to_train_eval_models-spk/$data_to_train_eval_models-spk/spk2gender data/$train_asv 
   rm -f data/$train_asv/cmvn.scp
   utils/fix_data_dir.sh data/$train_asv || exit 1
-  utils/validate_data_dir.sh data/$train_asv || exit 1
+  utils/validate_data_dir.sh --no-feats data/$train_asv || exit 1
 fi
 
 echo '  Done'
