@@ -37,15 +37,6 @@ if [ $stage -le 8 ]; then
   steps/train_mono.sh \
     --boost-silence 1.25 --nj $nj --cmd "$train_cmd" \
     data/train_5k data/lang_nosp exp/mono
-  (
-    utils/mkgraph.sh data/lang_nosp_test_tgsmall exp/mono exp/mono/graph_nosp_tgsmall
-    for test in $dev $test; do
-      steps/decode.sh \
-        --nj $nj --cmd "$decode_cmd" \
-        exp/mono/graph_nosp_tgsmall \
-        data/$test exp/mono/decode_nosp_tgsmall_$test
-    done
-  )&
 fi
 
 if [ $stage -le 9 ]; then
@@ -56,20 +47,13 @@ if [ $stage -le 9 ]; then
     --boost-silence 1.25 --cmd "$train_cmd" \
     2000 20000 data/$train data/lang_nosp \
     exp/mono_ali exp/tri1
-  (
     utils/mkgraph.sh \
       data/lang_nosp_test_tgsmall \
       exp/tri1 exp/tri1/graph_nosp_tgsmall
     for test in $dev $test; do
       steps/decode.sh --nj $nj --cmd "$decode_cmd" exp/tri1/graph_nosp_tgsmall \
                       data/$test exp/tri1/decode_nosp_tgsmall_$test
-      steps/lmrescore.sh --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tgmed} \
-                         data/$test exp/tri1/decode_nosp_{tgsmall,tgmed}_$test
-      steps/lmrescore_const_arpa.sh \
-        --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tglarge} \
-        data/$test exp/tri1/decode_nosp_{tgsmall,tglarge}_$test
     done
-  )&
 fi
 
 if [ $stage -le 10 ]; then
@@ -78,19 +62,6 @@ if [ $stage -le 10 ]; then
   steps/train_lda_mllt.sh --cmd "$train_cmd" \
                           --splice-opts "--left-context=3 --right-context=3" 2500 25000 \
                           data/$train data/lang_nosp exp/tri1_ali exp/tri2b
-  (
-    utils/mkgraph.sh data/lang_nosp_test_tgsmall \
-                     exp/tri2b exp/tri2b/graph_nosp_tgsmall
-    for test in $dev $test; do
-      steps/decode.sh --nj $nj --cmd "$decode_cmd" exp/tri2b/graph_nosp_tgsmall \
-                      data/$test exp/tri2b/decode_nosp_tgsmall_$test
-      steps/lmrescore.sh --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tgmed} \
-                         data/$test exp/tri2b/decode_nosp_{tgsmall,tgmed}_$test
-      steps/lmrescore_const_arpa.sh \
-        --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tglarge} \
-        data/$test exp/tri2b/decode_nosp_{tgsmall,tglarge}_$test
-    done
-  )&
 fi
 
 if [ $stage -le 11 ]; then
@@ -98,20 +69,9 @@ if [ $stage -le 11 ]; then
                      data/$train data/lang_nosp exp/tri2b exp/tri2b_ali
   steps/train_sat.sh --cmd "$train_cmd" 3000 45000 \
                      data/$train data/lang_nosp exp/tri2b_ali exp/tri3b
-  (
-    utils/mkgraph.sh data/lang_nosp_test_tgsmall \
+				 
+  utils/mkgraph.sh data/lang_nosp_test_tgsmall \
                      exp/tri3b exp/tri3b/graph_nosp_tgsmall
-    for test in $dev $test; do
-      steps/decode_fmllr.sh --nj $nj --cmd "$decode_cmd" \
-                            exp/tri3b/graph_nosp_tgsmall data/$test \
-                            exp/tri3b/decode_nosp_tgsmall_$test
-      steps/lmrescore.sh --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tgmed} \
-                         data/$test exp/tri3b/decode_nosp_{tgsmall,tgmed}_$test
-      steps/lmrescore_const_arpa.sh \
-        --cmd "$decode_cmd" data/lang_nosp_test_{tgsmall,tglarge} \
-        data/$test exp/tri3b/decode_nosp_{tgsmall,tglarge}_$test
-    done
-  )&
 fi
 
 if [ $stage -le 19 ]; then
@@ -125,13 +85,5 @@ if [ $stage -le 20 ]; then
 #    --stage 3 --train_stage -10
 fi
 
-# The nnet3 TDNN recipe:
-# local/nnet3/run_tdnn.sh # set "--stage 11" if you have already run local/chain/run_tdnn.sh
 
-# # train models on cleaned-up data
-# # we've found that this isn't helpful-- see the comments in local/run_data_cleaning.sh
-# local/run_data_cleaning.sh
-
-# Wait for decodings in the background
-wait
 echo Done
