@@ -71,6 +71,12 @@ elif [ $baseline_type = 'baseline-1' ]; then
 	distance=plda                        # cosine or plda
 	proximity=farthest                   # nearest or farthest speaker to be selected for anonymization
 	anonym_data=exp/am_nsf_data          # directory where features for voice anonymization will be stored 
+	inference_trunc_len=-1               # if Pytorch raises insufficient GPU memory,
+	                                     #  try to set this value to 1000.
+	                                     #  This tells the model to produce the waveform incrementally.
+	                                     #  The segment generated each time will be 1000 frames.
+	                                     #  If GPU is still insufficient, try to use a smaller value.
+	                                     #  By default, -1 will not use incremental generation mode.
 fi
 
 

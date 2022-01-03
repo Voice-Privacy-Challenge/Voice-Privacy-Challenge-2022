@@ -29,6 +29,8 @@ export TEMP_ACOUSTIC_NETWORK_PATH=${TEMP_ACOUSTIC_MODEL_DIRECTORY}/trained_netwo
 # 
 cd ${proj_dir}
 python ${proj_dir}/main.py --inference --module-config config \
+       --cudnn-deterministic-toggle  \
+       --cudnn-benchmark-toggle \
        --ignore-cached-file-infor \
        --output-dir ${output_dir} \
        --trained-model ${TEMP_ACOUSTIC_NETWORK_PATH} || exit 1

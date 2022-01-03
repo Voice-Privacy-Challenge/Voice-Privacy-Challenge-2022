@@ -504,6 +504,13 @@ def f_inference_wrapper(args, pt_model, device, \
     
     # start generation
     nii_display.f_print("Start inference (generation):", 'highlight')
+    
+    if hasattr(args, 'trunc_input_length_for_inference') and \
+       args.trunc_input_length_for_inference > 0:
+        mes = "Generation in segment-by-segment mode (truncation length "
+        mes += "{:d})".format(args.trunc_input_length_for_inference)
+        nii_display.f_print(mes)
+
 
     # output buffer, filename buffer
     output_buf = []
@@ -542,19 +549,53 @@ def f_inference_wrapper(args, pt_model, device, \
             else:
                 infer_func = pt_model.forward
 
-            # compute output
-            if args.model_forward_with_target:
-                # if model.forward requires (input, target) as arguments
-                # for example, for auto-encoder
-                if args.model_forward_with_file_name:
-                    data_gen = infer_func(data_in, data_tar, data_info)
+            
+            if hasattr(args, 'trunc_input_length_for_inference') and \
+               args.trunc_input_length_for_inference > 0:
+                # generate the data segment by segment, then do overlap and add
+                in_list, tar_list, overlap = nii_nn_tools.f_split_data(
+                    data_in, data_tar, args.trunc_input_length_for_inference,
+                    args.trunc_input_overlap)
+                
+                gen_list = []
+                for in_tmp, tar_tmp in zip(in_list, tar_list):
+                    # compute output
+                    if args.model_forward_with_target:
+                        if args.model_forward_with_file_name:
+                            data_gen = infer_func(in_tmp, tar_tmp, data_info)
+                        else:
+                            data_gen = infer_func(in_tmp, tar_tmp)
+                    else:    
+                        if args.model_forward_with_file_name:
+                            data_gen = infer_func(in_tmp, data_info)
+                        else:
+                            data_gen = infer_func(in_tmp)
+                    gen_list.append(data_gen)
+                
+                # generation model may "up-sample" the input, we need to know
+                # output_segment_length // input_segment_length
+                if len(gen_list) > 0 and len(in_list) > 0:
+                    upsamp_fac = gen_list[0].shape[1] // in_list[0].shape[1]
+                    data_gen = nii_nn_tools.f_overlap_data(
+                        gen_list, upsamp_fac * overlap)
                 else:
-                    data_gen = infer_func(data_in, data_tar)
-            else:    
-                if args.model_forward_with_file_name:
-                    data_gen = infer_func(data_in, data_info)
-                else:
-                    data_gen = infer_func(data_in)
+                    print("Gneration failed on {:s}".format(data_info))
+                    sys.exit(1)
+            
+            else:
+                # compute output
+                if args.model_forward_with_target:
+                    # if model.forward requires (input, target) as arguments
+                    # for example, for auto-encoder
+                    if args.model_forward_with_file_name:
+                        data_gen = infer_func(data_in, data_tar, data_info)
+                    else:
+                        data_gen = infer_func(data_in, data_tar)
+                else:    
+                    if args.model_forward_with_file_name:
+                        data_gen = infer_func(data_in, data_info)
+                    else:
+                        data_gen = infer_func(data_in)
             
             time_cost = time.time() - start_time
             # average time for each sequence when batchsize > 1
@@ -566,15 +607,6 @@ def f_inference_wrapper(args, pt_model, device, \
             else:
                 output_buf.append(data_gen)
                 filename_buf.append(data_info)
-
-            # print information
-            for idx, seq_info in enumerate(data_info):
-                _ = nii_op_display_tk.print_gen_info(seq_info, time_cost)
-                
-        # Writing generatd data to disk
-        nii_display.f_print("Writing output to %s" % (args.output_dir))
-        for data_gen, data_info in zip(output_buf, filename_buf):            
-            if data_gen is not None:
                 try:
                     data_gen = pt_model.denormalize_output(data_gen)
                     data_gen_np = data_gen.to("cpu").numpy()
@@ -585,10 +617,21 @@ def f_inference_wrapper(args, pt_model, device, \
                 
                 # save output (in case batchsize > 1, )
                 for idx, seq_info in enumerate(data_info):
-                    nii_display.f_print(seq_info)
+                    #nii_display.f_print(seq_info)
                     test_dataset_wrapper.putitem(data_gen_np[idx:idx+1],\
                                                  args.output_dir, \
                                                  seq_info)
+            # print information
+            for idx, seq_info in enumerate(data_info):
+                _ = nii_op_display_tk.print_gen_info(seq_info, time_cost)
+                
+
+            # 
+        # Writing generatd data to disk
+        #nii_display.f_print("Writing output to %s" % (args.output_dir))
+        #for data_gen, data_info in zip(output_buf, filename_buf):            
+        #    if data_gen is not None:
+                
         
         # done for
     # done with
