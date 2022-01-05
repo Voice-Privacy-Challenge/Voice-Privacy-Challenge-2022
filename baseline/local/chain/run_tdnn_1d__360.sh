@@ -1,6 +1,10 @@
 #ASR_eval training
 #!/bin/bash
+. ./config.sh
+
 set -e
+
+exp=$asr_eval_model_trained #directory to save the trained model (defined in config.sh) exp/models/user_asr_eval_${data_proc}
 
 # configs for 'chain'
 stage=0
@@ -8,6 +12,12 @@ decode_nj=10 #40
 train_set=train-clean-360
 gmm=tri3b_cleaned
 nnet3_affix=_cleaned
+
+dev=libri_dev_asr
+test=libri_test_asr
+#lang=exp/models/asr_eval/lang_nosp #data/lang_nosp
+lang_test_tgsmall=exp/models/asr_eval/lang_test_tgsmall #data/lang_nosp_test_tgsmall
+
 
 # The rest are configs specific to this script.  Most of the parameters
 # are just hardcoded at this level, in the commands below.
@@ -51,13 +61,13 @@ local/nnet3/run_ivector_common.sh --stage $stage \
 
 gmm_dir=exp/$gmm
 ali_dir=exp/${gmm}_ali_${train_set}_sp
-tree_dir=exp/chain${nnet3_affix}/tree_sp${tree_affix:+_$tree_affix}
+tree_dir=$exp/chain${nnet3_affix}/tree_sp${tree_affix:+_$tree_affix}
 lang=data/lang_chain
-lat_dir=exp/chain${nnet3_affix}/${gmm}_${train_set}_sp_lats
-dir=exp/chain${nnet3_affix}/tdnn${affix:+_$affix}_sp
+lat_dir=$exp/chain${nnet3_affix}/${gmm}_${train_set}_sp_lats
+dir=$exp/chain${nnet3_affix}/tdnn${affix:+_$affix}_sp
 train_data_dir=data/${train_set}_sp_hires
 lores_train_data_dir=data/${train_set}_sp
-train_ivector_dir=exp/nnet3${nnet3_affix}/ivectors_${train_set}_sp_hires
+train_ivector_dir=$exp/nnet3${nnet3_affix}/ivectors_${train_set}_sp_hires
 
 # if we are using the speed-perturbed data we need to generate
 # alignments for it.
@@ -170,27 +180,20 @@ if [ $stage -le 16 ]; then
   # Note: it might appear that this $lang directory is mismatched, and it is as
   # far as the 'topo' is concerned, but this script doesn't read the 'topo' from
   # the lang directory.
-  utils/mkgraph.sh --self-loop-scale 1.0 --remove-oov data/lang_test_tgsmall $dir $graph_dir
+  utils/mkgraph.sh --self-loop-scale 1.0 --remove-oov data/lang_test_tgsmall $dir $graph_dir || exit 1
 fi
 
-iter_opts=
-if [ ! -z $decode_iter ]; then
-  iter_opts=" --iter $decode_iter "
-fi
+
 if [ $stage -le 17 ]; then
-  for decode_set in test_clean test_other dev_clean dev_other; do
+  for decode_set in $dev $test; do
       steps/nnet3/decode.sh --acwt 1.0 --post-decode-acwt 10.0 \
           --nj $decode_nj --cmd "$decode_cmd" $iter_opts \
           --online-ivector-dir exp/nnet3${nnet3_affix}/ivectors_${decode_set}_hires \
-          $graph_dir data/${decode_set}_hires $dir/decode_${decode_set}${decode_iter:+_$decode_iter}_tgsmall || exit 1	  
+          $graph_dir data/${decode_set}_hires $dir/decode_${decode_set}_tgsmall || exit 1	  
 	  steps/lmrescore_const_arpa.sh \
           --cmd "$decode_cmd" data/lang_test_{tgsmall,tglarge} \
-          data/${decode_set}_hires $dir/decode_${decode_set}${decode_iter:+_$decode_iter}_{tgsmall,tglarge} || exit 1
-      # steps/lmrescore_const_arpa.sh \
-          # --cmd "$decode_cmd" data/lang_test_{tgsmall,fglarge} \
-          # data/${decode_set}_hires $dir/decode_${decode_set}${decode_iter:+_$decode_iter}_{tgsmall,fglarge} || exit 1
+          data/${decode_set}_hires $dir/decode_${decode_set}_{tgsmall,tglarge} || exit 1
   done
-
 fi
 
 exit 0;

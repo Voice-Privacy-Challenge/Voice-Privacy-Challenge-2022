@@ -8,14 +8,13 @@ set -e
 
 nj=$(nproc)
 asv_eval_model=exp/models/asv_eval/xvect_01709_1
-plda_dir=$asv_eval_model/xvect_train_clean_360
+plda_dir=$asv_eval_model
 
 #enrolls=vctk_dev_enrolls
 #trials=vctk_dev_trials_f_common
 
 enrolls=libri_dev_enrolls
 trials=libri_dev_trials_f
-
 
 . ./utils/parse_options.sh
 

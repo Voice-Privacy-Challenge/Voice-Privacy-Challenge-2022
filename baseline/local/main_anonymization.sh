@@ -5,6 +5,7 @@ set -e
 . ./config.sh
 
 rand_seed=$rand_seed_start
+anon_level=$train_anon_level
 
 data_netcdf=$(realpath $anonym_data)   # directory where features for voice anonymization will be stored
 echo $data_netcdf
@@ -30,9 +31,13 @@ for dset in libri_dev_{enrolls,trials_f,trials_m} \
     #create folder that will contain the anonymised wav files
     mkdir -p data/$dset$anon_data_suffix/wav
     #anonymise subset based on the current wav.scp file 
-    python local/anon/anonymise_dir_mcadams.py \
+    # python local/anon/anonymise_dir_mcadams.py \
+      # --data_dir=data/$dset --anon_suffix=$anon_data_suffix \
+      # --n_coeffs=$n_lpc --mc_coeff=$mc_coeff || exit 1
+	python local/anon/anonymise_dir_mcadams_rand_seed.py \
       --data_dir=data/$dset --anon_suffix=$anon_data_suffix \
-      --n_coeffs=$n_lpc --mc_coeff=$mc_coeff || exit 1
+      --n_coeffs=$n_lpc --mc_coeff_min=$mc_coeff_min --mc_coeff_max=$mc_coeff_max --subset=$dset || exit 1
+    
     #overwrite wav.scp file with new anonymised content
     #note sox is inclued to by-pass that files written by local/anon/anonymise_dir_mcadams.py were in float32 format and not pcm
     ls data/$dset$anon_data_suffix/wav/*/*.wav | \
