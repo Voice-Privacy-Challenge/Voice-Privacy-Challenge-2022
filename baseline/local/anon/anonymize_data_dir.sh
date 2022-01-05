@@ -25,6 +25,10 @@ ppg_dir=exp/nnet3_cleaned # change this to the dir where PPGs will be stored
 # Type of the TTS for baseline 1
 model_type=
 
+# Option for incremental waveform generation
+inference_trunc_len=-1
+
+
 # x-vector extraction
 xvec_nnet_dir= # change this to pretrained xvector model downloaded from Kaldi website
 anon_xvec_out_dir=${xvec_nnet_dir}/anon
@@ -137,14 +141,14 @@ if [ $stage -le 5 ]; then
   if [ "$script_am_dir" == "None" ];then   
       printf "${RED}\nStage a.5: Skip this step for model ${model_type}.${NC}\n"
   else
-      printf "${RED}\nStage a.5: Extract melspec from acoustic model for ${data_dir}.${NC}\n"
+      printf "${RED}\nStage a.5: Generate melspec from acoustic model for ${data_dir}.${NC}\n"
       local/vc/${script_am_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} || exit 1;
   fi
 fi
 
 if [ $stage -le 6 ]; then
   printf "${RED}\nStage a.6: Generate waveform from ${model_type} for ${data_dir}.${NC}\n"
-  local/vc/${script_wav_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${wav_output_dir_name} || exit 1;
+  local/vc/${script_wav_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${wav_output_dir_name} ${inference_trunc_len} || exit 1;
 fi
 
 if [ $stage -le 7 ]; then

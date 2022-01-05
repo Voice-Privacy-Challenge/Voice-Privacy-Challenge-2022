@@ -192,6 +192,17 @@ def f_args_parsed(argument_input = None):
     mes = 'path to save generated data (default: ./output)'
     parser.add_argument('--output-dir', type=str, default="./output", \
                         help=mes)
+    
+    mes = 'truncate input data sequences so that the max length < N.'
+    mes += ' (default: -1, not do truncating at all)'
+    parser.add_argument('--trunc-input-length-for-inference', type=int,
+                        default=-1, help=mes)
+
+
+    mes = 'truncate input data overlap length (default: 5)'
+    parser.add_argument('--trunc-input-overlap', type=int, default=5, help=mes)
+
+
     mes = 'which optimizer to use (Adam | SGD, default: Adam)'
     parser.add_argument('--optimizer', type=str, default='Adam', help=mes)
     
