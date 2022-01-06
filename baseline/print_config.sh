@@ -89,6 +89,8 @@ if [ $baseline_type == 'baseline-2' ]; then
   print_var "$n_lpc" n_lpc
   print_var "$mc_coeff_enroll" mc_coeff_enroll
   print_var "$mc_coeff_trials" mc_coeff_trials
+  print_var "$mc_coeff_min" mc_coeff_min
+  print_var "$mc_coeff_max" mc_coeff_max
 elif [ $baseline_type = 'baseline-1' ]; then 
   print_var "$ppg_model" ppg_model
   print_var "$cross_gender" cross_gender
@@ -156,6 +158,8 @@ echo "    Path to the directory to save ASV results: $results"
 
 ##########################################################
 echo -e "\n${GREEN}Anonymizing data to train ASR/ASV evaluation models:${NC}"
+print_var "$train_asr_eval" train_asr_eval
+print_var "$train_asv_eval" train_asv_eval
 print_var "$data_to_train_eval_models" data_to_train_eval_models
 print_var "$data_proc" data_proc
 print_var "$train_anon_level" train_anon_level

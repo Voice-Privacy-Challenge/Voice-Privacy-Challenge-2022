@@ -2,24 +2,28 @@
 # Copyright      2017   David Snyder
 #                2017   Johns Hopkins University (Author: Daniel Garcia-Romero)
 #                2017   Johns Hopkins University (Author: Daniel Povey)
-# Adapted from egs/sre16/v1/local/nnet3/xvector/tuning/run_xvector_1a.sh (commit e082c17d4a8f8a791428ae4d9f7ceb776aef3f0b).
+#
+# Copied from egs/sre16/v1/local/nnet3/xvector/tuning/run_xvector_1a.sh (commit e082c17d4a8f8a791428ae4d9f7ceb776aef3f0b).
+#
 # Apache 2.0.
 
-. ./cmd.sh
-. ./path.sh
+# This script trains a DNN similar to the recipe described in
+# http://www.danielpovey.com/files/2018_icassp_xvectors.pdf
 
+. ./cmd.sh
 set -e
 
 stage=1
-train_stage=-1
-lrate=001
-epochs=1
-shrink=10
+train_stage=0
+use_gpu=true
+remove_egs=false
 
-data=data/train_clean_360
-nnet_dir=exp/xvect
-egs_dir=$nnet_dir/egs
+data=data/train
+nnet_dir=exp/xvector_nnet_1a/
+egs_dir=exp/xvector_nnet_1a/egs
 
+. ./path.sh
+. ./cmd.sh
 . ./utils/parse_options.sh
 
 num_pdfs=$(awk '{print $2}' $data/utt2spk | sort | uniq -c | wc -l)
@@ -51,16 +55,21 @@ num_pdfs=$(awk '{print $2}' $data/utt2spk | sort | uniq -c | wc -l)
 # number of examples per archive.
 if [ $stage -le 6 ]; then
   echo "$0: Getting neural network training egs";
+  # dump egs.
+  if [[ $(hostname -f) == *.clsp.jhu.edu ]] && [ ! -d $egs_dir/storage ]; then
+    utils/create_split_dir.pl \
+     /export/b{03,04,05,06}/$USER/kaldi-data/egs/voxceleb2/v2/xvector-$(date +'%m_%d_%H_%M')/$egs_dir/storage $egs_dir/storage
+  fi
   sid/nnet3/xvector/get_egs.sh --cmd "$train_cmd" \
     --nj 8 \
     --stage 0 \
-    --frames-per-iter 100000000 \
+    --frames-per-iter 1000000000 \
     --frames-per-iter-diagnostic 100000 \
     --min-frames-per-chunk 200 \
     --max-frames-per-chunk 400 \
     --num-diagnostic-archives 3 \
     --num-repeats 50 \
-    "$data" $egs_dir || exit 1
+    "$data" $egs_dir
 fi
 
 if [ $stage -le 7 ]; then
@@ -109,7 +118,7 @@ EOF
 
   steps/nnet3/xconfig_to_configs.py \
       --xconfig-file $nnet_dir/configs/network.xconfig \
-      --config-dir $nnet_dir/configs
+      --config-dir $nnet_dir/configs/
   cp $nnet_dir/configs/final.config $nnet_dir/nnet.config
 
   # These three files will be used by sid/nnet3/xvector/extract_xvectors.sh
@@ -123,24 +132,24 @@ srand=123
 if [ $stage -le 8 ]; then
   steps/nnet3/train_raw_dnn.py --stage=$train_stage \
     --cmd="$train_cmd" \
-    --trainer.optimization.proportional-shrink $shrink \
+    --trainer.optimization.proportional-shrink 10 \
     --trainer.optimization.momentum=0.5 \
-    --trainer.optimization.num-jobs-initial=2 \
-    --trainer.optimization.num-jobs-final=2 \
-    --trainer.optimization.initial-effective-lrate=0.$lrate \
-    --trainer.optimization.final-effective-lrate=0.0$lrate \
+    --trainer.optimization.num-jobs-initial=3 \
+    --trainer.optimization.num-jobs-final=8 \
+    --trainer.optimization.initial-effective-lrate=0.001 \
+    --trainer.optimization.final-effective-lrate=0.0001 \
     --trainer.optimization.minibatch-size=64 \
     --trainer.srand=$srand \
     --trainer.max-param-change=2 \
-    --trainer.num-epochs=$epochs \
+    --trainer.num-epochs=3 \
     --trainer.dropout-schedule="$dropout_schedule" \
     --trainer.shuffle-buffer-size=1000 \
     --egs.frames-per-eg=1 \
     --egs.dir="$egs_dir" \
-    --cleanup.remove-egs false \
-    --cleanup.preserve-model-interval=5 \
+    --cleanup.remove-egs $remove_egs \
+    --cleanup.preserve-model-interval=10 \
     --use-gpu=true \
-    --dir=$nnet_dir  || exit 1
+    --dir=$nnet_dir  || exit 1;
 fi
 
-exit 0
+exit 0;
