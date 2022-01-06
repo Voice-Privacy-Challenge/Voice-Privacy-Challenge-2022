@@ -165,10 +165,17 @@ else
   #    ark,scp:$pitch_dir/processed_pitch_$name.JOB.ark,$pitch_dir/processed_pitch_$name.JOB.scp \
   #    || exit 1;
 
+  
   # making yaapt pitch
-  echo "time for yaapt"
-  $cmd JOB=1:$nj $logdir/make_pitch_yaapt_${name}.JOB.log \
-    local/featex/make_pitch_yaapt.sh $logdir/wav_${name}.JOB.scp \
+  #echo "time for yaapt"
+  #$cmd JOB=1:$nj $logdir/make_pitch_yaapt_${name}.JOB.log \
+  #  local/featex/make_pitch_yaapt.sh $logdir/wav_${name}.JOB.scp \
+  #    ${yaapt_pitch_dir} $logdir/tmpwav_${name}.JOB.wav \
+  #    || exit 1;
+
+  echo "time for pyworld"
+  $cmd JOB=1:$nj $logdir/make_pitch_pyworld_${name}.JOB.log \
+    local/featex/make_pitch_pyworld.sh $logdir/wav_${name}.JOB.scp \
       ${yaapt_pitch_dir} $logdir/tmpwav_${name}.JOB.wav \
       || exit 1;
 fi
