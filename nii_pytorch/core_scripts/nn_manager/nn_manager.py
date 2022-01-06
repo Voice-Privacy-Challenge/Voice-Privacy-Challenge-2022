@@ -513,8 +513,8 @@ def f_inference_wrapper(args, pt_model, device, \
 
 
     # output buffer, filename buffer
-    output_buf = []
-    filename_buf = []
+    #output_buf = []
+    #filename_buf = []
     
     pt_model.eval() 
     with torch.no_grad():
@@ -605,8 +605,8 @@ def f_inference_wrapper(args, pt_model, device, \
                 nii_display.f_print("No output saved: %s" % (str(data_info)),\
                                     'warning')
             else:
-                output_buf.append(data_gen)
-                filename_buf.append(data_info)
+                #output_buf.append(data_gen)
+                #filename_buf.append(data_info)
                 try:
                     data_gen = pt_model.denormalize_output(data_gen)
                     data_gen_np = data_gen.to("cpu").numpy()
