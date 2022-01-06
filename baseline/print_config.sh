@@ -97,6 +97,7 @@ elif [ $baseline_type = 'baseline-1' ]; then
   print_var "$distance" distance
   print_var "$proximity" proximity
   print_var "$anonym_data" anonym_data
+  print_var "$inference_trunc_len" inference_trunc_len
   echo -e "${BLUE}Input (for $baseline_type):${NC}"
   echo "    Path to the x-vector extractor: $xvec_nnet_dir"
   echo "    Path to the BN-feature extractor: $ppg_model"
