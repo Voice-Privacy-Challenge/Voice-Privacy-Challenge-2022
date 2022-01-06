@@ -55,8 +55,8 @@ def anonym(n,file, output_dir, winLengthinms=20, shiftLengthinms=10, lp_order=20
 	        
 	        # here we define the new angles of the poles, shifted accordingly to the mcadams coefficient
 	        # values >1 expand the spectrum, while values <1 constract it for angles>1
-		# values >1 constract the spectrum, while values <1 expand it for angles<1
-		# the choice of this value is strongly linked to the number of lpc coefficients
+	        # values >1 constract the spectrum, while values <1 expand it for angles<1
+	        # the choice of this value is strongly linked to the number of lpc coefficients
 	        # a bigger lpc coefficients number constraints the effect of the coefficient to very small variations
 	        # a smaller lpc coefficients number allows for a bigger flexibility
 	        new_angles = np.angle(poles[ind_imag_con])**mcadams
@@ -81,7 +81,7 @@ def anonym(n,file, output_dir, winLengthinms=20, shiftLengthinms=10, lp_order=20
 	        # reconstruct frames with new lpc coefficient
 	        frame_rec = scipy.signal.lfilter(np.array([1]),a_lpc_new,res)
 	        frame_rec = frame_rec*win    
-	 
+	
 	        outindex = np.arange(m*shift,m*shift+len(frame_rec))
 	        # overlap add
 	        sig_rec[outindex] = sig_rec[outindex] + frame_rec
@@ -100,7 +100,8 @@ def get_seed_from_string(dataset, filename):
         spkr_id = filename.split('-')[0]
     else: spkr_id = filename.split('-')[0]
     seed_string = dataset + spkr_id
-    seed=np.sum([(ord(i)) for i in seed_string]) 
+    #seed=np.sum([(ord(i)) for i in seed_string])
+    seed=np.abs(hash(seed_string))
     print(spkr_id, seed_string, seed)   
     return seed
 
@@ -117,6 +118,7 @@ if __name__ == "__main__":
     parser.add_argument('--shiftLengthinms',type=int,default=10)
     parser.add_argument('--subset',type=str,default='vctk_dev_enrolls')
     parser.add_argument('--seed',type=int,default=0)
+    parser.add_argument('--anon_level',type=str,default='spk')
     config = parser.parse_args()
     
     #Load protocol file
@@ -127,7 +129,8 @@ if __name__ == "__main__":
     for n in range(1):
         for idx,file in enumerate(list_files):   
             print(str(idx+1),'/',len(list_files))
-            random.seed(get_seed_from_string(config.subset, file[0]))
+            if config.anon_level=='spk':
+                random.seed(get_seed_from_string(config.subset, file[0]))
             rand_mc_coeff = random.uniform(config.mc_coeff_min,config.mc_coeff_max)
             anonym(n,file, output_dir=config.data_dir+'/wav/'+file[0]+'/', winLengthinms=config.winLengthinms, shiftLengthinms=config.shiftLengthinms, lp_order=config.n_coeffs, mcadams=rand_mc_coeff)
       

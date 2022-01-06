@@ -31,9 +31,9 @@ if [ $baseline_type = 'baseline-2' ]; then
   #create folder that will contain the anonymised wav files
   mkdir -p data/$dset$anon_data_suffix/wav
   #anonymise subset based on the current wav.scp file 
-  python local/anon/anonymise_dir_mcadams_rand_seed_utt.py \
+  python local/anon/anonymise_dir_mcadams_rand_seed.py \
     --data_dir=data/$dset --anon_suffix=$anon_data_suffix \
-    --n_coeffs=$n_lpc --mc_coeff_min=$mc_coeff_min --mc_coeff_max=$mc_coeff_max --subset=$dset || exit 1
+    --n_coeffs=$n_lpc --mc_coeff_min=$mc_coeff_min --mc_coeff_max=$mc_coeff_max --subset=$dset --seed=$rand_seed --anon_level=$anon_level || exit 1
   #overwrite wav.scp file with new anonymised content
   #note sox is inclued to by-pass that files written by local/anon/anonymise_dir_mcadams.py were in float32 format and not pcm
   ls data/$dset$anon_data_suffix/wav/*/*.wav | \
@@ -77,6 +77,6 @@ utils/utt2spk_to_spk2utt.pl data/$train_asv/utt2spk > data/$train_anon/spk2utt |
 cp data/$train/spk2gender data/$train_anon 
 rm -f data/$train_anon/cmvn.scp
 utils/fix_data_dir.sh data/$train_anon || exit 1
-utils/validate_data_dir.sh data/$train_anon || exit 1
+utils/validate_data_dir.sh --no-feats data/$train_anon || exit 1
 
 echo '  Done'

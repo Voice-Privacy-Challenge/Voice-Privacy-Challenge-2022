@@ -64,10 +64,10 @@ if [ $baseline_type = 'baseline-2' ]; then
 	#McAdams anonymisation config
 	n_lpc=20
 	#TODO: replace mc_coeff_enroll,mc_coeff_trials --> random
-	mc_coeff_enroll=0.8                  # mc_coeff for enrollment 
-	mc_coeff_trials=0.8                  # mc_coeff for trials
-	mc_coeff_min=0.5                     # min possible value for McAdams coefficient (sampled randomly for each speaker or uteerance (depending on anon_level) in interval [mc_coeff_min,mc_coeff_max])
-	mc_coeff_max=0.8                     # max possible value for McAdams coefficient 
+	#mc_coeff_enroll=0.8                 # mc_coeff for enrollment 
+	#mc_coeff_trials=0.8                 # mc_coeff for trials
+	mc_coeff_min=0.5                     # min possible value for McAdams coefficient (sampled randomly for each speaker or utterance (depending on anon_level) in interval [mc_coeff_min,mc_coeff_max])
+	mc_coeff_max=0.9                     # max possible value for McAdams coefficient 
 elif [ $baseline_type = 'baseline-1' ]; then
 	ppg_model=exp/models/1_asr_am/exp    # ASR model for BN extraction
 	cross_gender=false                   # false (same gender xvectors will be selected) or true (other gender xvectors)
@@ -107,7 +107,7 @@ train_asr_eval=true                                               # train ASR_ev
 train_asv_eval=true                                               # train ASV_eval model: false or true
 data_to_train_eval_models=train-clean-360                         # training dataset for evaluation models 
 data_proc=anon                                                    # anonymized (anon) or original(orig) 
-train_anon_level=utt                                              # spk (speaker-level anonymiz.) or utt (utterance-level anonymiz.) - used if data_proc=anon;
+train_anon_level=utt                                              # spk (speaker-level anonymiz.) or utt (utterance-level anonymiz.) - used if data_proc=anon; in the challenge evaluation should be: utt
 
 data_to_train_eval_models_anon=${data_to_train_eval_models}$anon_data_suffix  # directory name with anonymized training data for evaluation models 
 asr_eval_model_trained=exp/models/user_asr_eval_${data_proc}                  # directory to save the ASR evaluation model 
