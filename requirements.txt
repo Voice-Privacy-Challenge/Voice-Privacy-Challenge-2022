@@ -16,6 +16,7 @@ six==1.13.0
 subprocess32==3.5.4
 librosa==0.7.1
 pyworld
+AMFM-decompy==1.0.11
 tabulate
 tikzplotlib
 -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html

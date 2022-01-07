@@ -173,9 +173,9 @@ else
   #    ${yaapt_pitch_dir} $logdir/tmpwav_${name}.JOB.wav \
   #    || exit 1;
 
-  echo "time for pyworld"
-  $cmd JOB=1:$nj $logdir/make_pitch_pyworld_${name}.JOB.log \
-    local/featex/make_pitch_pyworld.sh $logdir/wav_${name}.JOB.scp \
+  echo "time for external pitch tracker"
+  $cmd JOB=1:$nj $logdir/make_pitch_external_${name}.JOB.log \
+    local/featex/make_pitch_external.sh $logdir/wav_${name}.JOB.scp \
       ${yaapt_pitch_dir} $logdir/tmpwav_${name}.JOB.wav \
       || exit 1;
 fi
