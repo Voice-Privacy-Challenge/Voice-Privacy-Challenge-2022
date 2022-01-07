@@ -19,6 +19,15 @@ test=libri_test_asr
 lang=exp/models/asr_eval/lang_nosp #data/lang_nosp
 lang_test_tgsmall=exp/models/asr_eval/lang_test_tgsmall #data/lang_nosp_test_tgsmall
 
+if [[ $data_proc == 'anon' ]]; then
+  printf "${GREEN} Training evaluation models on anonymized data...${NC}\n"
+  train=$train$anon_data_suffix
+  dev=$dev$anon_data_suffix
+  test=$test$anon_data_suffix
+else
+  printf "${GREEN} Training evaluation models on original data...${NC}\n"
+fi
+
 if [ $stage -le 0 ]; then
   for part in $dev $test $train; do
     steps/make_mfcc.sh --cmd "$train_cmd" --nj $nj data/$part exp/make_mfcc/$part $mfccdir

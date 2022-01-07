@@ -18,6 +18,11 @@ test=libri_test_asr
 #lang=exp/models/asr_eval/lang_nosp #data/lang_nosp
 lang_test_tgsmall=exp/models/asr_eval/lang_test_tgsmall #data/lang_nosp_test_tgsmall
 
+if [[ $data_proc == 'anon' ]]; then
+  train_set=$train_set$anon_data_suffix
+  dev=$dev$anon_data_suffix
+  test=$test$anon_data_suffix
+fi
 
 # The rest are configs specific to this script.  Most of the parameters
 # are just hardcoded at this level, in the commands below.
