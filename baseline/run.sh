@@ -114,31 +114,31 @@ if $train_asv_eval && [[ $stage -le 11 ]]; then
 fi
 
 
+# Make ASR evaluation subsets
+if [ $stage -le 12 ]; then
+  printf "${GREEN}\nStage 15: Making ASR evaluation subsets...${NC}\n"
+  local/main_make_asr_eval_sets.sh || exit 1
+fi
+
+
 # Train ASR_eval^anon 
-if $train_asr_eval && [[ $stage -le 12 ]]; then
+if $train_asr_eval && [[ $stage -le 13 ]]; then
   printf "${GREEN}\nStage 12: Train ASR_eval...${NC}\n"
   local/main_asr_eval_train.sh || exit 1
 fi
 
 
 # Make VCTK anonymized evaluation subsets
-if [ $stage -le 13 ]; then
+if [ $stage -le 14 ]; then
   printf "${GREEN}\nStage 13: Making VCTK anonymized evaluation subsets...${NC}\n"
   local/main_make_vctk_anon_eval_sets.sh || exit 1
 fi
 
 
 # ASV evaluation
-if [ $stage -le 14 ]; then
+if [ $stage -le 15 ]; then
   printf "${GREEN}\n Stage 14: Evaluate datasets using speaker verification...${NC}\n"
   local/main_eval_asv.sh || exit 1
-fi
-
-
-# Make ASR evaluation subsets
-if [ $stage -le 15 ]; then
-  printf "${GREEN}\nStage 15: Making ASR evaluation subsets...${NC}\n"
-  local/main_make_asr_eval_sets.sh || exit 1
 fi
 
 
@@ -148,6 +148,7 @@ if [ $stage -le 16 ]; then
   local/main_eval_asr.sh || exit 1
 fi
 #TODO: add 2 ASR evaluations: orig. and anon.
+
 
 if [ $stage -le 17 ]; then
   printf "${GREEN}\nStage 17: Collecting results${NC}\n"
