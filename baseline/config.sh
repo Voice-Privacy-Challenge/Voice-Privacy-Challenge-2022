@@ -79,7 +79,7 @@ elif [ $baseline_type = 'baseline-1' ]; then
 	                                     #  This tells the model to produce the waveform incrementally.
 	                                     #  The segment generated each time will be 1000 frames.
 	                                     #  If GPU is still insufficient, try to use a smaller value.
-	                                     #  By default, -1 will not use incremental generation mode.
+	                                     #  By default, -1 will not use incremental generation mode.  
 fi
 
 
@@ -113,7 +113,10 @@ data_to_train_eval_models_anon=${data_to_train_eval_models}$anon_data_suffix  # 
 asr_eval_model_trained=exp/models/user_asr_eval_${data_proc}                  # directory to save the ASR evaluation model 
 asv_eval_model_trained=exp/models/user_asv_eval_${data_proc}                  # directory to save the ASV evaluation model 
 
-
+f0_download=true                                                              # download F0 for train-clean-360 (for B1, 
+                                                                              # if f0_download=true then yaapt F0 will be dowloaded to 
+																			  # exp/am_nsf_data/train-clean-360-asv/f0 (this is done to 
+																			  # save time; yaapt is slow (~up to 40h for train-clean-360)
 ##########################################################
 # Settings for training TTS model
 

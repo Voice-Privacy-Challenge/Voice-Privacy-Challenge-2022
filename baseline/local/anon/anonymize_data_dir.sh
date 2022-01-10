@@ -6,6 +6,7 @@
 
 . ./path.sh
 . ./cmd.sh
+. ./config.sh
 
 set -e
 
@@ -85,10 +86,21 @@ fi
 
 # Extract pitch for source data
 if [ $stage -le 2 ]; then
-  printf "${RED}\nStage a.2: Pitch extraction for ${data_dir}.${NC}\n"
-  local/featex/02_extract_pitch.sh --nj ${nj} data/${data_dir} || exit 1;
+  # TEMPORAL (to speed up): use the dowloaded F0 files (yaapt) for train-clean-360-asv 
+  printf "f0_download=$f0_download, data_dir=$data_dir"
+  if [[ $f0_download == 'true' ]] && [[ $data_dir == 'train-clean-360-asv' ]]; then
+	if [ ! -d 'exp/am_nsf_data/train-clean-360-asv/f0' ]; then
+      printf "Directory exp/am_nsf_data/$data_dir/f0 does not exist. Please download train-clean-360-asv/f0 from the server or compute it (set up f0_download=false)"
+	  exit 1;
+	else
+	  printf "${RED}\nStage a.2: Skipping pitch extraction for exp/am_nsf_data/${data_dir}: dowloaded f0 will be used... ${NC}\n"
+	fi
+  else
+    printf "${RED}\nStage a.2: Pitch extraction for ${data_dir}.${NC}\n"
+   local/featex/02_extract_pitch.sh --nj ${nj} data/${data_dir} || exit 1;
+  fi
 fi
-
+exit 1
 # Extract PPGs for source data
 if [ $stage -le 3 ]; then
   printf "${RED}\nStage a.3: PPG extraction for ${data_dir}.${NC}\n"

@@ -85,7 +85,7 @@ print_var "$anon_data_suffix" anon_data_suffix
 
 echo -e "\n${C}Parameters for $baseline_type${NC}"
 echo -e "${C}-----------------------${NC}"
-if [ $baseline_type == 'baseline-2' ]; then
+if [ $baseline_type = 'baseline-2' ]; then
   print_var "$n_lpc" n_lpc
   #print_var "$mc_coeff_enroll" mc_coeff_enroll
   #print_var "$mc_coeff_trials" mc_coeff_trials
@@ -165,13 +165,13 @@ print_var "$data_to_train_eval_models" data_to_train_eval_models
 print_var "$data_proc" data_proc
 print_var "$train_anon_level" train_anon_level
 print_var "$data_to_train_eval_models_anon" data_to_train_eval_models_anon
+print_var "$f0_download" f0_download
 
 echo -e "${BLUE}Input:${NC}"
 echo "    Training dataset for evaluation models: $data_to_train_eval_models"
 echo "    Anonymization level: $train_anon_level"
 echo -e "${BLUE}Output:${NC}"
 echo "    Directory where the anonymized data for training will be saved: data/$data_to_train_eval_models_anon"
-
 
 ##########################################################
 echo -e "\n${GREEN}Training ASR evaluation model:${NC}"
