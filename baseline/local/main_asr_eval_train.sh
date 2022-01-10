@@ -85,7 +85,7 @@ fi
 
 
 if [ $stage -le 7 ]; then 
-  local/chain/run_tdnn_1d__360.sh --stage 8
+  local/chain/run_tdnn_1d__360.sh
 #    --stage 3 --train_stage -10
 fi
 
