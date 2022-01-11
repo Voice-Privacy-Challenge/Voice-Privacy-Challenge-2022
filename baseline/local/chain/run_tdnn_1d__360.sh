@@ -189,16 +189,16 @@ if [ $stage -le 16 ]; then
 fi
 
 
-if [ $stage -le 17 ]; then
-  for decode_set in $dev $test; do
-      steps/nnet3/decode.sh --acwt 1.0 --post-decode-acwt 10.0 \
-          --nj $decode_nj --cmd "$decode_cmd" $iter_opts \
-          --online-ivector-dir exp/nnet3${nnet3_affix}/ivectors_${decode_set}_hires \
-          $graph_dir data/${decode_set}_hires $dir/decode_${decode_set}_tgsmall || exit 1	  
-	  steps/lmrescore_const_arpa.sh \
-          --cmd "$decode_cmd" data/lang_test_{tgsmall,tglarge} \
-          data/${decode_set}_hires $dir/decode_${decode_set}_{tgsmall,tglarge} || exit 1
-  done
-fi
+# if [ $stage -le 17 ]; then
+  # for decode_set in $dev $test; do
+      # steps/nnet3/decode.sh --acwt 1.0 --post-decode-acwt 10.0 \
+          # --nj $decode_nj --cmd "$decode_cmd" $iter_opts \
+          # --online-ivector-dir exp/nnet3${nnet3_affix}/ivectors_${decode_set}_hires \
+          # $graph_dir data/${decode_set}_hires $dir/decode_${decode_set}_tgsmall || exit 1	  
+	  # steps/lmrescore_const_arpa.sh \
+          # --cmd "$decode_cmd" data/lang_test_{tgsmall,tglarge} \
+          # data/${decode_set}_hires $dir/decode_${decode_set}_{tgsmall,tglarge} || exit 1
+  # done
+# fi
 
 exit 0;
