@@ -105,8 +105,8 @@ if [ $stage -le 8 ]; then
     ln -s chain_cleaned/tdnn_1d_sp/final.mdl final.mdl
 	echo "chain_cleaned/tdnn_1d_sp/tree --> tree"
     ln -s chain_cleaned/tdnn_1d_sp/tree tree
-	ln -s ../../asr_eval/lang_test_tglarge lang_test_tglarge
-	ln -s ../../asr_eval/lang_test_tgsmall lang_test_tgsmall
+	ln -s ../asr_eval/lang_test_tglarge lang_test_tglarge
+	ln -s ../asr_eval/lang_test_tgsmall lang_test_tgsmall
 	cd ../../..
   fi
 fi
