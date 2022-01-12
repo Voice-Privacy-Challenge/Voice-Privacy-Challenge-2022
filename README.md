@@ -27,10 +27,9 @@ To participate in the **VoicePrivacy 2022 Challenge** and get access to evaluati
 
 * (i) the name of the team; 
 * (ii) the name of the contact person; 
-* (iii) their country; 
-* (iv) their status (academic/nonacademic) 
-* (v) affiliation(s).
-
+* (iii) their affiliation;
+* (iv) their country; 
+* (v) their status (academic/nonacademic).
 
 ## Data
 
