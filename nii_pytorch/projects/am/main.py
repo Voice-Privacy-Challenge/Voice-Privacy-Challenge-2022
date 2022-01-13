@@ -6,18 +6,14 @@ The training/inference process wrapper.
 Dataset API is replaced with NII_MergeDataSetLoader. 
 It is more convenient to train model on corpora stored in different directories.
 
-Requires model.py and config.py
+Requires model.py and config.py (config_merge_datasets.py)
 
 Usage:
-
 $: python main.py [options]      
-By default, load model.py and config.py in the current directory
-
+ By default, load model.py and config.py in the current directory
 or 
-
 $: python main.py --module-config XXX --module-model NNN
-Here, main reads XXX.py rather than config.py; reads NNN.py rather than model.py
-
+ Here, main reads XXX.py and NNN.py rather than model.py and config.py
 """
 from __future__ import absolute_import
 import os
@@ -157,8 +153,9 @@ def main():
         
         # default, no truncating, no shuffling
         params = {'batch_size':  args.batch_size,
-                  'shuffle': False,
-                  'num_workers': args.num_workers}
+                  'shuffle':  args.shuffle,
+                  'num_workers': args.num_workers,
+                  'sampler': args.sampler}
 
         in_trans_fns = prj_conf.test_input_trans_fns \
                        if hasattr(prj_conf, 'test_input_trans_fns') else None

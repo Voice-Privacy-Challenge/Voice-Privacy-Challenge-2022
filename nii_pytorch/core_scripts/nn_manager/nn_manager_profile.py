@@ -525,92 +525,111 @@ def f_inference_wrapper(args, pt_model, device, \
     
     # start generation
     nii_display.f_print("Start inference (generation):", 'highlight')
-
-    # output buffer, filename buffer
-    output_buf = []
-    filename_buf = []
     
+    # to evaluation mode
     pt_model.eval() 
-    with torch.no_grad():
-        
-        # run generation
-        for _, (data_in, data_tar, data_info, idx_orig) in \
-            enumerate(test_data_loader):
 
-            # send data to device and convert data type
-            if isinstance(data_in, torch.Tensor):
-                data_in = data_in.to(device, dtype=nii_dconf.d_dtype)
-            elif isinstance(data_in, list) and data_in:
-                data_in = [x.to(device, dtype=nii_dconf.d_dtype) \
-                           for x in data_in]
-            else:
-                nii_display.f_die("data_in is not a tensor or list of tensors")
+    try:
+        prof_opt = [int(x) for x in args.wait_warmup_active_repeat.split('-')]
+    except ValueError:
+        nii_display.f_die("Fail to parse --wait-warmup-active-repeat")
+    if len(prof_opt) != 4:
+        nii_display.f_die("Fail to parse --wait-warmup-active-repeat")
+    # number of steps for profiling
+    num_steps = (prof_opt[0] + prof_opt[1] + prof_opt[2]) * prof_opt[3]    
+    # output dir
+    prof_outdir = args.profile_output_dir
+    
+
+    with torch.profiler.profile(
+        schedule=torch.profiler.schedule(wait=prof_opt[0], 
+                                         warmup=prof_opt[1], 
+                                         active=prof_opt[2], 
+                                         repeat=prof_opt[3]),
+        on_trace_ready=torch.profiler.tensorboard_trace_handler(prof_outdir),
+        record_shapes=True,
+        profile_memory=False,
+        with_stack=True
+    ) as prof:
+
+        with torch.no_grad():
+            count = 0
+            # run generation
+            for _, (data_in, data_tar, data_info, idx_orig) in \
+                enumerate(test_data_loader):
                 
-            if isinstance(data_tar, torch.Tensor):
-                data_tar = data_tar.to(device, dtype=nii_dconf.d_dtype)
-            elif isinstance(data_tar, list) and data_tar:
-                data_tar = [x.to(device, dtype=nii_dconf.d_dtype) \
-                            for x in data_tar]
-            else:
-                pass
-            
-            
-            start_time = time.time()
-            
-            # in case the model defines inference function explicitly
-            if hasattr(pt_model, "inference"):
-                infer_func = pt_model.inference
-            else:
-                infer_func = pt_model.forward
-
-            # compute output
-            if args.model_forward_with_target:
-                # if model.forward requires (input, target) as arguments
-                # for example, for auto-encoder
-                if args.model_forward_with_file_name:
-                    data_gen = infer_func(data_in, data_tar, data_info)
+                # send data to device and convert data type
+                if isinstance(data_in, torch.Tensor):
+                    data_in = data_in.to(device, dtype=nii_dconf.d_dtype)
+                elif isinstance(data_in, list) and data_in:
+                    data_in = [x.to(device, dtype=nii_dconf.d_dtype) \
+                               for x in data_in]
                 else:
-                    data_gen = infer_func(data_in, data_tar)
-            else:    
-                if args.model_forward_with_file_name:
-                    data_gen = infer_func(data_in, data_info)
+                    nii_display.f_die("data_in is not a tensor or list of tensors")
+                
+                if isinstance(data_tar, torch.Tensor):
+                    data_tar = data_tar.to(device, dtype=nii_dconf.d_dtype)
+                elif isinstance(data_tar, list) and data_tar:
+                    data_tar = [x.to(device, dtype=nii_dconf.d_dtype) \
+                                for x in data_tar]
                 else:
-                    data_gen = infer_func(data_in)
+                    pass
             
-            time_cost = time.time() - start_time
-            # average time for each sequence when batchsize > 1
-            time_cost = time_cost / len(data_info)
-                
-            if data_gen is None:
-                nii_display.f_print("No output saved: %s" % (str(data_info)),\
-                                    'warning')
-            else:
-                output_buf.append(data_gen)
-                filename_buf.append(data_info)
+            
+                start_time = time.time()
+            
+                # in case the model defines inference function explicitly
+                if hasattr(pt_model, "inference"):
+                    infer_func = pt_model.inference
+                else:
+                    infer_func = pt_model.forward
 
-            # print information
-            for idx, seq_info in enumerate(data_info):
-                _ = nii_op_display_tk.print_gen_info(seq_info, time_cost)
+                # compute output
+                if args.model_forward_with_target:
+                    # if model.forward requires (input, target) as arguments
+                    # for example, for auto-encoder
+                    if args.model_forward_with_file_name:
+                        data_gen = infer_func(data_in, data_tar, data_info)
+                    else:
+                        data_gen = infer_func(data_in, data_tar)
+                else:    
+                    if args.model_forward_with_file_name:
+                        data_gen = infer_func(data_in, data_info)
+                    else:
+                        data_gen = infer_func(data_in)
+            
+                time_cost = time.time() - start_time
+                # average time for each sequence when batchsize > 1
+                time_cost = time_cost / len(data_info)
                 
-        # Writing generatd data to disk
-        nii_display.f_print("Writing output to %s" % (args.output_dir))
-        for data_gen, data_info in zip(output_buf, filename_buf):            
-            if data_gen is not None:
-                try:
-                    data_gen = pt_model.denormalize_output(data_gen)
-                    data_gen_np = data_gen.to("cpu").numpy()
-                except AttributeError:
-                    mes = "Output data is not torch.tensor. Please check "
-                    mes += "model.forward or model.inference"
-                    nii_display.f_die(mes)
+                if data_gen is None:
+                    nii_display.f_print("No output saved: {:f}".format(
+                        str(data_info)),'warning')
+                else:
+                    try:
+                        data_gen = pt_model.denormalize_output(data_gen)
+                        data_gen_np = data_gen.to("cpu").numpy()
+                    except AttributeError:
+                        mes = "Output data is not torch.tensor. Please check "
+                        mes += "model.forward or model.inference"
+                        nii_display.f_die(mes)
                 
-                # save output (in case batchsize > 1, )
+                    # save output (in case batchsize > 1, )
+                    for idx, seq_info in enumerate(data_info):
+                        nii_display.f_print(seq_info)
+                        test_dataset_wrapper.putitem(data_gen_np[idx:idx+1],\
+                                                     args.output_dir, \
+                                                     seq_info)
+
+                # print information
                 for idx, seq_info in enumerate(data_info):
-                    nii_display.f_print(seq_info)
-                    test_dataset_wrapper.putitem(data_gen_np[idx:idx+1],\
-                                                 args.output_dir, \
-                                                 seq_info)
-        
+                    _ = nii_op_display_tk.print_gen_info(seq_info, time_cost)
+                                
+                # 
+                prof.step()
+                count += 1
+                if count >= 3:
+                    break
         # done for
     # done with
     nii_display.f_print("Output data has been saved to %s" % (args.output_dir))

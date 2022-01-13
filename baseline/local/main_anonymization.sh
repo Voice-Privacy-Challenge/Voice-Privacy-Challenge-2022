@@ -61,6 +61,8 @@ for dset in libri_dev_{enrolls,trials_f,trials_m} \
       --anon-data-suffix $anon_data_suffix \
       --model-type $tts_type \
       --inference-trunc-len $inference_trunc_len \
+      --inference-batch-size-am $inference_batch_size_am \
+      --inference-batch-size-wav $inference_batch_size_wav \
       $dset || exit 1
   fi
   if [ -f data/$dset/enrolls ]; then

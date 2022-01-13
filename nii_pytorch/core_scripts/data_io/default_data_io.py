@@ -1269,12 +1269,19 @@ class NIIDataSet(torch.utils.data.Dataset):
 
         # write the data
         file_name = tmp_seq_info.seq_tag()
+        seq_length = tmp_seq_info.seq_length()
         s_dim = 0
         e_dim = 0
-        for t_ext, t_dim in zip(self.m_output_exts, self.m_output_dims):
+        for t_ext, t_dim, t_reso in \
+            zip(self.m_output_exts, self.m_output_dims, self.m_output_reso):
             e_dim = s_dim + t_dim
             file_path = nii_str_tk.f_realpath(save_dir, file_name, t_ext)
-            self.f_write_data(output_data[:, s_dim:e_dim], file_path)
+            expect_len = seq_length // t_reso
+            if output_data.shape[0] < expect_len:
+                nii_warn.f_print("Warning {:s}".format(file_path), "error")
+                nii_warn.f_print("The generated data is shorter than expected")
+                nii_warn.f_print("Please check the generated file")
+            self.f_write_data(output_data[:expect_len, s_dim:e_dim], file_path)
         
         return
 
@@ -1440,7 +1447,7 @@ class NIIDataSetLoader:
         if 'sampler' in tmp_params:
             tmp_sampler = None
             if tmp_params['sampler'] == nii_sampler_fn.g_str_sampler_bsbl:
-                if 'batch_size' in tmp_params:
+                if 'batch_size' in tmp_params and tmp_params['batch_size']>1:
                     # initialize the sampler
                     tmp_sampler = nii_sampler_fn.SamplerBlockShuffleByLen(
                         self.m_dataset.f_get_seq_len_list(), 
@@ -1448,7 +1455,9 @@ class NIIDataSetLoader:
                     # turn off automatic shuffle
                     tmp_params['shuffle'] = False                    
                 else:
-                    nii_warn.f_die("Sampler requires batch size > 1")
+                    nii_warn.f_print("{:s} off as batch-size is 1".format(
+                        nii_sampler_fn.g_str_sampler_bsbl))
+                    #nii_warn.f_die("Sampler requires batch size > 1")
             tmp_params['sampler'] = tmp_sampler
             
 

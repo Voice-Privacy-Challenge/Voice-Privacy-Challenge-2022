@@ -148,8 +148,9 @@ def main():
         
         # default, no truncating, no shuffling
         params = {'batch_size':  args.batch_size,
-                  'shuffle': False,
-                  'num_workers': args.num_workers}
+                  'shuffle':  args.shuffle,
+                  'num_workers': args.num_workers,
+                  'sampler': args.sampler}
 
         in_trans_fns = prj_conf.test_input_trans_fns \
                        if hasattr(prj_conf, 'test_input_trans_fns') else None

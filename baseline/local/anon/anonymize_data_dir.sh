@@ -28,7 +28,9 @@ model_type=
 
 # Option for incremental waveform generation
 inference_trunc_len=-1
-
+# Option for batch size during inference
+inference_batch_size_am=10
+inference_batch_size_wav=2
 
 # x-vector extraction
 xvec_nnet_dir= # change this to pretrained xvector model downloaded from Kaldi website
@@ -100,7 +102,7 @@ if [ $stage -le 2 ]; then
    local/featex/02_extract_pitch.sh --nj ${nj} data/${data_dir} || exit 1;
   fi
 fi
-exit 1
+
 # Extract PPGs for source data
 if [ $stage -le 3 ]; then
   printf "${RED}\nStage a.3: PPG extraction for ${data_dir}.${NC}\n"
@@ -154,13 +156,13 @@ if [ $stage -le 5 ]; then
       printf "${RED}\nStage a.5: Skip this step for model ${model_type}.${NC}\n"
   else
       printf "${RED}\nStage a.5: Generate melspec from acoustic model for ${data_dir}.${NC}\n"
-      local/vc/${script_am_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} || exit 1;
+      local/vc/${script_am_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${inference_batch_size_am} || exit 1;
   fi
 fi
 
 if [ $stage -le 6 ]; then
   printf "${RED}\nStage a.6: Generate waveform from ${model_type} for ${data_dir}.${NC}\n"
-  local/vc/${script_wav_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${wav_output_dir_name} ${inference_trunc_len} || exit 1;
+  local/vc/${script_wav_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${wav_output_dir_name} ${inference_trunc_len} ${inference_batch_size_wav} || exit 1;
 fi
 
 if [ $stage -le 7 ]; then

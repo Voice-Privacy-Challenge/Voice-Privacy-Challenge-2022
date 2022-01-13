@@ -10,7 +10,7 @@ proj_dir=${nii_pt_scripts}/projects/am
 test_data_dir=$1
 
 output_dir=${test_data_dir}/$2
-
+batch_size=$3
 
 export TEMP_TESTSET_NAME=`basename ${test_data_dir}`
 export TEMP_TESTSET_LST=${test_data_dir}/scp/data.lst
@@ -30,6 +30,9 @@ export TEMP_ACOUSTIC_NETWORK_PATH=${TEMP_ACOUSTIC_MODEL_DIRECTORY}/trained_netwo
 cd ${proj_dir}
 python ${proj_dir}/main.py --inference --module-config config \
        --cudnn-deterministic-toggle  \
+       --batch-size ${batch_size} \
+       --num-workers ${batch_size} \
+       --sampler block_shuffle_by_length \
        --cudnn-benchmark-toggle \
        --ignore-cached-file-infor \
        --output-dir ${output_dir} \
