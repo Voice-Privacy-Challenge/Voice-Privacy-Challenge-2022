@@ -6,7 +6,7 @@ set -e
 
 
 collect () {
-  for name in `find $results -type d -name "ASV-*" | sort`; do
+  for name in `find $res -type d -name "ASV-*" | sort`; do
     echo "$(basename $name)" | tee -a $expo
     [ ! -f $name/EER ] && echo "Directory $name/EER does not exist" && exit 1
     #for label in 'EER:' 'minDCF(p-target=0.01):' 'minDCF(p-target=0.001):'; do
@@ -41,8 +41,10 @@ collect () {
   done
 }
 
+res=$results
 expo=$results/results.txt
 collect || exit 1
+res=$results.orig
 expo=$results.orig/results.txt
 collect || exit 1
 
