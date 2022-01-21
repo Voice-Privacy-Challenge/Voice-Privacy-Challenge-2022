@@ -34,8 +34,8 @@ if [ $baseline_type = 'baseline-2' ]; then
 
   #overwrite wav.scp file with new anonymised content
   #note sox is inclued to by-pass that files written by local/anon/anonymise_dir_mcadams.py were in float32 format and not pcm
-  ls data/$dset$anon_data_suffix/wav/*.wav | \
-    awk -F'[/.]' '{print $5 " sox " $0 " -t wav -R -b 16 - |"}' > data/$dset$anon_data_suffix/wav.scp
+  #ls data/$dset$anon_data_suffix/wav/*.wav | \
+  #  awk -F'[/.]' '{print $5 " sox " $0 " -t wav -R -b 16 - |"}' > data/$dset$anon_data_suffix/wav.scp
 else
   data_netcdf=$(realpath $anonym_data)   # directory where features for voice anonymization will be stored
   echo $data_netcdf

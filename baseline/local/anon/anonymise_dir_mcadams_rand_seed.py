@@ -9,6 +9,7 @@ import os
 import librosa
 import numpy as np
 import scipy
+import wave
 import argparse
 import matplotlib.pyplot as plt
 import random
@@ -22,7 +23,7 @@ def load_utt2spk(path):
     return utt2spk
 
 
-def anonym(freq, samples, output_file, winLengthinms=20, shiftLengthinms=10, lp_order=20, mcadams=0.8):    
+def anonym(freq, samples, winLengthinms=20, shiftLengthinms=10, lp_order=20, mcadams=0.8):    
     print(mcadams)
     eps = np.finfo(np.float32).eps
     samples = samples + eps
@@ -89,9 +90,10 @@ def anonym(freq, samples, output_file, winLengthinms=20, shiftLengthinms=10, lp_
         outindex = np.arange(m * shift, m * shift + len(frame_rec))
         # overlap add
         sig_rec[outindex] = sig_rec[outindex] + frame_rec
-    sig_rec = sig_rec / np.max(np.abs(sig_rec))
-    scipy.io.wavfile.write(output_file, freq, np.float32(sig_rec)) 
-
+    sig_rec = (sig_rec / np.max(np.abs(sig_rec)) * (np.iinfo(np.int16).max - 1)).astype(np.int16)
+    return sig_rec
+    #scipy.io.wavfile.write(output_file, freq, np.float32(sig_rec))
+    #awk -F'[/.]' '{print $5 " sox " $0 " -t wav -R -b 16 - |"}' > data/$dset$anon_data_suffix/wav.scp
 
 if __name__ == "__main__":
     #Parse args    
@@ -117,21 +119,29 @@ if __name__ == "__main__":
     # # 1462-170142-0000 data/libri_dev/wav/1462-170142-0000/1462-170142-0000.wav
     config.data_dir = config.data_dir + config.anon_suffix
 
-    with ReadHelper(f'scp:{wav_scp}') as reader:
-        for utid, (freq, samples) in reader:
-            print(utid)
-            output_dir = os.path.join(config.data_dir, 'wav')
-            output_file = os.path.join(output_dir, f'{utid}.wav')
-            print(output_file)
-            if os.path.exists(output_file):
-                print('file already exists')
-                continue
-            samples = samples / (np.iinfo(np.int16).max + 1)
-            if config.anon_level == 'spk':
-                assert utid in utt2spk, f'Failed to find speaker ID for utterance {utid}'
-                spid = utt2spk[utid]
-                random.seed(np.abs(hash(spid)))
-            rand_mc_coeff = random.uniform(config.mc_coeff_min, config.mc_coeff_max)
-            if not os.path.exists(output_dir):
-                os.makedirs(output_dir)
-            anonym(freq=freq, samples=samples, output_file=output_file, winLengthinms=config.winLengthinms, shiftLengthinms=config.shiftLengthinms, lp_order=config.n_coeffs, mcadams=rand_mc_coeff)
+    path = os.path.join(output_dir, 'wav.scp')
+    with open(path, 'wt', encoding='utf-8') as writer:
+        with ReadHelper(f'scp:{wav_scp}') as reader:
+            for utid, (freq, samples) in reader:
+                print(utid)
+                output_dir = os.path.join(config.data_dir, 'wav')
+                output_file = os.path.join(output_dir, f'{utid}.wav')
+                print(output_file)
+                if os.path.exists(output_file):
+                    print('file already exists')
+                    continue
+                samples = samples / (np.iinfo(np.int16).max + 1)
+                if config.anon_level == 'spk':
+                    assert utid in utt2spk, f'Failed to find speaker ID for utterance {utid}'
+                    spid = utt2spk[utid]
+                    random.seed(np.abs(hash(spid)))
+                rand_mc_coeff = random.uniform(config.mc_coeff_min, config.mc_coeff_max)
+                if not os.path.exists(output_dir):
+                    os.makedirs(output_dir)
+                samples = anonym(freq=freq, samples=samples, winLengthinms=config.winLengthinms, shiftLengthinms=config.shiftLengthinms, lp_order=config.n_coeffs, mcadams=rand_mc_coeff)
+                with wave.open(output_file, 'wb') stream:
+                    stream.setframerate(freq)
+                    stream.setnchannels(1)
+                    stream.setsampwidth(2)
+                    stream.writeframes(samples)
+                print(f'{utid} {output_file}', file=writer)
