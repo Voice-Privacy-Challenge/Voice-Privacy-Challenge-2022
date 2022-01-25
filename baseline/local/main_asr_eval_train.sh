@@ -95,19 +95,22 @@ if [ $stage -le 8 ]; then
     echo "$asr_eval_model_trained/extractor already exists, skipping link creation"
   else
     cd $asr_eval_model_trained
-	echo "nnet3_cleaned/extractor --> extractor"
-    ln -s nnet3_cleaned/extractor extractor
-	echo "nnet3_cleaned/configs --> configs"
-    ln -s chain_cleaned/tdnn_1d_sp/configs configs
-	echo "chain_cleaned/tdnn_1d_sp/graph_tgsmall --> graph_tgsmall"
-    ln -s chain_cleaned/tdnn_1d_sp/graph_tgsmall graph_tgsmall
-	echo "chain_cleaned/tdnn_1d_sp/final.mdl --> final.mdl"
-    ln -s chain_cleaned/tdnn_1d_sp/final.mdl final.mdl
-	echo "chain_cleaned/tdnn_1d_sp/tree --> tree"
-    ln -s chain_cleaned/tdnn_1d_sp/tree tree
-	ln -s ../asr_eval/lang_test_tglarge lang_test_tglarge
-	ln -s ../asr_eval/lang_test_tgsmall lang_test_tgsmall
-	cd ../../..
+  echo "nnet3_cleaned/extractor --> extractor"
+  ln -s nnet3_cleaned/extractor extractor
+  echo "nnet3_cleaned/configs --> configs"
+  ln -s chain_cleaned/tdnn_1d_sp/configs configs
+  echo "chain_cleaned/tdnn_1d_sp/graph_tgsmall --> graph_tgsmall"
+  ln -s chain_cleaned/tdnn_1d_sp/graph_tgsmall graph_tgsmall
+  echo "chain_cleaned/tdnn_1d_sp/final.mdl --> final.mdl"
+  ln -s chain_cleaned/tdnn_1d_sp/final.mdl final.mdl
+  echo "chain_cleaned/tdnn_1d_sp/tree --> tree"
+  ln -s chain_cleaned/tdnn_1d_sp/tree tree
+  echo "chain_cleaned/tdnn_1d_sp/frame_subsampling_factor --> frame_subsampling_factor"
+  ln -s chain_cleaned/tdnn_1d_sp/frame_subsampling_factor frame_subsampling_factor
+  ln -s ../asr_eval/lang_test_tglarge lang_test_tglarge
+  ln -s ../asr_eval/lang_test_tglarge lang_test_tglarge
+  ln -s ../asr_eval/lang_test_tgsmall lang_test_tgsmall
+  cd ../../..
   fi
 fi
 
