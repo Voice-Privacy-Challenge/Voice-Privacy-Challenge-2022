@@ -118,9 +118,9 @@ if __name__ == "__main__":
     # # 100-121669-0000 flac -c -d -s corpora/LibriSpeech/train-clean-360/100/121669/100-121669-0000.flac |
     # # 1462-170142-0000 data/libri_dev/wav/1462-170142-0000/1462-170142-0000.wav
     config.data_dir = config.data_dir + config.anon_suffix
-
-    path = os.path.join(output_dir, 'wav.scp')
-    with open(path, 'wt', encoding='utf-8') as writer:
+    print(config.data_dir)
+    path_wav_scp_out = os.path.join(config.data_dir, 'wav.scp')
+    with open(path_wav_scp_out, 'wt', encoding='utf-8') as writer:
         with ReadHelper(f'scp:{wav_scp}') as reader:
             for utid, (freq, samples) in reader:
                 print(utid)
@@ -139,9 +139,10 @@ if __name__ == "__main__":
                 if not os.path.exists(output_dir):
                     os.makedirs(output_dir)
                 samples = anonym(freq=freq, samples=samples, winLengthinms=config.winLengthinms, shiftLengthinms=config.shiftLengthinms, lp_order=config.n_coeffs, mcadams=rand_mc_coeff)
-                with wave.open(output_file, 'wb') stream:
+                with wave.open(output_file, 'wb') as stream:
                     stream.setframerate(freq)
                     stream.setnchannels(1)
                     stream.setsampwidth(2)
                     stream.writeframes(samples)
                 print(f'{utid} {output_file}', file=writer)
+    print('Done')
