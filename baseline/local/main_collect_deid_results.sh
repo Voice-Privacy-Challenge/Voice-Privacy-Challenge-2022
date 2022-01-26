@@ -25,3 +25,19 @@ for suff in $eval_subsets; do
 done
 
 echo '  Done'
+
+
+# Summary
+expo=$results/results_summary.txt
+for suff in $eval_subsets; do
+   for name in libri_${suff}_trials_f libri_${suff}_trials_m vctk_${suff}_trials_f vctk_${suff}_trials_m vctk_${suff}_trials_f_common vctk_${suff}_trials_m_common; do
+     echo "$name" | tee -a $expo
+     [ ! -f $results/$dir/$name/gain_of_voice_distinctiveness ] && echo "File $name/gain_of_voice_distinctiveness does not exist" && exit 1
+     label='Gain of voice distinctiveness :'
+     value=$(grep "$label" $results/$dir/$name/gain_of_voice_distinctiveness)
+     value=$(echo $value)
+     echo "  $value" | tee -a $expo
+   done
+done
+
+echo '  Done'
