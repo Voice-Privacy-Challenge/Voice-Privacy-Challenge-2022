@@ -2,6 +2,7 @@
 
 . ./cmd.sh
 . ./path.sh
+. ./config.sh
 
 set -e
 
@@ -10,8 +11,8 @@ set -e
 set_test=libri_test_trials_f 
 results=
 
-asv_eval_model=exp/models/asv_eval/xvect_01709_1
-plda_dir=$asv_eval_model/xvect_train_clean_360
+#asv_eval_model=exp/models/asv_eval/xvect_01709_1
+plda_dir=$asv_eval_model
 
 #=========== end config ===========
 

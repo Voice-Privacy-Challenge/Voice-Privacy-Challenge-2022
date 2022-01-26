@@ -5,10 +5,11 @@ set -e
 . ./config.sh
 
 rand_seed=$rand_seed_start
+anon_level=$anon_level_trials
 
-data_netcdf=$(realpath $anonym_data)   # directory where features for voice anonymization will be stored
-echo $data_netcdf
-mkdir -p $data_netcdf || exit 1;
+# data_netcdf=$(realpath $anonym_data)   # directory where features for voice anonymization will be stored #baseline-1
+# echo $data_netcdf
+# mkdir -p $data_netcdf || exit 1;
 
 for dset in libri_dev_{enrolls,trials_f,trials_m} \
             vctk_dev_{enrolls,trials_f_all,trials_m_all} \
@@ -16,10 +17,10 @@ for dset in libri_dev_{enrolls,trials_f,trials_m} \
             vctk_test_{enrolls,trials_f_all,trials_m_all}; do
   if [ -z "$(echo $dset | grep enrolls)" ]; then
     anon_level=$anon_level_trials
-    mc_coeff=$mc_coeff_trials
+    #mc_coeff=$mc_coeff_trials
   else
     anon_level=$anon_level_enroll
-    mc_coeff=$mc_coeff_enroll
+    #mc_coeff=$mc_coeff_enroll
   fi
   echo "anon_level = $anon_level"
   echo $dset
@@ -30,14 +31,22 @@ for dset in libri_dev_{enrolls,trials_f,trials_m} \
     #create folder that will contain the anonymised wav files
     mkdir -p data/$dset$anon_data_suffix/wav
     #anonymise subset based on the current wav.scp file 
-    python local/anon/anonymise_dir_mcadams.py \
+    # python local/anon/anonymise_dir_mcadams.py \
+      # --data_dir=data/$dset --anon_suffix=$anon_data_suffix \
+      # --n_coeffs=$n_lpc --mc_coeff=$mc_coeff || exit 1
+	python local/anon/anonymise_dir_mcadams_rand_seed.py \
       --data_dir=data/$dset --anon_suffix=$anon_data_suffix \
-      --n_coeffs=$n_lpc --mc_coeff=$mc_coeff || exit 1
+      --n_coeffs=$n_lpc --mc_coeff_min=$mc_coeff_min --mc_coeff_max=$mc_coeff_max --subset=$dset --seed=$rand_seed --anon_level=$anon_level || exit 1
+    
     #overwrite wav.scp file with new anonymised content
     #note sox is inclued to by-pass that files written by local/anon/anonymise_dir_mcadams.py were in float32 format and not pcm
     ls data/$dset$anon_data_suffix/wav/*/*.wav | \
       awk -F'[/.]' '{print $5 " sox " $0 " -t wav -R -b 16 - |"}' > data/$dset$anon_data_suffix/wav.scp
   else
+    data_netcdf=$(realpath $anonym_data)   # directory where features for voice anonymization will be stored #baseline-1
+    echo $data_netcdf
+    mkdir -p $data_netcdf || exit 1;
+  
     printf "${GREEN}\n Anonymizing using x-vectors and neural wavform models...${NC}\n"
     ppg_dir=${ppg_model}/nnet3_cleaned
     local/anon/anonymize_data_dir.sh \
@@ -50,7 +59,9 @@ for dset in libri_dev_{enrolls,trials_f,trials_m} \
       --proximity $proximity --cross-gender $cross_gender \
       --rand-seed $rand_seed \
       --anon-data-suffix $anon_data_suffix \
-      --model-type $tts_type $dset || exit 1
+      --model-type $tts_type \
+      --inference-trunc-len $inference_trunc_len \
+      $dset || exit 1
   fi
   if [ -f data/$dset/enrolls ]; then
     cp data/$dset/enrolls data/$dset$anon_data_suffix/ || exit 1

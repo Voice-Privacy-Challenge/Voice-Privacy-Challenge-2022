@@ -1,5 +1,5 @@
 #!/bin/bash
-# Download and preparing training data for ASR_eval / ASR_eval_anon  and ASV_eval / ASV_eval_anon
+# Download and preparing training data for evaluation models ASR_eval / ASR_eval_anon  and ASV_eval / ASV_eval_anon
 
 set -e
 
@@ -15,14 +15,13 @@ nj=10
 
 train=$data_to_train_eval_models
 train_asv=$data_to_train_eval_models-asv
-train_anon=${data_to_train_eval_models}$anon_data_suffix
-train_asv_anon=$data_to_train_eval_models-asv$anon_data_suffix
+
 
 if [ $stage -le 0 ]; then
 # Download LibriSpeech data sets for training evaluation models (train-clean-360)
   echo "train=$train"
   for part in $train; do
-    printf "${GREEN}\nStage 0: Downloading LibriSpeech data set $train for training evaluatio models...${NC}\n"
+    printf "${GREEN}Downloading LibriSpeech data set $train for training evaluatio models...${NC}\n"
     local/download_and_untar.sh --remove-archive $corpora $data_url_librispeech $part LibriSpeech || exit 1
   done
   # lang directory link for ASR
@@ -46,7 +45,7 @@ fi
 
 if [ $stage -le 1 ]; then
   # Prepare data for training evaluation models (train-clean-360): spk2utt with session-speaker ids
-  printf "${GREEN}\nStage 1: Preparing data $train for training evaluation models...${NC}\n"
+  printf "${GREEN}Preparing data $train for training evaluation models...${NC}\n"
   # TODO: ...
   # format the data as Kaldi data directories
   for part in $train; do
@@ -57,35 +56,17 @@ if [ $stage -le 1 ]; then
 fi
 
 
-if [ $stage -le -2 ]; then
+if [ $stage -le 2 ]; then
 # Prepare data for training ASV evaluation model:  spk2utt with real speaker ids
+  printf "${GREEN}Preparing data data for training ASV evaluation model:  spk2utt with real speaker ids...${NC}\n"
+  echo "$data_to_train_eval_models --> $train_asv"
   utils/copy_data_dir.sh data/$data_to_train_eval_models data/$train_asv || exit 1
-  cp data/$data_to_train_eval_models-spk/utt2spk data/$train_asv
+  cp data/$data_to_train_eval_models-spk/$data_to_train_eval_models-spk/utt2spk data/$train_asv
   utils/utt2spk_to_spk2utt.pl data/$train_asv/utt2spk > data/$train_asv/spk2utt || exit 1
-  cp data/$data_to_train_eval_models-spk/spk2gender data/$train_asv 
-  rm data/$train_asv/cmvn.scp
+  cp data/$data_to_train_eval_models-spk/$data_to_train_eval_models-spk/spk2gender data/$train_asv 
+  rm -f data/$train_asv/cmvn.scp
   utils/fix_data_dir.sh data/$train_asv || exit 1
-  utils/validate_data_dir.sh data/$train_asv || exit 1
-fi
-
-
-if [[ $data_proc == 'anon' ]] && [[ $stage -le 3 ]]; then
-  # Anonymize data for training evaluation models (train-clean-360)
-  printf "${GREEN}\nStage 3: Anonymizing data $train for training evaluation models...${NC}\n"
-  local/main_anonymization_train_data.sh || exit 1
-fi
-
-
-if [[ $data_proc == 'anon' ]] && [[ $stage -le 4 ]]; then
-  # Copy train_anon from train_asv_anon and replace spk2utt with session-speaker ids
-  printf "${GREEN}\nStage 4: Copy  $train_anon from $train_asv_anon and modication of spk2utt...${NC}\n"
-  utils/copy_data_dir.sh data/$train_asv_anon data/$train_anon || exit 1
-  cp data/$train/utt2spk data/$train_anon
-  utils/utt2spk_to_spk2utt.pl data/$train_asv/utt2spk > data/$train_anon/spk2utt || exit 1
-  cp data/$train/spk2gender data/$train_anon 
-  rm data/$train_anon/cmvn.scp
-  utils/fix_data_dir.sh data/$train_anon || exit 1
-  utils/validate_data_dir.sh data/$train_anon || exit 1
+  utils/validate_data_dir.sh --no-feats data/$train_asv || exit 1
 fi
 
 echo '  Done'

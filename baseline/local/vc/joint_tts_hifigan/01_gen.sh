@@ -4,14 +4,14 @@
 #  here, we use features in ../TESTDATA/vctk_vctk_anonymize for demonstration
 # 
 . path.sh
-. local/vc/am/init.sh
+#. local/vc/am/init.sh
 
 model_name=joint_tts_hifigan
 proj_dir=${nii_pt_scripts}/projects/${model_name}
 test_data_dir=$1
 
 output_dir=${test_data_dir}/$3
-
+inf_trunc_option=$4
 
 export TEMP_TESTSET_NAME=`basename ${test_data_dir}`
 export TEMP_TESTSET_LST=${test_data_dir}/scp/data.lst
@@ -31,7 +31,10 @@ export TEMP_NETWORK_PATH=${TEMP_MODEL_DIRECTORY}/trained_network_G.pt
 cd ${proj_dir}
 python ${proj_dir}/main.py --inference --module-config config \
        --ignore-cached-file-infor \
+       --cudnn-deterministic-toggle  \
+       --cudnn-benchmark-toggle \
        --output-dir ${output_dir} \
+       --trunc-input-length-for-inference ${inf_trunc_option} \
        --trained-model ${TEMP_NETWORK_PATH} || exit 1
 cd -
 

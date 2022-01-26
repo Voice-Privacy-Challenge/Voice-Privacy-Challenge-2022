@@ -70,14 +70,23 @@ anon_data_suffix=_anon
 if [ $baseline_type = 'baseline-2' ]; then
 	#McAdams anonymisation config
 	n_lpc=20
-	mc_coeff_enroll=0.8                  # mc_coeff for enrollment 
-	mc_coeff_trials=0.8                  # mc_coeff for trials
+	#TODO: replace mc_coeff_enroll,mc_coeff_trials --> random
+	#mc_coeff_enroll=0.8                 # mc_coeff for enrollment 
+	#mc_coeff_trials=0.8                 # mc_coeff for trials
+	mc_coeff_min=0.5                     # min possible value for McAdams coefficient (sampled randomly for each speaker or utterance (depending on anon_level) in interval [mc_coeff_min,mc_coeff_max])
+	mc_coeff_max=0.9                     # max possible value for McAdams coefficient 
 elif [ $baseline_type = 'baseline-1' ]; then
 	ppg_model=exp/models/1_asr_am/exp    # ASR model for BN extraction
 	cross_gender=false                   # false (same gender xvectors will be selected) or true (other gender xvectors)
 	distance=plda                        # cosine or plda
 	proximity=farthest                   # nearest or farthest speaker to be selected for anonymization
 	anonym_data=exp/am_nsf_data          # directory where features for voice anonymization will be stored 
+	inference_trunc_len=-1               # if Pytorch raises insufficient GPU memory,
+	                                     #  try to set this value to 1000.
+	                                     #  This tells the model to produce the waveform incrementally.
+	                                     #  The segment generated each time will be 1000 frames.
+	                                     #  If GPU is still insufficient, try to use a smaller value.
+	                                     #  By default, -1 will not use incremental generation mode.  
 fi
 
 
@@ -108,19 +117,26 @@ fi
 ##########################################################
 # Settings for training of evaluation (original or anonymized) models 
 
+train_asr_eval=true                                               # train ASR_eval model: false or true
+train_asv_eval=true                                               # train ASV_eval model: false or true
 data_to_train_eval_models=train-clean-360                         # training dataset for evaluation models 
 data_proc=anon                                                    # anonymized (anon) or original(orig) 
-train_anon_level=spk                                              # spk (speaker-level anonymiz.) or utt (utterance-level anonymiz.) - used if data_proc=anon;
+train_anon_level=utt                                              # spk (speaker-level anonymiz.) or utt (utterance-level anonymiz.) - used if data_proc=anon; in the challenge evaluation should be: utt
 
-data_to_train_eval_models_anon=${data_to_train_eval_models}_anon  # directory name with anonymized training data for evaluation models 
-asr_eval_model_trained=exp/models/asr_eval_${data_proc}           # directory to save the ASR evaluation model 
-asv_eval_model_trained=exp/models/asv_eval_${data_proc}           # directory to save the ASV evaluation model 
+data_to_train_eval_models_anon=${data_to_train_eval_models}$anon_data_suffix  # directory name with anonymized training data for evaluation models 
+asr_eval_model_trained=exp/models/user_asr_eval_${data_proc}                  # directory to save the ASR evaluation model 
+asv_eval_model_trained=exp/models/user_asv_eval_${data_proc}                  # directory to save the ASV evaluation model 
 
-
+f0_download=true                                                              # download F0 for train-clean-360 (for B1, 
+                                                                              # if f0_download=true then yaapt F0 will be dowloaded to 
+																			  # exp/am_nsf_data/train-clean-360-asv/f0 (this is done to 
+																			  # save time; yaapt is slow (~up to 40h for train-clean-360)
 ##########################################################
 # Settings for training TTS model
 
 data_train_tts=$libritts_train_clean_100            # training set 
-data_train_tts_out=${libritts_train_clean_100}_tts  # directory name to save the prepared data in the format to train TTS models
-tts_model_name=tts_joint_hifigan                    # name of the TTS model
-tts_model=exp/models/$tts_model_name                # path to save the TTS model
+data_train_tts_out=${libritts_train_clean_100}_tts  # directory name to save the prepared data for TTS models
+tts_model_name=user_trained_tts_${tts_type}         # name of the TTS model
+tts_model_save=exp/models/$tts_model_name           # path to save the TTS model
+tts_sampling_rate=16000                             # sampling rate, fixed, don't change
+tts_use_predefined_trn_dev="True"                   # Whether use pre-defined train and dev split

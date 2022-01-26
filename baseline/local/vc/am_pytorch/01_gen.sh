@@ -4,7 +4,7 @@
 #  here, we use features in ../TESTDATA/vctk_vctk_anonymize for demonstration
 # 
 . path.sh
-. local/vc/am/init.sh
+#. local/vc/am/init.sh
 
 proj_dir=${nii_pt_scripts}/projects/am
 test_data_dir=$1
@@ -29,6 +29,8 @@ export TEMP_ACOUSTIC_NETWORK_PATH=${TEMP_ACOUSTIC_MODEL_DIRECTORY}/trained_netwo
 # 
 cd ${proj_dir}
 python ${proj_dir}/main.py --inference --module-config config \
+       --cudnn-deterministic-toggle  \
+       --cudnn-benchmark-toggle \
        --ignore-cached-file-infor \
        --output-dir ${output_dir} \
        --trained-model ${TEMP_ACOUSTIC_NETWORK_PATH} || exit 1

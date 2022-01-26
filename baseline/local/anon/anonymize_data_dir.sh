@@ -26,6 +26,10 @@ ppg_dir=exp/nnet3_cleaned # change this to the dir where PPGs will be stored
 # Type of the TTS for baseline 1
 model_type=
 
+# Option for incremental waveform generation
+inference_trunc_len=-1
+
+
 # x-vector extraction
 xvec_nnet_dir= # change this to pretrained xvector model downloaded from Kaldi website
 anon_xvec_out_dir=${xvec_nnet_dir}/anon
@@ -44,6 +48,8 @@ rand_seed=2020
 #=========== end config ===========
 
 . utils/parse_options.sh
+
+echo "param=$1"
 
 if [ $# != 1 ]; then
   echo "Usage: "
@@ -84,10 +90,21 @@ fi
 
 # Extract pitch for source data
 if [ $stage -le 2 ]; then
-  printf "${RED}\nStage a.2: Pitch extraction for ${data_dir}.${NC}\n"
-  local/featex/02_extract_pitch.sh --nj ${nj} data/${data_dir} || exit 1;
+  # TEMPORAL (to speed up): use the dowloaded F0 files (yaapt) for train-clean-360-asv 
+  printf "f0_download=$f0_download, data_dir=$data_dir"
+  if [[ $f0_download == 'true' ]] && [[ $data_dir == 'train-clean-360-asv' ]]; then
+	if [ ! -d 'exp/am_nsf_data/train-clean-360-asv/f0' ]; then
+      printf "Directory exp/am_nsf_data/$data_dir/f0 does not exist. Please download train-clean-360-asv/f0 from the server or compute it (set up f0_download=false)"
+	  exit 1;
+	else
+	  printf "${RED}\nStage a.2: Skipping pitch extraction for exp/am_nsf_data/${data_dir}: dowloaded f0 will be used... ${NC}\n"
+	fi
+  else
+    printf "${RED}\nStage a.2: Pitch extraction for ${data_dir}.${NC}\n"
+   local/featex/02_extract_pitch.sh --nj ${nj} data/${data_dir} || exit 1;
+  fi
 fi
-
+exit 1
 # Extract PPGs for source data
 if [ $stage -le 3 ]; then
   printf "${RED}\nStage a.3: PPG extraction for ${data_dir}.${NC}\n"
@@ -140,14 +157,14 @@ if [ $stage -le 5 ]; then
   if [ "$script_am_dir" == "None" ];then   
       printf "${RED}\nStage a.5: Skip this step for model ${model_type}.${NC}\n"
   else
-      printf "${RED}\nStage a.5: Extract melspec from acoustic model for ${data_dir}.${NC}\n"
+      printf "${RED}\nStage a.5: Generate melspec from acoustic model for ${data_dir}.${NC}\n"
       local/vc/${script_am_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} || exit 1;
   fi
 fi
 
 if [ $stage -le 6 ]; then
   printf "${RED}\nStage a.6: Generate waveform from ${model_type} for ${data_dir}.${NC}\n"
-  local/vc/${script_wav_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${wav_output_dir_name} || exit 1;
+  local/vc/${script_wav_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${wav_output_dir_name} ${inference_trunc_len} || exit 1;
 fi
 
 if [ $stage -le 7 ]; then
