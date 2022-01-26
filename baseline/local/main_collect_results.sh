@@ -41,11 +41,15 @@ collect () {
   done
 }
 
-res=$results
 expo=$results/results.txt
+res=$results
 collect || exit 1
-res=$results.orig
+
 expo=$results.orig/results.txt
+res=$results.orig
 collect || exit 1
+
+echo '  Results summary...'
+local/results_summary.sh || exit 1
 
 echo '  Done'
