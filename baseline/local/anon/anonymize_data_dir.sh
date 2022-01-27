@@ -7,7 +7,6 @@
 . ./path.sh
 . ./cmd.sh
 . ./config.sh
-
 set -e
 
 #===== begin config =======
@@ -100,12 +99,16 @@ if [ $stage -le 2 ]; then
    local/featex/02_extract_pitch.sh --nj ${nj} data/${data_dir} || exit 1;
   fi
 fi
-exit 1
+#exit 1
 # Extract PPGs for source data
 if [ $stage -le 3 ]; then
-  printf "${RED}\nStage a.3: PPG extraction for ${data_dir}.${NC}\n"
-  local/featex/extract_ppg.sh --nj $nj --stage 0 \
+  if [ "$tts_type" == "ssl" ];then
+      printf "${RED}\nStage a.3: Skip PPG extraction for model ${tts_type}.${NC}\n"
+  else
+      printf "${RED}\nStage a.3: PPG extraction for ${data_dir}.${NC}\n"
+      local/featex/extract_ppg.sh --nj $nj --stage 0 \
 	  ${data_dir} ${ppg_model} ${ppg_dir}/ppg_${data_dir} || exit 1;
+  fi
 fi
 
 # Create netcdf data for voice conversion
@@ -144,13 +147,16 @@ case $model_type in
 	script_am_dir="None"
 	script_wav_dir=joint_tts_nsf_hifigan
 	;;
+    ssl)
+	script_am_dir="None"
+	;;
     *)
 	printf "${RED}\nUnknown ${model_type}${NC}\n" 
 	exit 1;
 esac
 
 if [ $stage -le 5 ]; then
-  if [ "$script_am_dir" == "None" ];then   
+  if [[ "$script_am_dir" == "None" ]] || [[ "$tts_type" == "ssl" ]] ;then    
       printf "${RED}\nStage a.5: Skip this step for model ${model_type}.${NC}\n"
   else
       printf "${RED}\nStage a.5: Generate melspec from acoustic model for ${data_dir}.${NC}\n"
@@ -159,13 +165,22 @@ if [ $stage -le 5 ]; then
 fi
 
 if [ $stage -le 6 ]; then
-  printf "${RED}\nStage a.6: Generate waveform from ${model_type} for ${data_dir}.${NC}\n"
-  local/vc/${script_wav_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${wav_output_dir_name} ${inference_trunc_len} || exit 1;
+  if [ "$tts_type" == "ssl" ];then
+      printf "${RED}\nStage a.6: Generate waveform from ssl model for model ${ssl_model}.${NC}\n"
+      local/vc/ssl/01_gen.sh ${data_netcdf}/${data_dir} exp/ssl_output_wav/${ssl_model}
+  else
+      printf "${RED}\nStage a.6: Generate waveform from ${model_type} for ${data_dir}.${NC}\n"
+      local/vc/${script_wav_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${wav_output_dir_name} ${inference_trunc_len} || exit 1;
+  fi
 fi
 
 if [ $stage -le 7 ]; then
   printf "${RED}\nStage a.7: Creating new data directories corresponding to anonymization.${NC}\n"
-  wav_path=${data_netcdf}/${data_dir}/${wav_output_dir_name}
+  if [ "$tts_type" == "ssl" ];then
+     wav_path=exp/ssl_output_wav/${ssl_model}/${data_dir}
+  else
+     wav_path=${data_netcdf}/${data_dir}/${wav_output_dir_name}
+  fi
   new_data_dir=data/${data_dir}${anon_data_suffix}
   if [ -d "$new_data_dir" ]; then
     rm -rf ${new_data_dir}

@@ -22,4 +22,19 @@ EOF
   cd $home
 fi
 
+
+check=$expo/models/ssl_models
+if [ ! -e $check ]; then
+    cd $expo/models
+    if [ -f ssl_models.tar.gz ];
+    then
+        rm ssl_models.tar.gz
+    fi
+    wget --quiet https://www.dropbox.com/sh/bua2vks8clnl2ha/AAAbMqgoGBUmxNF-6AeJhjtQa/ssl_models.tar.gz
+    tar -xzvf ssl_models.tar.gz
+    cd $home
+fi
+
+
+
 echo '  Done'

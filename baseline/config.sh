@@ -6,11 +6,11 @@
 nj=$(nproc)
 
 #tts_type=am_nsf_old          #TTS: SS AM + NSF model (c++)m baseline-1 from VPC-2020
-tts_type=am_nsf_pytorch       #TTS: SS AM + NSF model (pytorch)
+#tts_type=am_nsf_pytorch       #TTS: SS AM + NSF model (pytorch)
 #tts_type=joint_hifigan       #TTS: Single joint TTS model based on HiFi GAN
 #tts_type=joint_nsf_hifigan   #TTS: Single joint TTS model based on NSF with GAN
 
-#tts_type=ssl                 #TTS: Self-supervised learning features: wav2vec2 (...); hubert; hubert_kmeans
+tts_type=ssl                 #TTS: Self-supervised learning features: wav2vec2 (...); hubert; hubert_kmeans
 
 xvect_type=kaldi     
 #xvect_type=sidekit
