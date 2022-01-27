@@ -21,3 +21,5 @@ tikzplotlib
 torch==1.8.2+cu111
 torchvision==0.9.2+cu111
 torchaudio==0.8.2
+tensorboard
+fairseq@git+https://github.com//pytorch/fairseq.git@f2146bdc7abf293186de9449bfa2272775e39e1d#egg=fairseq
