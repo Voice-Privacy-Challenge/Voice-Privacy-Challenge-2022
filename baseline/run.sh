@@ -150,18 +150,17 @@ fi
 #TODO: add 2 ASR evaluations: orig. and anon.
 
 
-# pitch/prosody correlation
 if [ $stage -le 17 ]; then
-  printf "${GREEN}\nStage 17: Compute pitch correlation metric...${NC}\n"
-  local/main_pitch_corr.sh || exit 1
-fi
-
-
-if [ $stage -le 18 ]; then
-  printf "${GREEN}\nStage 18: Collecting results${NC}\n"
+  printf "${GREEN}\nStage 17: Collecting results${NC}\n"
   local/main_collect_results.sh || exit 1
 fi
 
+
+# pitch/prosody correlation
+if [ $stage -le 18 ]; then
+  printf "${GREEN}\nStage 18: Compute pitch correlation metric...${NC}\n"
+  local/main_compute_pitch_corr.sh || exit 1
+fi
 
 if [ $stage -le 19 ]; then
   printf "${GREEN}\nStage 19: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
