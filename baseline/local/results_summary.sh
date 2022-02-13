@@ -51,18 +51,6 @@ collect_asr () {
 }
 
 
-# collect_f0 () {
-  # for name in `find $results/results.txt`; do
-    # # echo "$(basename $name)" | tee -a $expo
-    # while read line; do
-      # if grep -q "Pitch" <<< "$line"; then
-        # echo "$line" | tee -a $expo
-      # fi
-    # done < $name
-  # done
-# }
-
-
 res=$results
 expo=$results/results_summary.txt
 res=$results.orig
@@ -70,6 +58,6 @@ collect_orig || exit 1
 res=$results
 collect_anon || exit 1
 collect_asr || exit 1
-#collect_f0 || exit 1
+
 
 echo '  Done'
