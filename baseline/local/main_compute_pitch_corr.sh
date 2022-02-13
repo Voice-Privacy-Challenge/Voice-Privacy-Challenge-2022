@@ -12,4 +12,15 @@ for suff in $eval_subsets; do
   done
 done
 
+
+for name in `find $results/results.txt`; do
+  # echo "$(basename $name)" | tee -a $expo
+  while read line; do
+    if grep -q "Pitch" <<< "$line"; then
+      echo "$line" | tee -a $results/results_summary.txt
+    fi
+  done < $name
+done
+
+
 echo '  Done'

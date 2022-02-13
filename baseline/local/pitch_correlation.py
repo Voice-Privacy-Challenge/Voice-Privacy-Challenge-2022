@@ -105,8 +105,8 @@ def pitchCorr_list(data, wav_list_orig, wav_list_anon, result_file):
                 corr_list.append(corr)
     mean = np.mean(corr_list)
     std = np.std(corr_list)
-    file = open(result_file, 'a+')  
-    str_out = "Pitch correlation for " + str(data) + ": mean=" + str("{:.4f}".format(mean)) + " std="  + str("{:.4f}".format(std) + "\n");
+    file = open(result_file, 'a+')
+    str_out = str(data) + "  Pitch_correlation: mean=" + str("{:.4f}".format(mean)) + " std="  + str("{:.4f}".format(std) + "\n")
     print(str_out)
     file.write(str_out)
     file.close()
