@@ -115,11 +115,11 @@ def pitchCorr_list(data, wav_list_orig, wav_list_anon, max_len_diff, result_file
 if __name__ == "__main__":
     #Parse args    
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data',type=str,default='libri_test_trials_f')
-    parser.add_argument('--list_name',type=str,default=' ')
-    parser.add_argument('--list_name_anon',type=str,default=' ')
-    parser.add_argument('--max_len_diff',type=str,default=' ')
-    parser.add_argument('--results',type=str,default=' ')
+    parser.add_argument('--data', type=str, default='libri_test_trials_f')
+    parser.add_argument('--list_name', type=str, default=' ')
+    parser.add_argument('--list_name_anon', type=str, default=' ')
+    parser.add_argument('--max_len_diff', type=int, default=0)
+    parser.add_argument('--results', type=str, default=' ')
     config = parser.parse_args()
-    pitchCorr_list(config.data, config.list_name, config.list_name_anon, int(config.max_len_diff), config.results)
+    pitchCorr_list(config.data, config.list_name, config.list_name_anon, config.max_len_diff, config.results)
     print('Done')
