@@ -82,7 +82,7 @@ def pitchCorr_f(wav_path_orig,wav_path_anon):
 
     return c.iloc[1]['a']
 
-def pitchCorr_list(data, wav_list_orig, wav_list_anon, result_file):
+def pitchCorr_list(data, wav_list_orig, wav_list_anon, max_len_diff, result_file):
     assert os.path.isfile(wav_list_orig), f'file {wav_list_orig} does not exist'
     assert os.path.isfile(wav_list_anon), f'file {wav_list_anon} does not exist'
     print("wav_list_orig = ", wav_list_orig)
@@ -98,8 +98,9 @@ def pitchCorr_list(data, wav_list_orig, wav_list_anon, result_file):
                 assert utid_anon == utid_orig, f'Different order of utterances in the lists of original and anonymized files: {wav_list_orig} and {wav_list_anon}'
                 assert freq_anon == freq_orig, f'Different sampling frequency of original and anonymized files: {wav_list_orig} and {wav_list_anon}'
                 assert freq_anon == 16000, f'Wrong sampling frequency (should be 16000): {wav_list_orig} and {wav_list_anon}'
-                diff = abs(len(samp_anon) - len(samp_orig)) / freq_orig # in sec
-                assert diff < 0.025, f'Difference between lenghts of original and anonymized utterances exceeds is too long (exceeds 25ms): {utid_orig}  and {utid_anon}, difference = {diff} ms'                
+                diff = abs(len(samp_anon) - len(samp_orig)) / freq_orig * 1000 # in ms 
+                assert diff < max_len_diff, f'Difference between lenghts of original and anonymized utterances is too long (exceeds threshold max_len_diff={max_len_diff} ms): {utid_orig}  and {utid_anon}, difference = {diff} ms'                
+                #assert diff < 0.070, f'Difference between lenghts of original and anonymized utterances exceeds is too long (exceeds 70ms): {utid_orig}  and {utid_anon}, difference = {diff} ms'                
                 #assert len(samp_anon) == len(samp_orig), f'Different lenghts of original and anonymized utterances: {utid_orig} ({len(samp_orig)}) and {utid_anon} ({len(samp_anon)})'
                 corr = pitchCorr(samp_orig, samp_anon)
                 corr_list.append(corr)
@@ -117,7 +118,8 @@ if __name__ == "__main__":
     parser.add_argument('--data',type=str,default='libri_test_trials_f')
     parser.add_argument('--list_name',type=str,default=' ')
     parser.add_argument('--list_name_anon',type=str,default=' ')
+    parser.add_argument('--max_len_diff',type=str,default=' ')
     parser.add_argument('--results',type=str,default=' ')
     config = parser.parse_args()
-    pitchCorr_list(config.data, config.list_name, config.list_name_anon, config.results)
+    pitchCorr_list(config.data, config.list_name, config.list_name_anon, int(config.max_len_diff), config.results)
     print('Done')

@@ -19,7 +19,7 @@ list_name=data/$data/wav.scp
 list_name_anon=data/$data$anon_data_suffix/wav.scp
 
 python local/pitch_correlation.py \
-      --data=$data --list_name=$list_name --list_name_anon=$list_name_anon --results=$results/results.txt
+      --data=$data --list_name=$list_name --list_name_anon=$list_name_anon --max_len_diff=$max_len_diff --results=$results/results.txt
 
 echo "$list_name, $list_name_anon"
 
