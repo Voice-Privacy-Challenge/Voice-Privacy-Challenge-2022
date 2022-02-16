@@ -215,4 +215,8 @@ echo "    Directory with the data (BN-features, F0, x-vectors,...): data/$data_t
 echo -e "${BLUE}Output:${NC}"
 echo "    Directory to save TTS model: $tts_model"
 
+##########################################################
+echo -e "\n${GREEN}Compute F0 correlation:${NC}"
+print_var "$max_len_diff" max_len_diff
+
 echo Done

@@ -98,7 +98,7 @@ if [ $stage -le 9 ]; then
 fi
 
 
-# Anonymization
+# Anonymization of evaluation datasets
 if [ $stage -le 10 ]; then
   printf "${GREEN}\nStage 10: Anonymizing evaluation datasets...${NC}\n"
   local/main_anonymization.sh || exit 1
@@ -154,26 +154,30 @@ fi
 #TODO: add 2 ASR evaluations: orig. and anon.
 
 
-if [ $stage -le 18 ]; then
+if [ $stage -le 18]; then
   printf "${GREEN}\nStage 18: Collecting results${NC}\n"
   local/main_collect_results.sh || exit 1
 fi
 
-
+# pitch/prosody correlation
 if [ $stage -le 19 ]; then
-  printf "${GREEN}\nStage 19: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
+  printf "${GREEN}\nStage 19: Compute pitch correlation metric...${NC}\n"
+  local/main_compute_pitch_corr.sh || exit 1
+fi
+
+if [ $stage -le 20 ]; then
+  printf "${GREEN}\nStage 20: Compute the de-indentification and the voice-distinctiveness preservation with the similarity matrices${NC}\n"
   local/main_compute_deid.sh || exit 1
 fi
 
-
-if [ $stage -le 20 ]; then
-  printf "${GREEN}\nStage 20: Collecting results for re-indentification and the voice-distinctiveness preservation${NC}\n"
+if [ $stage -le 21 ]; then
+  printf "${GREEN}\nStage 21: Collecting results for re-indentification and the voice-distinctiveness preservation${NC}\n"
   local/main_collect_deid_results.sh || exit 1
 fi
 
 
-if [ $stage -le 21 ]; then
-  printf "${GREEN}\nStage 21: Summarizing ZEBRA plots for all experiments${NC}\n"
+if [ $stage -le 22 ]; then
+  printf "${GREEN}\nStage 22: Summarizing ZEBRA plots for all experiments${NC}\n"
   local/main_zebra_results.sh || exit 1
 fi
 
