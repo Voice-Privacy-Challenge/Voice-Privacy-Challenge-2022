@@ -1,255 +1,255 @@
 ASV-libri_dev_enrolls-libri_dev_trials_f
-  EER: 20.88%
-  Cllr (min/act): 0.640/12.124
-  ROCCH-EER: 20.425%
-  linkability: 0.518429
-  Population: 0.249 bit
-  Individual: 3.101 (C)
+  EER: 21.59%
+  Cllr (min/act): 0.654/12.861
+  ROCCH-EER: 21.376%
+  linkability: 0.499641
+  Population: 0.239 bit
+  Individual: 2.376 (C)
 ASV-libri_dev_enrolls-libri_dev_trials_f_anon
-  EER: 48.44%
-  Cllr (min/act): 0.994/24.752
-  ROCCH-EER: 47.722%
-  linkability: 0.068836
+  EER: 48.86%
+  Cllr (min/act): 0.994/25.979
+  ROCCH-EER: 47.920%
+  linkability: 0.073422
   Population: 0.004 bit
   Individual: 1.015 (B)
 ASV-libri_dev_enrolls-libri_dev_trials_m
-  EER: 16.61%
-  Cllr (min/act): 0.490/18.384
-  ROCCH-EER: 16.155%
-  linkability: 0.625424
-  Population: 0.360 bit
-  Individual: 3.419 (C)
+  EER: 16.77%
+  Cllr (min/act): 0.498/19.490
+  ROCCH-EER: 16.448%
+  linkability: 0.620568
+  Population: 0.353 bit
+  Individual: 3.422 (C)
 ASV-libri_dev_enrolls-libri_dev_trials_m_anon
-  EER: 51.4%
-  Cllr (min/act): 0.997/43.099
-  ROCCH-EER: 49.352%
-  linkability: 0.053305
+  EER: 51.71%
+  Cllr (min/act): 0.998/41.605
+  ROCCH-EER: 49.324%
+  linkability: 0.065506
   Population: 0.002 bit
-  Individual: 0.434 (A)
+  Individual: 0.244 (A)
 ASV-libri_dev_enrolls_anon-libri_dev_trials_f_anon
-  EER: 18.32%
-  Cllr (min/act): 0.541/5.361
-  ROCCH-EER: 17.945%
-  linkability: 0.595678
-  Population: 0.322 bit
-  Individual: 3.213 (C)
+  EER: 17.76%
+  Cllr (min/act): 0.529/5.490
+  ROCCH-EER: 17.456%
+  linkability: 0.590552
+  Population: 0.331 bit
+  Individual: 3.125 (C)
 ASV-libri_dev_enrolls_anon-libri_dev_trials_m_anon
-  EER: 6.988%
-  Cllr (min/act): 0.227/1.994
-  ROCCH-EER: 6.799%
-  linkability: 0.829437
-  Population: 0.551 bit
-  Individual: 3.123 (C)
+  EER: 6.366%
+  Cllr (min/act): 0.220/2.173
+  ROCCH-EER: 6.156%
+  linkability: 0.838471
+  Population: 0.556 bit
+  Individual: 3.084 (C)
 ASV-libri_test_enrolls-libri_test_trials_f
-  EER: 14.6%
-  Cllr (min/act): 0.458/12.714
-  ROCCH-EER: 14.415%
-  linkability: 0.660010
-  Population: 0.381 bit
-  Individual: 3.110 (C)
+  EER: 14.05%
+  Cllr (min/act): 0.461/12.859
+  ROCCH-EER: 13.799%
+  linkability: 0.677141
+  Population: 0.378 bit
+  Individual: 3.331 (C)
 ASV-libri_test_enrolls-libri_test_trials_f_anon
-  EER: 48.18%
-  Cllr (min/act): 0.994/36.358
-  ROCCH-EER: 47.395%
-  linkability: 0.049285
-  Population: 0.004 bit
-  Individual: 1.009 (B)
+  EER: 48.36%
+  Cllr (min/act): 0.992/36.548
+  ROCCH-EER: 47.578%
+  linkability: 0.068707
+  Population: 0.005 bit
+  Individual: 0.775 (A)
 ASV-libri_test_enrolls-libri_test_trials_m
-  EER: 12.92%
-  Cllr (min/act): 0.424/17.912
-  ROCCH-EER: 12.609%
-  linkability: 0.683169
-  Population: 0.406 bit
-  Individual: 3.169 (C)
+  EER: 14.25%
+  Cllr (min/act): 0.434/20.483
+  ROCCH-EER: 13.598%
+  linkability: 0.665800
+  Population: 0.399 bit
+  Individual: 2.755 (C)
 ASV-libri_test_enrolls-libri_test_trials_m_anon
-  EER: 49%
-  Cllr (min/act): 0.987/49.213
-  ROCCH-EER: 47.176%
-  linkability: 0.070389
+  EER: 48.55%
+  Cllr (min/act): 0.986/48.839
+  ROCCH-EER: 47.177%
+  linkability: 0.066066
   Population: 0.009 bit
-  Individual: 0.351 (A)
+  Individual: 0.601 (A)
 ASV-libri_test_enrolls_anon-libri_test_trials_f_anon
-  EER: 13.14%
-  Cllr (min/act): 0.398/2.906
-  ROCCH-EER: 13.024%
-  linkability: 0.685953
-  Population: 0.427 bit
-  Individual: 3.323 (C)
+  EER: 12.04%
+  Cllr (min/act): 0.381/2.762
+  ROCCH-EER: 11.896%
+  linkability: 0.707632
+  Population: 0.439 bit
+  Individual: 3.030 (C)
 ASV-libri_test_enrolls_anon-libri_test_trials_m_anon
   EER: 8.909%
-  Cllr (min/act): 0.298/2.699
-  ROCCH-EER: 8.663%
-  linkability: 0.767818
-  Population: 0.499 bit
-  Individual: 3.005 (C)
+  Cllr (min/act): 0.295/2.723
+  ROCCH-EER: 8.791%
+  linkability: 0.769778
+  Population: 0.501 bit
+  Individual: 3.094 (C)
 ASV-vctk_dev_enrolls-vctk_dev_trials_f
-  EER: 12.97%
-  Cllr (min/act): 0.443/19.365
-  ROCCH-EER: 12.834%
-  linkability: 0.667636
+  EER: 13.64%
+  Cllr (min/act): 0.444/19.211
+  ROCCH-EER: 13.423%
+  linkability: 0.660347
   Population: 0.391 bit
-  Individual: 3.004 (C)
+  Individual: 3.029 (C)
 ASV-vctk_dev_enrolls-vctk_dev_trials_f_anon
-  EER: 44.86%
-  Cllr (min/act): 0.980/9.956
-  ROCCH-EER: 44.457%
-  linkability: 0.083978
-  Population: 0.013 bit
-  Individual: 0.577 (A)
+  EER: 45.42%
+  Cllr (min/act): 0.982/11.770
+  ROCCH-EER: 44.874%
+  linkability: 0.075605
+  Population: 0.012 bit
+  Individual: 0.533 (A)
 ASV-vctk_dev_enrolls-vctk_dev_trials_f_common
   EER: 20.64%
-  Cllr (min/act): 0.592/17.276
-  ROCCH-EER: 20.455%
-  linkability: 0.501041
+  Cllr (min/act): 0.589/16.274
+  ROCCH-EER: 20.105%
+  linkability: 0.530523
   Population: 0.287 bit
-  Individual: 2.376 (C)
+  Individual: 2.225 (C)
 ASV-vctk_dev_enrolls-vctk_dev_trials_f_common_anon
-  EER: 45.93%
-  Cllr (min/act): 0.982/24.182
-  ROCCH-EER: 45.139%
-  linkability: 0.081344
-  Population: 0.012 bit
-  Individual: 0.498 (A)
+  EER: 45.35%
+  Cllr (min/act): 0.984/26.474
+  ROCCH-EER: 44.615%
+  linkability: 0.077049
+  Population: 0.011 bit
+  Individual: 0.414 (A)
 ASV-vctk_dev_enrolls-vctk_dev_trials_m
-  EER: 12.31%
-  Cllr (min/act): 0.381/18.432
-  ROCCH-EER: 12.137%
-  linkability: 0.698063
-  Population: 0.438 bit
-  Individual: 2.839 (C)
+  EER: 11.36%
+  Cllr (min/act): 0.362/18.955
+  ROCCH-EER: 11.209%
+  linkability: 0.714332
+  Population: 0.452 bit
+  Individual: 2.882 (C)
 ASV-vctk_dev_enrolls-vctk_dev_trials_m_anon
-  EER: 53.9%
-  Cllr (min/act): 0.999/27.314
-  ROCCH-EER: 49.898%
-  linkability: 0.069695
-  Population: 4e-04 bit
-  Individual: 0.402 (A)
+  EER: 53.5%
+  Cllr (min/act): 0.999/25.640
+  ROCCH-EER: 49.867%
+  linkability: 0.068450
+  Population: 5e-04 bit
+  Individual: 0.508 (A)
 ASV-vctk_dev_enrolls-vctk_dev_trials_m_common
-  EER: 12.54%
-  Cllr (min/act): 0.372/16.691
-  ROCCH-EER: 12.282%
-  linkability: 0.679056
+  EER: 11.97%
+  Cllr (min/act): 0.369/17.794
+  ROCCH-EER: 11.719%
+  linkability: 0.693521
   Population: 0.446 bit
-  Individual: 2.331 (C)
+  Individual: 2.292 (C)
 ASV-vctk_dev_enrolls-vctk_dev_trials_m_common_anon
   EER: 53.56%
-  Cllr (min/act): 0.999/51.126
-  ROCCH-EER: 49.949%
-  linkability: 0.070375
-  Population: 5e-04 bit
+  Cllr (min/act): 1.000/48.521
+  ROCCH-EER: 49.985%
+  linkability: 0.085696
+  Population: 2e-04 bit
   Individual: 0.001 (A)
 ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_anon
-  EER: 12.13%
-  Cllr (min/act): 0.409/2.321
-  ROCCH-EER: 12.094%
-  linkability: 0.696656
-  Population: 0.416 bit
-  Individual: 2.810 (C)
+  EER: 12.46%
+  Cllr (min/act): 0.407/2.370
+  ROCCH-EER: 12.294%
+  linkability: 0.696280
+  Population: 0.417 bit
+  Individual: 2.844 (C)
 ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_common_anon
-  EER: 14.83%
-  Cllr (min/act): 0.463/1.419
-  ROCCH-EER: 14.331%
-  linkability: 0.622258
-  Population: 0.377 bit
-  Individual: 2.544 (C)
+  EER: 13.95%
+  Cllr (min/act): 0.428/1.288
+  ROCCH-EER: 13.843%
+  linkability: 0.642490
+  Population: 0.404 bit
+  Individual: 2.468 (C)
 ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_anon
-  EER: 9.826%
-  Cllr (min/act): 0.344/3.052
-  ROCCH-EER: 9.664%
-  linkability: 0.747636
-  Population: 0.463 bit
-  Individual: 2.680 (C)
+  EER: 9.33%
+  Cllr (min/act): 0.325/2.571
+  ROCCH-EER: 9.218%
+  linkability: 0.758646
+  Population: 0.476 bit
+  Individual: 2.837 (C)
 ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_common_anon
-  EER: 15.1%
-  Cllr (min/act): 0.473/1.648
-  ROCCH-EER: 14.343%
-  linkability: 0.633129
-  Population: 0.369 bit
-  Individual: 1.878 (B)
+  EER: 13.11%
+  Cllr (min/act): 0.411/1.408
+  ROCCH-EER: 12.702%
+  linkability: 0.665986
+  Population: 0.415 bit
+  Individual: 2.159 (C)
 ASV-vctk_test_enrolls-vctk_test_trials_f
-  EER: 20.27%
-  Cllr (min/act): 0.604/20.131
-  ROCCH-EER: 20.037%
-  linkability: 0.517423
-  Population: 0.275 bit
-  Individual: 2.499 (C)
+  EER: 20.88%
+  Cllr (min/act): 0.612/19.732
+  ROCCH-EER: 20.599%
+  linkability: 0.503101
+  Population: 0.271 bit
+  Individual: 2.714 (C)
 ASV-vctk_test_enrolls-vctk_test_trials_f_anon
-  EER: 47.22%
-  Cllr (min/act): 0.995/10.832
-  ROCCH-EER: 47.102%
-  linkability: 0.050215
+  EER: 47.27%
+  Cllr (min/act): 0.995/11.136
+  ROCCH-EER: 47.013%
+  linkability: 0.051417
   Population: 0.003 bit
-  Individual: 0.952 (A)
+  Individual: 0.827 (A)
 ASV-vctk_test_enrolls-vctk_test_trials_f_common
-  EER: 21.39%
-  Cllr (min/act): 0.642/15.413
-  ROCCH-EER: 20.523%
-  linkability: 0.489680
-  Population: 0.247 bit
-  Individual: 1.623 (B)
+  EER: 20.52%
+  Cllr (min/act): 0.634/13.804
+  ROCCH-EER: 20.157%
+  linkability: 0.509249
+  Population: 0.253 bit
+  Individual: 1.748 (B)
 ASV-vctk_test_enrolls-vctk_test_trials_f_common_anon
-  EER: 47.4%
-  Cllr (min/act): 0.989/22.882
-  ROCCH-EER: 45.669%
-  linkability: 0.071866
-  Population: 0.007 bit
-  Individual: 0.280 (A)
+  EER: 48.27%
+  Cllr (min/act): 0.987/24.593
+  ROCCH-EER: 46.107%
+  linkability: 0.072353
+  Population: 0.009 bit
+  Individual: 0.373 (A)
 ASV-vctk_test_enrolls-vctk_test_trials_m
-  EER: 12.63%
-  Cllr (min/act): 0.427/18.845
-  ROCCH-EER: 12.559%
-  linkability: 0.678625
-  Population: 0.402 bit
-  Individual: 2.915 (C)
+  EER: 11.14%
+  Cllr (min/act): 0.374/18.951
+  ROCCH-EER: 10.962%
+  linkability: 0.721022
+  Population: 0.441 bit
+  Individual: 3.174 (C)
 ASV-vctk_test_enrolls-vctk_test_trials_m_anon
-  EER: 55.91%
-  Cllr (min/act): 1.000/26.226
-  ROCCH-EER: 49.965%
-  linkability: 0.089332
-  Population: 3e-04 bit
-  Individual: 0.198 (A)
+  EER: 56.77%
+  Cllr (min/act): 0.999/26.419
+  ROCCH-EER: 49.943%
+  linkability: 0.089940
+  Population: 5e-04 bit
+  Individual: 0.881 (A)
 ASV-vctk_test_enrolls-vctk_test_trials_m_common
-  EER: 10.45%
-  Cllr (min/act): 0.335/17.065
-  ROCCH-EER: 10.141%
-  linkability: 0.732989
-  Population: 0.472 bit
-  Individual: 3.110 (C)
+  EER: 11.02%
+  Cllr (min/act): 0.342/17.768
+  ROCCH-EER: 10.575%
+  linkability: 0.727648
+  Population: 0.467 bit
+  Individual: 3.027 (C)
 ASV-vctk_test_enrolls-vctk_test_trials_m_common_anon
-  EER: 52.26%
-  Cllr (min/act): 0.999/49.705
-  ROCCH-EER: 49.611%
-  linkability: 0.072035
-  Population: 4e-04 bit
-  Individual: 0.447 (A)
+  EER: 52.54%
+  Cllr (min/act): 0.998/47.861
+  ROCCH-EER: 49.266%
+  linkability: 0.089838
+  Population: 0.001 bit
+  Individual: 0.845 (A)
 ASV-vctk_test_enrolls_anon-vctk_test_trials_f_anon
-  EER: 16.26%
-  Cllr (min/act): 0.524/4.243
-  ROCCH-EER: 16.099%
-  linkability: 0.603707
-  Population: 0.332 bit
-  Individual: 2.395 (C)
+  EER: 16%
+  Cllr (min/act): 0.520/4.113
+  ROCCH-EER: 15.853%
+  linkability: 0.612369
+  Population: 0.335 bit
+  Individual: 2.660 (C)
 ASV-vctk_test_enrolls_anon-vctk_test_trials_f_common_anon
-  EER: 18.79%
-  Cllr (min/act): 0.543/1.992
-  ROCCH-EER: 18.321%
-  linkability: 0.540503
-  Population: 0.321 bit
-  Individual: 2.049 (C)
+  EER: 17.34%
+  Cllr (min/act): 0.517/1.756
+  ROCCH-EER: 17.035%
+  linkability: 0.560000
+  Population: 0.339 bit
+  Individual: 2.060 (C)
 ASV-vctk_test_enrolls_anon-vctk_test_trials_m_anon
-  EER: 10.39%
-  Cllr (min/act): 0.357/3.057
-  ROCCH-EER: 10.303%
-  linkability: 0.733298
-  Population: 0.454 bit
-  Individual: 2.886 (C)
+  EER: 10.05%
+  Cllr (min/act): 0.339/2.725
+  ROCCH-EER: 9.989%
+  linkability: 0.744107
+  Population: 0.467 bit
+  Individual: 2.768 (C)
 ASV-vctk_test_enrolls_anon-vctk_test_trials_m_common_anon
-  EER: 12.99%
-  Cllr (min/act): 0.399/1.296
-  ROCCH-EER: 12.512%
-  linkability: 0.675266
-  Population: 0.424 bit
-  Individual: 2.178 (C)
+  EER: 9.887%
+  Cllr (min/act): 0.338/1.047
+  ROCCH-EER: 9.641%
+  linkability: 0.731170
+  Population: 0.469 bit
+  Individual: 2.447 (C)
 ASR-libri_dev_asr
   %WER 16.57 [ 6594 / 39783, 450 ins, 1308 del, 4836 sub ] exp/models/user_asr_eval_anon/decode_libri_dev_asr_tgsmall/wer_12_0.0
   %WER 12.07 [ 4803 / 39783, 472 ins, 812 del, 3519 sub ] exp/models/user_asr_eval_anon/decode_libri_dev_asr_tglarge/wer_12_0.0

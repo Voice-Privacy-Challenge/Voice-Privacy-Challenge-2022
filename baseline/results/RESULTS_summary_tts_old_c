@@ -10,18 +10,18 @@ ASV-vctk_test_enrolls-vctk_test_trials_f  EER: 4.887%
 ASV-vctk_test_enrolls-vctk_test_trials_m  EER: 2.067%
 ASV-vctk_test_enrolls-vctk_test_trials_f_common  EER: 2.89%
 ASV-vctk_test_enrolls-vctk_test_trials_m_common  EER: 1.13%
-ASV-libri_dev_enrolls_anon-libri_dev_trials_f_anon  EER: 18.32%
-ASV-libri_dev_enrolls_anon-libri_dev_trials_m_anon  EER: 6.988%
-ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_anon  EER: 12.13%
-ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_common_anon  EER: 14.83%
-ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_anon  EER: 9.826%
-ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_common_anon  EER: 15.1%
-ASV-libri_test_enrolls_anon-libri_test_trials_f_anon  EER: 13.14%
+ASV-libri_dev_enrolls_anon-libri_dev_trials_f_anon  EER: 17.76%
+ASV-libri_dev_enrolls_anon-libri_dev_trials_m_anon  EER: 6.366%
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_anon  EER: 12.46%
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_common_anon  EER: 13.95%
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_anon  EER: 9.33%
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_common_anon  EER: 13.11%
+ASV-libri_test_enrolls_anon-libri_test_trials_f_anon  EER: 12.04%
 ASV-libri_test_enrolls_anon-libri_test_trials_m_anon  EER: 8.909%
-ASV-vctk_test_enrolls_anon-vctk_test_trials_f_anon  EER: 16.26%
-ASV-vctk_test_enrolls_anon-vctk_test_trials_f_common_anon  EER: 18.79%
-ASV-vctk_test_enrolls_anon-vctk_test_trials_m_anon  EER: 10.39%
-ASV-vctk_test_enrolls_anon-vctk_test_trials_m_common_anon  EER: 12.99%
+ASV-vctk_test_enrolls_anon-vctk_test_trials_f_anon  EER: 16%
+ASV-vctk_test_enrolls_anon-vctk_test_trials_f_common_anon  EER: 17.34%
+ASV-vctk_test_enrolls_anon-vctk_test_trials_m_anon  EER: 10.05%
+ASV-vctk_test_enrolls_anon-vctk_test_trials_m_common_anon  EER: 9.887%
 ASR-libri_dev_asr  %WER 3.82 [ 1518 / 39783, 185 ins, 140 del, 1193 sub ] exp/models/asr_eval/decode_libri_dev_asr_tglarge/wer_13_0.0
 ASR-libri_test_asr  %WER 4.15 [ 1453 / 35042, 174 ins, 157 del, 1122 sub ] exp/models/asr_eval/decode_libri_test_asr_tglarge/wer_12_1.0
 ASR-vctk_dev_asr  %WER 10.79 [ 9349 / 86627, 993 ins, 1354 del, 7002 sub ] exp/models/asr_eval/decode_vctk_dev_asr_tglarge/wer_14_0.5
