@@ -153,8 +153,7 @@ if [ $stage -le 17 ]; then
 fi
 #TODO: add 2 ASR evaluations: orig. and anon.
 
-
-if [ $stage -le 18]; then
+if [ $stage -le 18 ]; then
   printf "${GREEN}\nStage 18: Collecting results${NC}\n"
   local/main_collect_results.sh || exit 1
 fi
