@@ -169,7 +169,7 @@ if [ ! -f $mark ]; then
     -DCMAKE_BUILD_TYPE=Release \
     -DBOOST_ROOT=$boost_root \
     -DNETCDF_LIB=$netcdf_lib || exit 1
-  make -j $(npoc) || exit 1
+  make -j $nj || exit 1
   cd $home
   touch $mark
 fi
