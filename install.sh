@@ -160,10 +160,10 @@ fi
 mark=.done-nii
 if [ ! -f $mark ]; then
   echo 'Building nii'
+  cp $nii_cmake $currennt_dir || exit 1
   dir=$currennt_dir/build
   [ -d $dir ] && rm -r $dir
   mkdir -p $dir || exit 1
-  cp $nii_cmake $currennt_dir || exit 1
   cd $dir
   cmake .. \
     -DCMAKE_BUILD_TYPE=Release \
