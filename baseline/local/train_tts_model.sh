@@ -59,7 +59,7 @@ if [ $stage -le 1 ]; then
       # we need the full path to the data folder
       tmp_data_path=`realpath ${data_dir}`
       local/vc/${script_am_dir}/00_run.sh tmp_${data_train_tts} \
-	       ${tmp_data_path} ${tts_model_save}/am || exit 1;
+	       ${tmp_data_path} ${tts_model_save}/am  ${xvect_type} || exit 1;
   fi
 fi
 
@@ -74,7 +74,7 @@ if [ $stage -le 2 ]; then
       tmp_tts_model_save=${tts_model_save}/nsf
   fi
   local/vc/${script_wav_dir}/00_run.sh tmp_${data_train_tts} \
-	 ${tmp_data_path} ${tmp_tts_model_save} || exit 1;
+	 ${tmp_data_path} ${tmp_tts_model_save} ${xvect_type} || exit 1;
 fi
 
 echo Done
