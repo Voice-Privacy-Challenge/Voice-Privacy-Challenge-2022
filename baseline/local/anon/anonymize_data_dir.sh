@@ -28,7 +28,9 @@ model_type=
 
 # Option for incremental waveform generation
 inference_trunc_len=-1
-
+# Option for batch size during inference
+inference_batch_size_am=10
+inference_batch_size_wav=2
 
 # x-vector extraction
 xvec_nnet_dir= # change this to pretrained xvector model downloaded from Kaldi website
@@ -104,7 +106,7 @@ if [ $stage -le 2 ]; then
    local/featex/02_extract_pitch.sh --nj ${nj} data/${data_dir} || exit 1;
   fi
 fi
-exit 1
+
 # Extract PPGs for source data
 if [ $stage -le 3 ]; then
   printf "${RED}\nStage a.3: PPG extraction for ${data_dir}.${NC}\n"
@@ -125,32 +127,55 @@ fi
 case $model_type in
     
     am_nsf_old)
-	am_output_dir_name=am_out_mel
-	wav_output_dir_name=nsf_output_wav
-	script_am_dir=am
-	script_wav_dir=nsf
-	;;
+    if [ $xvect_type = "sidekit" ];
+    then
+        printf "${RED}\nam_nsf_old cannot suport ${xvect_type}${NC}\n"
+        printf "${RED}Please use am_nsf_pytorch${NC}\n "
+        exit 1;
+    else
+        am_output_dir_name=am_out_mel
+        wav_output_dir_name=nsf_output_wav
+    fi
+    script_am_dir=am
+    script_wav_dir=nsf
+    ;;
     am_nsf_pytorch)
-	am_output_dir_name=am_pt_out_mel
-	wav_output_dir_name=nsf_pt_output_wav
-	script_am_dir=am_pytorch
-	script_wav_dir=nsf_pytorch
-	;;
-    joint_hifigan)
-	am_output_dir_name="None"
-	wav_output_dir_name=hifigan_output_wav
-	script_am_dir="None"
-	script_wav_dir=joint_tts_hifigan
-	;;
-    joint_nsf_hifigan)
-	am_output_dir_name="None"
-	wav_output_dir_name=nsf_hifigan_output_wav
-	script_am_dir="None"
-	script_wav_dir=joint_tts_nsf_hifigan
-	;;
-    *)
-	printf "${RED}\nUnknown ${model_type}${NC}\n" 
-	exit 1;
+		if [ $xvect_type = "sidekit" ];
+	  then
+	    am_output_dir_name=am_pt_sidekit_out_mel
+	    wav_output_dir_name=nsf_pt_sidekit_output_wav
+	  else
+	    am_output_dir_name=am_pt_out_mel
+	    wav_output_dir_name=nsf_pt_output_wav
+    fi
+    script_am_dir=am_pytorch
+    script_wav_dir=nsf_pytorch
+    ;;
+      joint_hifigan)
+    am_output_dir_name="None"
+    if [ $xvect_type = "sidekit" ];
+    then
+        wav_output_dir_name=hifigan_sidekit_output_wav
+    else
+        wav_output_dir_name=hifigan_output_wav
+    fi
+    script_am_dir="None"
+    script_wav_dir=joint_tts_hifigan
+    ;;
+      joint_nsf_hifigan)
+    am_output_dir_name="None"
+    if [ $xvect_type = "sidekit" ];
+    then
+        wav_output_dir_name=nsf_hifigan_sidekit_output_wav
+    else
+        wav_output_dir_name=nsf_hifigan_output_wav
+    fi
+    script_am_dir="None"
+    script_wav_dir=joint_tts_nsf_hifigan
+    ;;
+      *)
+    printf "${RED}\nUnknown ${model_type}${NC}\n"
+    exit 1;
 esac
 
 if [ $stage -le 5 ]; then
@@ -158,13 +183,13 @@ if [ $stage -le 5 ]; then
       printf "${RED}\nStage a.5: Skip this step for model ${model_type}.${NC}\n"
   else
       printf "${RED}\nStage a.5: Generate melspec from acoustic model for ${data_dir}.${NC}\n"
-      local/vc/${script_am_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} || exit 1;
+      local/vc/${script_am_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${inference_batch_size_am} ${xvect_type  || exit 1;
   fi
 fi
 
 if [ $stage -le 6 ]; then
   printf "${RED}\nStage a.6: Generate waveform from ${model_type} for ${data_dir}.${NC}\n"
-  local/vc/${script_wav_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${wav_output_dir_name} ${inference_trunc_len} || exit 1;
+  local/vc/${script_wav_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${wav_output_dir_name} ${inference_trunc_len} ${inference_batch_size_wav} ${xvect_type} || exit 1;
 fi
 
 if [ $stage -le 7 ]; then

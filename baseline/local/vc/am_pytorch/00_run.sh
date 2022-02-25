@@ -41,10 +41,18 @@ export TEMP_TRNSET_LIST=${tmp_data_dir}/scp/train.lst
 export TEMP_DEVSET_LIST=${tmp_data_dir}/scp/dev.lst
 #  path to the data (train and dev should be in the same folder)
 export TEMP_TRNDEV_PPG=${tmp_data_dir}/ppg
-export TEMP_TRNDEV_XVEC=${tmp_data_dir}/xvector
 export TEMP_TRNDEV_F0=${tmp_data_dir}/f0
 export TEMP_TRNDEV_MEL=${tmp_data_dir}/mel
 
+
+if [ $xvect_type = "sidekit" ];
+then
+    config_file=config_sidekit
+    export TEMP_TRNDEV_XVEC=${tmp_data_dir}/xvector_sidekit
+else
+    config_file=config
+    export TEMP_TRNDEV_XVEC=${tmp_data_dir}/xvector
+fi
 
 ####
 # start training
@@ -58,7 +66,8 @@ printf "${GREEN}Training started... ${NC}\n"
 printf "Please monitor the training log \n  $PWD/${log_train_name}\n"
 printf "Training error per utterance is in \n  $PWD/${log_err_name}\n"
 
-python3 main.py --sampler block_shuffle_by_length --model-forward-with-target \
+python3 main.py --module-config ${config_file} \
+	--sampler block_shuffle_by_length --model-forward-with-target \
 	--num-workers 5 --epochs 200 --no-best-epochs 50 --batch-size 32 \
 	--optimizer AdamW --lr 0.0001 --shuffle --seed 1000 \
 	--model-forward-with-file-name \
