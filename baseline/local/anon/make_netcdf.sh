@@ -21,7 +21,7 @@ ppg_file=$2
 xvector_file=$3
 
 out_dir=$4
-
+xvector_dup_flag=$5
 
 if [ $stage -le 0 ]; then
   mkdir -p $out_dir/scp $out_dir/xvector $out_dir/f0 $out_dir/ppg
@@ -39,6 +39,6 @@ fi
 
 if [ $stage -le 2 ]; then
   echo "Writing xvector and F0 for train."
-  python local/featex/create_xvector_f0_data.py ${src_data} ${xvector_file} ${out_dir} || exit 1;
+  python local/featex/create_xvector_f0_data.py ${src_data} ${xvector_file} ${out_dir} ${xvector_dup_flag}  || exit 1;
 fi
 

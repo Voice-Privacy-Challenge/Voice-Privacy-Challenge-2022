@@ -117,9 +117,19 @@ fi
 # Create netcdf data for voice conversion
 if [ $stage -le 4 ]; then
   printf "${RED}\nStage a.4: Make netcdf data for VC.${NC}\n"
+
+  # only old model needs x-vector to be up-sampled to frame level
+  case $model_type in
+      am_nsf_old)
+	  xvector_dup_flag=1
+	  ;;
+      *)
+	  xvector_dup_flag=0
+  esac
+
   local/anon/make_netcdf.sh --stage 0 data/${data_dir} ${ppg_dir}/ppg_${data_dir}/phone_post.scp \
 	  ${anon_xvec_out_dir}/xvectors_${data_dir}/pseudo_xvecs/pseudo_xvector.scp \
-	  ${data_netcdf}/${data_dir} || exit 1;
+	  ${data_netcdf}/${data_dir} ${xvector_dup_flag} || exit 1;
 fi
 
 
@@ -183,7 +193,7 @@ if [ $stage -le 5 ]; then
       printf "${RED}\nStage a.5: Skip this step for model ${model_type}.${NC}\n"
   else
       printf "${RED}\nStage a.5: Generate melspec from acoustic model for ${data_dir}.${NC}\n"
-      local/vc/${script_am_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${inference_batch_size_am} ${xvect_type  || exit 1;
+      local/vc/${script_am_dir}/01_gen.sh ${data_netcdf}/${data_dir} ${am_output_dir_name} ${inference_batch_size_am} ${xvect_type} || exit 1;
   fi
 fi
 
