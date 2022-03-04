@@ -1,6 +1,5 @@
 # Recipe for VoicePrivacy Challenge 2022
 
-## Under construction...
 
 Please visit the [challenge website](https://www.voiceprivacychallenge.org/) for more information about the Challenge.
 
