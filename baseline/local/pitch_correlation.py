@@ -99,7 +99,9 @@ def pitchCorr_list(data, wav_list_orig, wav_list_anon, max_len_diff, result_file
                 assert freq_anon == freq_orig, f'Different sampling frequency of original and anonymized files: {wav_list_orig} and {wav_list_anon}'
                 assert freq_anon == 16000, f'Wrong sampling frequency (should be 16000): {wav_list_orig} and {wav_list_anon}'
                 diff = abs(len(samp_anon) - len(samp_orig)) / freq_orig * 1000 # in ms 
-                assert diff < max_len_diff, f'Difference between lenghts of original and anonymized utterances is too long (exceeds threshold max_len_diff={max_len_diff} ms): {utid_orig}  and {utid_anon}, difference = {diff} ms'                
+                if diff > max_len_diff:
+                    print(f'Warning! Difference between lenghts of original and anonymized utterances is too long (exceeds #threshold max_len_diff={max_len_diff} ms): {utid_orig}  and {utid_anon}, difference = {diff} ms')
+                #assert diff < max_len_diff, f'Difference between lenghts of original and anonymized utterances is too long (exceeds #threshold max_len_diff={max_len_diff} ms): {utid_orig}  and {utid_anon}, difference = {diff} ms'                
                 #assert diff < 0.070, f'Difference between lenghts of original and anonymized utterances exceeds is too long (exceeds 70ms): {utid_orig}  and {utid_anon}, difference = {diff} ms'                
                 #assert len(samp_anon) == len(samp_orig), f'Different lenghts of original and anonymized utterances: {utid_orig} ({len(samp_orig)}) and {utid_anon} ({len(samp_anon)})'
                 corr = pitchCorr(samp_orig, samp_anon)
