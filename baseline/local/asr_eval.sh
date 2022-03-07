@@ -50,10 +50,10 @@ if [ ! -f $expo/.done ]; then
     --online-ivector-dir $ivect \
     $graph_dir $data $expo || exit 1
   mkdir -p $results
-  grep WER $expo/wer* | utils/best_wer.sh | tee -a $results/ASR-$dset
   touch $expo/.done
 fi
-
+grep WER $expo/wer* | utils/best_wer.sh | tee -a $results/ASR-$dset
+  
 expo=$model/decode_${dset}_tglarge
 if [ ! -f $expo/.done ]; then
   printf "${RED}  rescoring: $dset${NC}\n"
@@ -61,6 +61,6 @@ if [ ! -f $expo/.done ]; then
     --cmd "$decode_cmd" $small_lang $large_lang \
     $data $model/decode_${dset}_tgsmall $expo || exit 1
   mkdir -p $results
-  grep WER $expo/wer* | utils/best_wer.sh | tee -a $results/ASR-$dset
   touch $expo/.done
 fi
+grep WER $expo/wer* | utils/best_wer.sh | tee -a $results/ASR-$dset

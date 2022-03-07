@@ -134,3 +134,7 @@ tts_model_name=user_trained_tts_${tts_type}         # name of the TTS model
 tts_model_save=exp/models/$tts_model_name           # path to save the TTS model
 tts_sampling_rate=16000                             # sampling rate, fixed, don't change
 tts_use_predefined_trn_dev="True"                   # Whether use pre-defined train and dev split
+
+##########################################################
+# Settings for F0 correlation metric
+max_len_diff=65                                     # (in ms) maximum possible difference in length between original and anonymized files (in the challenge: max_len_diff=60 (ms))
