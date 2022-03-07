@@ -12,6 +12,8 @@ tmp_dataset_name=$1
 tmp_data_dir=$2
 # path to save the trained model
 tmp_output_dir=$3
+# xvector
+xvect_type=$4
 
 
 ####
@@ -38,10 +40,18 @@ export TEMP_TRNSET_LIST=${tmp_data_dir}/scp/train.lst
 export TEMP_DEVSET_LIST=${tmp_data_dir}/scp/dev.lst
 #  path to the data (train and dev should be in the same folder)
 export TEMP_TRNDEV_PPG=${tmp_data_dir}/ppg
-export TEMP_TRNDEV_XVEC=${tmp_data_dir}/xvector
 export TEMP_TRNDEV_F0=${tmp_data_dir}/f0
 export TEMP_TRNDEV_WAV=${tmp_data_dir}/wav_tts
 
+
+if [ $xvect_type = "sidekit" ];
+then
+    config_file=config_sidekit
+    export TEMP_TRNDEV_XVEC=${tmp_data_dir}/xvector_sidekit
+else
+    config_file=config
+    export TEMP_TRNDEV_XVEC=${tmp_data_dir}/xvector
+fi
 
 ####
 # start training
@@ -57,7 +67,7 @@ printf "Training error per utterance is in $PWD/${log_err_name}\n"
 
 
 python3 main.py --lr 0.0001 --epochs 300 --no-best-epochs 300 --batch-size 32 \
-	--num-workers 5  \
+	--num-workers 5  --module-config ${config_file} \
 	--force-save-lite-trained-network-per-epoch \
 	--not-save-each-epoch \
 	--ignore-length-invalid-data \

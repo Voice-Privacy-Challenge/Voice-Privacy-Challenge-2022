@@ -40,7 +40,7 @@ def extractF0(input_wav, output_f0, min_f0 = 60, max_f0 = 400, frame_length = 35
                                         'frame_length':frame_length,
                                         'frame_space':frame_shift})
         f0_value = pitch.samp_values
-        datatype = numpy.dtype(('<f4',1))
+        datatype = numpy.dtype('<f4')
         f0_value = numpy.asarray(f0_value, dtype=datatype)
 
         f = open(output_f0,'wb')

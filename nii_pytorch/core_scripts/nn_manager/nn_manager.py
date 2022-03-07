@@ -517,8 +517,12 @@ def f_inference_wrapper(args, pt_model, device, \
     #filename_buf = []
     
     pt_model.eval() 
+    total_start_time = time.time()
+    total_accumulate = 0
+    sample_account = 0
     with torch.no_grad():
         
+        start_time_load = time.time()
         # run generation
         for _, (data_in, data_tar, data_info, idx_orig) in \
             enumerate(test_data_loader):
@@ -540,8 +544,9 @@ def f_inference_wrapper(args, pt_model, device, \
             else:
                 pass
             
-            
-            start_time = time.time()
+            # load down time for debugging
+            start_time_inf = time.time()
+            time_cost_load = (start_time_inf - start_time_load)/len(data_info)
             
             # in case the model defines inference function explicitly
             if hasattr(pt_model, "inference"):
@@ -597,10 +602,12 @@ def f_inference_wrapper(args, pt_model, device, \
                     else:
                         data_gen = infer_func(data_in)
             
-            time_cost = time.time() - start_time
+            # log time for debugging
+            start_time_save = time.time()
+            time_cost_inf = start_time_save - start_time_inf
             # average time for each sequence when batchsize > 1
-            time_cost = time_cost / len(data_info)
-                
+            time_cost_inf = time_cost_inf / len(data_info)
+            
             if data_gen is None:
                 nii_display.f_print("No output saved: %s" % (str(data_info)),\
                                     'warning')
@@ -621,17 +628,26 @@ def f_inference_wrapper(args, pt_model, device, \
                     test_dataset_wrapper.putitem(data_gen_np[idx:idx+1],\
                                                  args.output_dir, \
                                                  seq_info)
-            # print information
-            for idx, seq_info in enumerate(data_info):
-                _ = nii_op_display_tk.print_gen_info(seq_info, time_cost)
-                
 
-            # 
-        # Writing generatd data to disk
-        #nii_display.f_print("Writing output to %s" % (args.output_dir))
-        #for data_gen, data_info in zip(output_buf, filename_buf):            
-        #    if data_gen is not None:
+            start_time_load = time.time()
+            time_cost_save = (start_time_load - start_time_save)/len(data_info)
+            
+            # print information
+            time_cost = time_cost_load + time_cost_inf + time_cost_save
+            for idx, seq_info in enumerate(data_info):
+                #print("{:s} {:f} {:f} {:f}".format(
+                #    seq_info, time_cost_load, time_cost_inf, time_cost_save))
+                sample_account += 1
+                _ = nii_op_display_tk.print_gen_info(
+                    seq_info, time_cost, sample_account)
                 
+            # log time for debugging
+            total_accumulate += time_cost * len(data_info)
+            #
+
+        total_time = time.time() - total_start_time
+        nii_display.f_print("Inference time cost: {:f}s".format(total_time))
+        #nii_display.f_print("{:f}".format(total_accumulate))
         
         # done for
     # done with
