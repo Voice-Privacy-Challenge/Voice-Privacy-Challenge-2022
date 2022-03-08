@@ -18,7 +18,7 @@ The recipe uses the pre-trained models of anonymization. To run the baseline sys
 
 ## General information
 
-For more details about the baseline and data, please see [The VoicePrivacy 2020 Challenge Evaluation Plan](https://www.voiceprivacychallenge.org/vp2020/docs/VoicePrivacy_2020_Eval_Plan_v1_3.pdf)
+For more details about the baseline and data, please see [The VoicePrivacy 2022 Challenge Evaluation Plan](https://www.voiceprivacychallenge.org/vp2020/docs/...)
 
 For the latest updates in the baseline and evaluation scripts, please visit [News and updates page](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/wiki/News-and-Updates)
 
@@ -45,11 +45,13 @@ The dataset for anonymization system traing consists of subsets from the followi
 * [LibriSpeech](http://www.openslr.org/12/) - subsets libri_dev and libri_test are download from server in run.sh
 
 
-##  Baseline-1: Anonymization  using x-vectors and neural waveform models 
+##  Baselines
 
-This is the primary (default) baseline.
+### Baseline B1.a Anonymization  using x-vectors and neural waveform models
 
-### Models
+This is the same baseline as the primary baseline for the VoicePrivacy-2020.
+
+#### Models
 
 The baseline system uses several independent models:
 1. ASR acoustic model to extract BN features (`1_asr_am`) - trained on LibriSpeech-train-clean-100 and LibriSpeech-train-other-500
@@ -61,10 +63,11 @@ The baseline system uses several independent models:
 
 All the pretrained models are provided as part of this baseline (downloaded by ./baseline/local/download_models.sh)
 
+### Baseline B1.b Anonymization using x-vectors and neural waveform models (HiFi-GAN + NSF)
 
-##  Baseline-2: Anonymization using McAdams coefficient
 
-This is an additional baseline.
+###  Baseline B2: Anonymization using McAdams coefficient (randomized version)
+
 
 To run: `./run.sh --mcadams true`
 
