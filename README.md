@@ -90,13 +90,13 @@ It does not require any training data and is based upon simple signal processing
 The result file with all the metrics and all datasets for submission will be generated in: ./baseline/exp/results-`date`-`time`/results.txt
 
 Please see 
-* [RESULTS for Baseline-1](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_baseline) 
-* [RESULTS for Baseline-2](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/RESULTS_mcadams) 
+* [RESULTS B1.a](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_old_c)
+* [RESULTS B1.b](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_joint_nsf_hifigan)
+* [RESULTS B2](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_mcadams_summary)
 
-  **new baselies 2022**:
-* [RESULTS for Baseline TTS-pytorch](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_pytorch)
-* [RESULTS for Baseline TTS-pytorch, HIFI-GAN](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_joint_hifigan)
-* [RESULTS for Baseline TTS-pytorch, NSF+HIFI-GAN](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/RESULTS_baseline_tts_joint_nsf_hifigan)
+  **other anonymization systems**:
+* [RESULTS for Baseline TTS-pytorch](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_pytorch)
+* [RESULTS for Baseline TTS-pytorch, HIFI-GAN](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_joint_hifigan)
 
 for the evalation and development data sets.
 
