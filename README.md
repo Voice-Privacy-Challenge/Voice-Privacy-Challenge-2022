@@ -47,9 +47,11 @@ The dataset for anonymization system traing consists of subsets from the followi
 
 ##  Baselines
 
-### Baseline B1.a Anonymization  using x-vectors and neural waveform models
+### Baseline B1.a: Anonymization  using x-vectors and neural waveform models
 
 This is the same baseline as the primary baseline for the VoicePrivacy-2020.
+In [config.sh](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/config.sh) parameters: 
+`baseline_type=baseline-1` ` tts_type=am_nsf_old`
 
 #### Models
 
@@ -63,15 +65,21 @@ The baseline system uses several independent models:
 
 All the pretrained models are provided as part of this baseline (downloaded by ./baseline/local/download_models.sh)
 
-### Baseline B1.b Anonymization using x-vectors and neural waveform models (HiFi-GAN + NSF)
+### Baseline B1.b: Anonymization using x-vectors and neural waveform models (HiFi-GAN + NSF)
+The main difference wrt to B1.a is in the speech synthesis component of the anonymization system, B1.b directly converts BN features, F0, and x-vector using an NSF model. 
 
+In [config.sh](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/config.sh) parameters:
+`baseline_type=baseline-1` ` tts_type=joint_nsf_hifigan`
 
 <img src="https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/fig/B1b.jpg" width="60%" height="60%">
 
 ###  Baseline B2: Anonymization using McAdams coefficient (randomized version)
 
+This ia a randomized version of the McAdams algorithm, where the McAdams coefficient is sampled for each source speaker in the evaluation set from a uniform
+distribution in the interval `[mc_coeff_min, mc_coeff_max]`
 
-To run: `./run.sh --mcadams true`
+In [config.sh](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/config.sh) parameters:  
+`baseline_type=baseline-2` ` mc_coeff_min=0.5` ` mc_coeff_max=0.9`
 
 It does not require any training data and is based upon simple signal processing techniques using the McAdams coefficient.
 
