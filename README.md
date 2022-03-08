@@ -59,12 +59,14 @@ The baseline system uses several independent models:
 3. Speech synthesis (SS) acoustic model (`3_ss_am`) - trained on LibriTTS-train-clean-100.
 4. Neural source filter (NSF) model (`4_nsf`) - trained on LibriTTS-train-clean-100.
 
-<img src="https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/blob/master/baseline/fig/baseline_git.jpg" width="60%" height="60%">
+<img src="https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/fig/B1a.jpg" width="60%" height="60%">
 
 All the pretrained models are provided as part of this baseline (downloaded by ./baseline/local/download_models.sh)
 
 ### Baseline B1.b Anonymization using x-vectors and neural waveform models (HiFi-GAN + NSF)
 
+
+<img src="https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/fig/B1b.jpg" width="60%" height="60%">
 
 ###  Baseline B2: Anonymization using McAdams coefficient (randomized version)
 
