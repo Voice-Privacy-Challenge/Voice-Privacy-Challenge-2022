@@ -55,7 +55,7 @@ In [config.sh](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challeng
 
 #### Models
 
-The baseline system uses several independent models:
+The baseline B1.b system uses several independent models:
 1. ASR acoustic model to extract BN features (`1_asr_am`) - trained on LibriSpeech-train-clean-100 and LibriSpeech-train-other-500
 2. X-vector extractor (`2_xvect_extr`) - trained on VoxCeleb 1 & 2.
 3. Speech synthesis (SS) acoustic model (`3_ss_am`) - trained on LibriTTS-train-clean-100.
@@ -67,6 +67,13 @@ All the pretrained models are provided as part of this baseline (downloaded by .
 
 ### Baseline B1.b: Anonymization using x-vectors and neural waveform models (HiFi-GAN + NSF)
 The main difference wrt to B1.a is in the speech synthesis component of the anonymization system, B1.b directly converts BN features, F0, and x-vector using an NSF model. 
+
+#### Models
+The baseline B1.b system uses several independent models:
+1. ASR acoustic model to extract BN features (`1_asr_am`) - trained on LibriSpeech-train-clean-100 and LibriSpeech-train-other-500
+2. X-vector extractor (`2_xvect_extr`) - trained on VoxCeleb 1 & 2.
+3. Speech synthesis model HiFi-GAN + NSF (`5_joint_tts_nsf_hifigan`) - trained on LibriTTS-train-clean-100.
+
 
 In [config.sh](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/config.sh) parameters:
 `baseline_type=baseline-1` ` tts_type=joint_nsf_hifigan`
@@ -87,12 +94,15 @@ It does not require any training data and is based upon simple signal processing
 
 ## Results
 
-The result file with all the metrics and all datasets for submission will be generated in: ./baseline/exp/results-`date`-`time`/results.txt
+The result file with all the metrics and all datasets for submission will be generated in:
+* Summary results: `  ./baseline/exp/results-<date>-<time>/results_summary.txt`
+* Additional metrics obtained using `ASR_eval` and `ASV_eval` trained on original data:  `  ./baseline/exp/results-<date>-<time>.orig/results_summary.txt`
+* Additional metrics obtained using `ASR_eval^anon` and `ASV_eval^anon` trained on anonymized data:  `  ./baseline/exp/results-<date>-<time>/results_summary.txt`
 
 Please see 
-* [RESULTS B1.a](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_old_c)
-* [RESULTS B1.b](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_joint_nsf_hifigan)
-* [RESULTS B2](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_mcadams_summary)
+* Summary [RESULTS B1.a](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_old_c)
+* Summary [RESULTS B1.b](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_joint_nsf_hifigan)
+* Summary [RESULTS B2](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_mcadams_summary)
 
   **other anonymization systems**:
 * [RESULTS for Baseline TTS-pytorch](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_pytorch)
