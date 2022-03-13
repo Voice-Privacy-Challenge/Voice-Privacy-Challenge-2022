@@ -30,7 +30,7 @@ if [ ! -e $check ]; then
     then
         rm ssl_models.tar.gz
     fi
-    wget --quiet https://www.dropbox.com/sh/bua2vks8clnl2ha/AAAbMqgoGBUmxNF-6AeJhjtQa/ssl_models.tar.gz
+    wget --quiet https://zenodo.org/record/6350122/files/ssl_models.tar.gz?download=1
     tar -xzvf ssl_models.tar.gz
     cd $home
 fi
