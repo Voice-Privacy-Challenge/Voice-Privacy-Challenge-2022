@@ -154,29 +154,20 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 ## References
 
 ```
-@inproceedings{tomashenko2020introducing,
-  author={N. Tomashenko and Brij Mohan Lal Srivastava and Xin Wang and Emmanuel Vincent and Andreas Nautsch and Junichi Yamagishi and Nicholas Evans and Jose Patino and Jean-François Bonastre and Paul-Gauthier Noé and Massimiliano Todisco},
-  title={{Introducing the VoicePrivacy Initiative}},
-  year=2020,
-  booktitle={Proc. Interspeech 2020},
-  pages={1693--1697},
-  doi={10.21437/Interspeech.2020-1333},
-  url={http://dx.doi.org/10.21437/Interspeech.2020-1333}
-}
-```
-
-```
-article{tomashenkovoiceprivacy,
-  title={The {VoicePrivacy} 2020 {Challenge} Evaluation Plan},
-  author={Tomashenko, Natalia and Srivastava, Brij Mohan Lal and Wang, Xin and Vincent, Emmanuel and Nautsch, Andreas and Yamagishi, Junichi and Evans, Nicholas and Patino, Jose and Bonastre, Jean-Fran{\c{c}}ois and No{\'e}, Paul-Gauthier and Todisco, Massimiliano},
-  url={https://www.voiceprivacychallenge.org/docs/VoicePrivacy_2020_Eval_Plan_v1_3.pdf},
-  year={2020}
+article{...,
+  title={The {VoicePrivacy} 2022 {Challenge} Evaluation Plan},
+  author={...},
+  url={https://www.voiceprivacychallenge.org/docs/VoicePrivacy_2022_Eval_Plan_v1.pdf},
+  year={2022}
 }
 ```
 
 ## Anonymization metrics
 
+#### VoicePrivacy 2022 primary privacy metric:
 - Equal error rate (EER)
+
+#### Other metrics:
 - Log-likelihood-ratio cost function (Cllr and Cllr-min)
 - [The Privacy ZEBRA: Zero Evidence Biometric Recognition Assessment (expected privacy disclosure (population) and worst case privacy disclosure (individual))](https://www.isca-speech.org/archive_v0/Interspeech_2020/pdfs/1815.pdf)
 - [Speech Pseudonymisation Assessment Using Voice Similarity Matrices (de-identification and voice distinctiveness preservation)](https://www.isca-speech.org/archive_v0/Interspeech_2020/pdfs/2720.pdf)
