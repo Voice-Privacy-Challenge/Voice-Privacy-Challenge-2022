@@ -102,7 +102,7 @@ The result file with all the metrics and all datasets for submission will be gen
 Please see 
 * Summary [RESULTS B1.a](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_old_c)
 * Summary [RESULTS B1.b](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_joint_nsf_hifigan)
-* Summary [RESULTS B2](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_mcadams_summary)
+* Summary [RESULTS B2](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_mcadams)
 
   **other anonymization systems**:
 * [RESULTS for Baseline TTS-pytorch](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/results/RESULTS_summary_tts_pytorch)
