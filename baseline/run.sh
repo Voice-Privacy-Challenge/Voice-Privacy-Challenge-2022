@@ -175,7 +175,13 @@ fi
 
 
 if [ $stage -le 21 ]; then
-  printf "${GREEN}\nStage 21: Summarizing ZEBRA plots for all experiments${NC}\n"
+  printf "${GREEN}\nStage 21: Computing average results${NC}\n"
+  local/main_average_results.sh || exit 1
+fi
+
+
+if [ $stage -le 22 ]; then
+  printf "${GREEN}\nStage 22: Summarizing ZEBRA plots for all experiments${NC}\n"
   local/main_zebra_results.sh || exit 1
 fi
 
