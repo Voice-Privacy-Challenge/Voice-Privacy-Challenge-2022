@@ -54,3 +54,15 @@ vctk_test_trials_f  Gain of voice distinctiveness : -6.08940664344984
 vctk_test_trials_m  Gain of voice distinctiveness : -8.643949633248635
 vctk_test_trials_f_common  Gain of voice distinctiveness : -5.096758711409944
 vctk_test_trials_m_common  Gain of voice distinctiveness : -6.5018955903822375
+Weighted average EER dev orig: 3.551
+Weighted average EER test orig: 3.786
+Weighted average EER dev anon: 9.928
+Weighted average EER test anon: 9.183
+Average WER dev orig: 7.315
+Average WER test orig: 8.475
+Average WER dev anon: 7.585
+Average WER test anon: 7.560
+Weighted average pitch correlation dev: 0.804
+Weighted average pitch correlation test: 0.801
+Weighted average gain of voice distinctiveness dev: -6.444
+Weighted average gain of voice distinctiveness test: -6.438
