@@ -1,0 +1,68 @@
+ASV-libri_dev_enrolls-libri_dev_trials_f  EER: 8.665%
+ASV-libri_dev_enrolls-libri_dev_trials_m  EER: 1.242%
+ASV-vctk_dev_enrolls-vctk_dev_trials_f  EER: 2.864%
+ASV-vctk_dev_enrolls-vctk_dev_trials_m  EER: 1.439%
+ASV-vctk_dev_enrolls-vctk_dev_trials_f_common  EER: 2.616%
+ASV-vctk_dev_enrolls-vctk_dev_trials_m_common  EER: 1.425%
+ASV-libri_test_enrolls-libri_test_trials_f  EER: 7.664%
+ASV-libri_test_enrolls-libri_test_trials_m  EER: 1.114%
+ASV-vctk_test_enrolls-vctk_test_trials_f  EER: 4.887%
+ASV-vctk_test_enrolls-vctk_test_trials_m  EER: 2.067%
+ASV-vctk_test_enrolls-vctk_test_trials_f_common  EER: 2.89%
+ASV-vctk_test_enrolls-vctk_test_trials_m_common  EER: 1.13%
+ASV-libri_dev_enrolls_anon-libri_dev_trials_f_anon  EER: 11.36%
+ASV-libri_dev_enrolls_anon-libri_dev_trials_m_anon  EER: 1.398%
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_anon  EER: 6.682%
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_common_anon  EER: 5.814%
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_anon  EER: 6.352%
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_common_anon  EER: 8.832%
+ASV-libri_test_enrolls_anon-libri_test_trials_f_anon  EER: 7.117%
+ASV-libri_test_enrolls_anon-libri_test_trials_m_anon  EER: 1.114%
+ASV-vctk_test_enrolls_anon-vctk_test_trials_f_anon  EER: 16.92%
+ASV-vctk_test_enrolls_anon-vctk_test_trials_f_common_anon  EER: 10.98%
+ASV-vctk_test_enrolls_anon-vctk_test_trials_m_anon  EER: 7.692%
+ASV-vctk_test_enrolls_anon-vctk_test_trials_m_common_anon  EER: 4.802%
+ASR-libri_dev_asr  %WER 3.82 [ 1518 / 39783, 185 ins, 140 del, 1193 sub ] exp/models/asr_eval/decode_libri_dev_asr_tglarge/wer_13_0.0
+ASR-libri_test_asr  %WER 4.15 [ 1453 / 35042, 174 ins, 157 del, 1122 sub ] exp/models/asr_eval/decode_libri_test_asr_tglarge/wer_12_1.0
+ASR-vctk_dev_asr  %WER 10.79 [ 9348 / 86627, 993 ins, 1354 del, 7001 sub ] exp/models/asr_eval/decode_vctk_dev_asr_tglarge/wer_14_0.5
+ASR-vctk_test_asr  %WER 12.82 [ 11104 / 86642, 1300 ins, 1472 del, 8332 sub ] exp/models/asr_eval/decode_vctk_test_asr_tglarge/wer_14_0.0
+ASR-libri_dev_asr_anon  %WER 4.32 [ 1719 / 39783, 205 ins, 150 del, 1364 sub ] exp/models/user_asr_eval_anon/decode_libri_dev_asr_anon_tglarge/wer_12_0.0
+ASR-libri_test_asr_anon  %WER 4.58 [ 1606 / 35042, 212 ins, 147 del, 1247 sub ] exp/models/user_asr_eval_anon/decode_libri_test_asr_anon_tglarge/wer_12_0.5
+ASR-vctk_dev_asr_anon  %WER 11.76 [ 10186 / 86627, 1273 ins, 1205 del, 7708 sub ] exp/models/user_asr_eval_anon/decode_vctk_dev_asr_anon_tglarge/wer_14_0.0
+ASR-vctk_test_asr_anon  %WER 13.48 [ 11678 / 86642, 1368 ins, 1486 del, 8824 sub ] exp/models/user_asr_eval_anon/decode_vctk_test_asr_anon_tglarge/wer_13_0.0
+libri_dev_trials_f  Pitch_correlation: mean=0.6374 std=0.1711
+libri_dev_trials_m  Pitch_correlation: mean=0.5291 std=0.2042
+vctk_dev_trials_f  Pitch_correlation: mean=0.6954 std=0.1444
+vctk_dev_trials_m  Pitch_correlation: mean=0.5916 std=0.1829
+vctk_dev_trials_f_common  Pitch_correlation: mean=0.6437 std=0.1697
+vctk_dev_trials_m_common  Pitch_correlation: mean=0.5439 std=0.1889
+libri_test_trials_f  Pitch_correlation: mean=0.6089 std=0.1574
+libri_test_trials_m  Pitch_correlation: mean=0.5419 std=0.1811
+vctk_test_trials_f  Pitch_correlation: mean=0.6836 std=0.1469
+vctk_test_trials_m  Pitch_correlation: mean=0.6637 std=0.1751
+vctk_test_trials_f_common  Pitch_correlation: mean=0.6511 std=0.1300
+vctk_test_trials_m_common  Pitch_correlation: mean=0.6140 std=0.1691
+libri_dev_trials_f  Gain of voice distinctiveness : -1.939460000444101
+libri_dev_trials_m  Gain of voice distinctiveness : -1.6493264384897122
+vctk_dev_trials_f  Gain of voice distinctiveness : -1.3215550931156284
+vctk_dev_trials_m  Gain of voice distinctiveness : -2.1815677494861125
+vctk_dev_trials_f_common  Gain of voice distinctiveness : -1.1415902930439583
+vctk_dev_trials_m_common  Gain of voice distinctiveness : -1.3246512454922792
+libri_test_trials_f  Gain of voice distinctiveness : -1.7054074286432193
+libri_test_trials_m  Gain of voice distinctiveness : -1.7374127228641643
+vctk_test_trials_f  Gain of voice distinctiveness : -1.562397882310541
+vctk_test_trials_m  Gain of voice distinctiveness : -1.5615648713693606
+vctk_test_trials_f_common  Gain of voice distinctiveness : -1.5905810649339058
+vctk_test_trials_m_common  Gain of voice distinctiveness : -1.3635334649585955
+Weighted average EER dev orig: 3.539
+Weighted average EER test orig: 3.786
+Weighted average EER dev anon: 6.529
+Weighted average EER test anon: 7.769
+Average WER dev orig: 7.305
+Average WER test orig: 8.485
+Average WER dev anon: 8.040
+Average WER test anon: 9.030
+Weighted average pitch correlation dev: 0.608
+Weighted average pitch correlation test: 0.620
+Weighted average gain of voice distinctiveness dev: -1.721
+Weighted average gain of voice distinctiveness test: -1.633
