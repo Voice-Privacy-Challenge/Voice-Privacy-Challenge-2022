@@ -154,10 +154,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 ## References
 
 ```
-article{...,
+article{vpc2022,
   title={The {VoicePrivacy} 2022 {Challenge} Evaluation Plan},
-  author={...},
-  url={https://www.voiceprivacychallenge.org/docs/VoicePrivacy_2022_Eval_Plan_v1.pdf},
+  author={Tomashenko, Natalia and Wang, Xin and Miao, Xiaoxiao and Nourtel, Hubert and Champion, Pierre and Todisco, Massimiliano and Vincent, Emmanuel and Evans, Nicholas and Yamagishi, Junichi and Bonastre, Jean-François
+},
+  url={https://www.voiceprivacychallenge.org/docs/VoicePrivacy_2022_Eval_Plan_v1.0.pdf},
   year={2022}
 }
 ```
