@@ -18,7 +18,7 @@ The recipe uses the pre-trained models of anonymization. To run the baseline sys
 
 ## General information
 
-For more details about the baseline and data, please see [The VoicePrivacy 2022 Challenge Evaluation Plan](https://www.voiceprivacychallenge.org/vp2020/docs/...)
+For more details about the baseline and data, please see [The VoicePrivacy 2022 Challenge Evaluation Plan](https://www.voiceprivacychallenge.org/vp2020/docs/VoicePrivacy_2022_Eval_Plan_v1.0.pdf)
 
 For the latest updates in the baseline and evaluation scripts, please visit [News and updates page](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/wiki/News-and-Updates)
 
