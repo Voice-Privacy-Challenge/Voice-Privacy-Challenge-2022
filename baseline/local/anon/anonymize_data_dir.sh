@@ -90,12 +90,14 @@ if [ $stage -le 1 ]; then
 fi
 
 # Extract pitch for source data
+f0_download_train=false
 if [ $stage -le 2 ]; then
   # TEMPORAL (to speed up): use the dowloaded F0 files (yaapt) for train-clean-360-asv 
   printf "f0_download=$f0_download, data_dir=$data_dir"
   if [[ $f0_download == 'true' ]] && [[ $data_dir == 'train-clean-360-asv' ]]; then
 	if [ ! -d 'exp/am_nsf_data/train-clean-360-asv/f0' ]; then
       printf "Directory exp/am_nsf_data/$data_dir/f0 does not exist. Please download train-clean-360-asv/f0 from the server or compute it (set up f0_download=false)"
+      f0_download_train=true
 	  exit 1;
 	else
 	  printf "${RED}\nStage a.2: Skipping pitch extraction for exp/am_nsf_data/${data_dir}: dowloaded f0 will be used... ${NC}\n"
@@ -126,7 +128,7 @@ if [ $stage -le 4 ]; then
 	  xvector_dup_flag=0
   esac
 
-  local/anon/make_netcdf.sh --stage 0 data/${data_dir} ${ppg_dir}/ppg_${data_dir}/phone_post.scp \
+  local/anon/make_netcdf.sh --stage 0 --f0_download_train ${f0_download_train} data/${data_dir} ${ppg_dir}/ppg_${data_dir}/phone_post.scp \
 	  ${anon_xvec_out_dir}/xvectors_${data_dir}/pseudo_xvecs/pseudo_xvector.scp \
 	  ${data_netcdf}/${data_dir} ${xvector_dup_flag} || exit 1;
 fi
