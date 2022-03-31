@@ -11,7 +11,8 @@ xvector_file = args[2]
 out_dir = args[3]
 xvector_dup_flag = int(args[4])
 if len(sys.argv) > 5:
-    f0_download_train = bool(args[5])
+    f0_download_train = args[5]
+    print(args[5])
 else:
     f0_download_train = False
     
@@ -22,7 +23,11 @@ pitch_out_dir = join(out_dir, "f0")
 
 # Write pitch features
 pitch2shape = None
-if not f0_download_train:
+print(f0_download_train)
+
+if f0_download_train == 'true':
+    print('using downloaded f0')
+else:
     pitch_file = join(data_dir, 'pitch.scp')
     pitch2shape = {}
     with ReadHelper('scp:'+pitch_file) as reader:

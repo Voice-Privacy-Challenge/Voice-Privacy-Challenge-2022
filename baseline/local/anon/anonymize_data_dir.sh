@@ -82,11 +82,7 @@ fi
 # Generate pseudo-speakers for source data
 if [ $stage -le 1 ]; then
   printf "${RED}\nStage a.1: Generating pseudo-speakers for ${data_dir}.${NC}\n"
-  local/anon/make_pseudospeaker.sh --rand-level ${pseudo_xvec_rand_level} \
-      	  --cross-gender ${cross_gender} --distance ${distance} \
-	  --proximity ${proximity} --rand-seed ${rand_seed} \
-	  data/${data_dir} data/${anoni_pool} ${anon_xvec_out_dir} \
-	  ${plda_dir} || exit 1;
+  local/anon/make_pseudospeaker.sh --rand-level ${pseudo_xvec_rand_level} --cross-gender ${cross_gender} --distance ${distance} --proximity ${proximity} --rand-seed ${rand_seed} data/${data_dir} data/${anoni_pool} ${anon_xvec_out_dir} ${plda_dir} || exit 1;
 fi
 
 # Extract pitch for source data
@@ -95,24 +91,23 @@ if [ $stage -le 2 ]; then
   # TEMPORAL (to speed up): use the dowloaded F0 files (yaapt) for train-clean-360-asv 
   printf "f0_download=$f0_download, data_dir=$data_dir"
   if [[ $f0_download == 'true' ]] && [[ $data_dir == 'train-clean-360-asv' ]]; then
-	if [ ! -d 'exp/am_nsf_data/train-clean-360-asv/f0' ]; then
+    f0_download_train=true
+    if [ ! -d 'exp/am_nsf_data/train-clean-360-asv/f0' ]; then
       printf "Directory exp/am_nsf_data/$data_dir/f0 does not exist. Please download train-clean-360-asv/f0 from the server or compute it (set up f0_download=false)"
-      f0_download_train=true
-	  exit 1;
-	else
-	  printf "${RED}\nStage a.2: Skipping pitch extraction for exp/am_nsf_data/${data_dir}: dowloaded f0 will be used... ${NC}\n"
-	fi
+      exit 1;
+    else
+      printf "${RED}\nStage a.2: Skipping pitch extraction for exp/am_nsf_data/${data_dir}: dowloaded f0 will be used... ${NC}\n"
+    fi
   else
     printf "${RED}\nStage a.2: Pitch extraction for ${data_dir}.${NC}\n"
-   local/featex/02_extract_pitch.sh --nj ${nj} data/${data_dir} || exit 1;
+    local/featex/02_extract_pitch.sh --nj ${nj} data/${data_dir} || exit 1;
   fi
 fi
 
 # Extract PPGs for source data
 if [ $stage -le 3 ]; then
   printf "${RED}\nStage a.3: PPG extraction for ${data_dir}.${NC}\n"
-  local/featex/extract_ppg.sh --nj $nj --stage 0 \
-	  ${data_dir} ${ppg_model} ${ppg_dir}/ppg_${data_dir} || exit 1;
+  local/featex/extract_ppg.sh --nj $nj --stage 0 ${data_dir} ${ppg_model} ${ppg_dir}/ppg_${data_dir} || exit 1;
 fi
 
 # Create netcdf data for voice conversion
