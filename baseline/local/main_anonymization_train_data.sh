@@ -50,7 +50,11 @@ else
     --proximity $proximity --cross-gender $cross_gender \
     --rand-seed $rand_seed \
     --anon-data-suffix $anon_data_suffix \
-    --model-type $tts_type ${dset} || exit 1"
+    --model-type $tts_type \
+    --inference-trunc-len $inference_trunc_len \
+    --inference-batch-size-am $inference_batch_size_am \
+    --inference-batch-size-wav $inference_batch_size_wav \
+    ${dset} || exit 1"
  
   local/anon/anonymize_data_dir.sh \
     --nj $nj --anoni-pool $anoni_pool \
@@ -62,7 +66,7 @@ else
     --proximity $proximity --cross-gender $cross_gender \
     --rand-seed $rand_seed \
     --anon-data-suffix $anon_data_suffix \
-    --model-type $tts_type ${dset} || exit 1
+    --model-type $tts_type \
     --inference-trunc-len $inference_trunc_len \
     --inference-batch-size-am $inference_batch_size_am \
     --inference-batch-size-wav $inference_batch_size_wav \
