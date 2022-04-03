@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script for The 2022 VoicePrivacy Challenge
 ##
-# Copyright (C) 2021  <Brij Mohan Lal Srivastava, Natalia Tomashenko, Xin Wang, Jose Patino, Paul-Gauthier Noé, Andreas Nautsch, ...>
+# Copyright (C) 2021  The VoicePrivacy Challenge organizers (https://arxiv.org/pdf/2109.00648.pdf)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
