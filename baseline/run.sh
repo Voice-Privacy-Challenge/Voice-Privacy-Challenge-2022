@@ -48,7 +48,7 @@ if [ $baseline_type = 'baseline-1' ]; then
 
   # Download  VoxCeleb-1,2 corpus for training anonymization system models
   if $download_full && [[ $stage -le 2 ]]; then
-    printf "${GREEN}\nStage 2: In order to download VoxCeleb-1,2 corpus, please go to: http://www.robots.ox.ac.uk/~vgg/data/voxceleb/ ...${NC}\n"
+    printf "${GREEN}\nStage 2: In order to download VoxCeleb-1,2 corpus, please go to: http://www.robots.ox.ac.uk/~vgg/data/voxceleb/ or https://mm.kaist.ac.kr/voxceleb...${NC}\n"
     sleep 10; 
   fi
 
