@@ -44,7 +44,7 @@ if [ ! -f $mark ]; then
   pip install -r requirements.txt || exit 1
   touch $mark
 fi
-echo "if [ \$(which python) != $venv_dir/bin/python ]; then source $venv_dir/bin/activate; fi" > env.sh
+echo "if [ \$(which python) != $venv_dir/bin/python ]; then source $venv_dir/bin/activate base; fi" > env.sh
 
 mark=.done-kaldi-tools
 if [ ! -f $mark ]; then
