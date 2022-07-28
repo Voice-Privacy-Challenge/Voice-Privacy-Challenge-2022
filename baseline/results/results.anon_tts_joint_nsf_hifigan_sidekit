@@ -1,0 +1,357 @@
+ASV-libri_dev_enrolls_anon-libri_dev_trials_f_anon
+  EER: 12.34
+  Cllr (min/act): 0.410666 0.890768
+  linkability: 0.686250
+  
+ASV-libri_dev_enrolls_anon-libri_dev_trials_m_anon
+  EER: 6.58
+  Cllr (min/act): 0.224156 0.885902
+  linkability: 0.826909
+  
+ASV-libri_dev_enrolls-libri_dev_trials_f
+  EER: 17.95
+  Cllr (min/act): 0.540661 0.935817linkability: 0.578153
+  
+ASV-libri_dev_enrolls-libri_dev_trials_f_anon
+  EER: 49.48
+  Cllr (min/act): 0.999850 1.016140linkability: 0.082364
+  
+ASV-libri_dev_enrolls-libri_dev_trials_m
+  EER: 5.44
+  Cllr (min/act): 0.192882 0.888909
+  linkability: 0.862457  
+  
+ASV-libri_dev_enrolls-libri_dev_trials_m_anon
+  EER: 49.51
+  Cllr (min/act): 0.998564 1.016946
+  linkability: 0.094940
+ASV-libri_test_enrolls_anon-libri_test_trials_f_anon
+  EER: 8.23
+  Cllr (min/act): 0.260761 0.870891
+  linkability: 0.784186
+  
+ASV-libri_test_enrolls_anon-libri_test_trials_m_anon
+  EER: 6.54
+  Cllr (min/act): 0.234385 0.878175
+  linkability: 0.829214
+  
+ASV-libri_test_enrolls-libri_test_trials_f
+  EER: 13.60
+  Cllr (min/act): 0.409867 0.904540
+  linkability: 0.677150
+  
+ASV-libri_test_enrolls-libri_test_trials_f_anon
+  EER: 46.90
+  Cllr (min/act): 0.991068 1.002281
+  linkability: 0.091031
+  
+ASV-libri_test_enrolls-libri_test_trials_m
+  EER: 10.58
+  Cllr (min/act): 0.307443 0.909430
+  linkability: 0.785454
+  
+ASV-libri_test_enrolls-libri_test_trials_m_anon
+  EER: 48.18
+  Cllr (min/act): 0.984245 1.012030
+  linkability: 0.133776
+  
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_anon
+  EER: 8.03
+  Cllr (min/act): 0.294147 0.935387
+  linkability: 0.794057
+  
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_common_anon
+  EER: 8.16
+  Cllr (min/act): 0.246496 0.929218
+  linkability: 0.783704
+  
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_anon
+  EER: 6.48
+  Cllr (min/act): 0.224101 0.931349
+  linkability: 0.832078
+  
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_common_anon
+  EER: 7.60
+  Cllr (min/act): 0.259007 0.936369
+  linkability: 0.782635
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_f
+  EER: 4.36
+  Cllr (min/act): 0.150620 0.941247
+  linkability: 0.897937
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_f_anon
+  EER: 41.67
+  Cllr (min/act): 0.929614 0.997357
+  linkability: 0.231613
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_f_common
+  EER: 7.07
+  Cllr (min/act): 0.246461 0.961178
+  linkability: 0.795670
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_f_common_anon
+  EER: 46.94
+  Cllr (min/act): 0.976491 1.013589
+  linkability: 0.146511
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_m
+  EER: 4.28
+  Cllr (min/act): 0.157298 0.959667
+  linkability: 0.886567
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_m_anon
+  EER: 49.86
+  Cllr (min/act): 0.998481 1.042323
+  linkability: 0.217501
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_m_common
+  EER: 5.84
+  Cllr (min/act): 0.204277 0.962275
+  linkability: 0.794130
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_m_common_anon
+  EER: 49.79
+  Cllr (min/act): 0.996878 1.027696
+  linkability: 0.130596
+  
+ASV-vctk_test_enrolls_anon-vctk_test_trials_f_anon
+  EER: 13.14
+  Cllr (min/act): 0.426789 0.986955
+  linkability: 0.678301
+  
+ASV-vctk_test_enrolls_anon-vctk_test_trials_f_common_anon
+  EER: 10.20
+  Cllr (min/act): 0.331702 0.989696
+  linkability: 0.706573
+  
+ASV-vctk_test_enrolls_anon-vctk_test_trials_m_anon
+  EER: 11.71
+  Cllr (min/act): 0.387165 0.985113
+  linkability: 0.703463
+  
+ASV-vctk_test_enrolls_anon-vctk_test_trials_m_common_anon
+  EER: 6.72
+  Cllr (min/act): 0.243983 0.973356
+  linkability: 0.803734
+  
+ASV-vctk_test_enrolls-vctk_test_trials_f
+  EER: 6.96
+  Cllr (min/act): 0.242226 0.972492
+  linkability: 0.831399
+  
+ASV-vctk_test_enrolls-vctk_test_trials_f_anon
+  EER: 49.44
+  Cllr (min/act): 0.996390 1.011551
+  linkability: 0.054842
+  
+ASV-vctk_test_enrolls-vctk_test_trials_f_common
+  EER: 4.96
+  Cllr (min/act): 0.181360 0.959565
+  linkability: 0.822340
+  
+ASV-vctk_test_enrolls-vctk_test_trials_f_common_anon
+  EER: 46.82
+  Cllr (min/act): 0.983256 1.006123
+  linkability: 0.112463
+  
+ASV-vctk_test_enrolls-vctk_test_trials_m
+  EER: 6.04
+  Cllr (min/act): 0.222857 0.930819
+  linkability: 0.838681
+  
+ASV-vctk_test_enrolls-vctk_test_trials_m_anon
+  EER: 48.96
+  Cllr (min/act): 0.995814 1.003651
+  linkability: 0.060932
+  
+ASV-vctk_test_enrolls-vctk_test_trials_m_common
+  EER: 6.02
+  Cllr (min/act): 0.231743 0.935889
+  linkability: 0.808855
+  
+ASV-vctk_test_enrolls-vctk_test_trials_m_common_anon
+  EER: 49.99
+  Cllr (min/act): 0.999899 1.017469
+  linkability: 0.106670
+  
+ASV-libri_dev_enrolls_anon-libri_dev_trials_f_anon
+  EER: 12.34
+  Cllr (min/act): 0.410666 0.890768
+  linkability: 0.686250
+  
+ASV-libri_dev_enrolls_anon-libri_dev_trials_m_anon
+  EER: 6.58
+  Cllr (min/act): 0.224156 0.885902
+  linkability: 0.826909
+  
+ASV-libri_dev_enrolls-libri_dev_trials_f
+  EER: 17.95
+  Cllr (min/act): 0.540661 0.935817
+  linkability: 0.578153
+  
+ASV-libri_dev_enrolls-libri_dev_trials_f_anon
+  EER: 49.48
+  Cllr (min/act): 0.999850 1.016140
+  linkability: 0.082364
+  
+ASV-libri_dev_enrolls-libri_dev_trials_m
+  EER: 5.44
+  Cllr (min/act): 0.192882 0.888909
+  linkability: 0.862457
+  
+ASV-libri_dev_enrolls-libri_dev_trials_m_anon
+  EER: 49.51
+  Cllr (min/act): 0.998564 1.016946
+  linkability: 0.094940
+  
+ASV-libri_test_enrolls_anon-libri_test_trials_f_anon
+  EER: 8.23
+  Cllr (min/act): 0.260761 0.870891
+  linkability: 0.784186
+  
+ASV-libri_test_enrolls_anon-libri_test_trials_m_anon
+  EER: 6.54
+  Cllr (min/act): 0.234385 0.878175
+  linkability: 0.829214
+  
+ASV-libri_test_enrolls-libri_test_trials_f
+  EER: 13.60
+  Cllr (min/act): 0.409867 0.904540
+  linkability: 0.677150
+  
+ASV-libri_test_enrolls-libri_test_trials_f_anon
+  EER: 46.90
+  Cllr (min/act): 0.991068 1.002281
+  linkability: 0.091031
+  
+ASV-libri_test_enrolls-libri_test_trials_m
+  EER: 10.58
+  Cllr (min/act): 0.307443 0.909430
+  linkability: 0.785454
+  
+ASV-libri_test_enrolls-libri_test_trials_m_anon
+  EER: 48.18
+  Cllr (min/act): 0.984245 1.012030
+  linkability: 0.133776
+  
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_anon
+  EER: 8.03
+  Cllr (min/act): 0.294147 0.935387
+  linkability: 0.794057
+  
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_f_common_anon
+  EER: 8.16
+  Cllr (min/act): 0.246496 0.929218
+  linkability: 0.783704
+  
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_anon
+  EER: 6.48
+  Cllr (min/act): 0.224101 0.931349
+  linkability: 0.832078
+  
+ASV-vctk_dev_enrolls_anon-vctk_dev_trials_m_common_anon
+  EER: 7.60
+  Cllr (min/act): 0.259007 0.936369
+  linkability: 0.782635
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_f
+  EER: 4.36
+  Cllr (min/act): 0.150620 0.941247
+  linkability: 0.897937
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_f_anon
+  EER: 41.67
+  Cllr (min/act): 0.929614 0.997357
+  linkability: 0.231613
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_f_common
+  EER: 7.07
+  Cllr (min/act): 0.246461 0.961178
+  linkability: 0.795670
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_f_common_anon
+  EER: 46.94
+  Cllr (min/act): 0.976491 1.013589
+  linkability: 0.146511
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_m
+  EER: 4.28
+  Cllr (min/act): 0.157298 0.959667
+  linkability: 0.886567
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_m_anon
+  EER: 49.86
+  Cllr (min/act): 0.998481 1.042323
+  linkability: 0.217501
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_m_common
+  EER: 5.84
+  Cllr (min/act): 0.204277 0.962275
+  linkability: 0.794130
+  
+ASV-vctk_dev_enrolls-vctk_dev_trials_m_common_anon
+  EER: 49.79
+  Cllr (min/act): 0.996878 1.027696
+  linkability: 0.130596
+  
+ASV-vctk_test_enrolls_anon-vctk_test_trials_f_anon
+  EER: 13.14
+  Cllr (min/act): 0.426789 0.986955
+  linkability: 0.678301
+  
+ASV-vctk_test_enrolls_anon-vctk_test_trials_f_common_anon
+  EER: 10.20
+  Cllr (min/act): 0.331702 0.989696
+  linkability: 0.706573
+  
+ASV-vctk_test_enrolls_anon-vctk_test_trials_m_anon
+  EER: 11.71
+  Cllr (min/act): 0.387165 0.985113
+  linkability: 0.703463
+  
+ASV-vctk_test_enrolls_anon-vctk_test_trials_m_common_anon
+  EER: 6.72
+  Cllr (min/act): 0.243983 0.973356
+  linkability: 0.803734
+  
+ASV-vctk_test_enrolls-vctk_test_trials_f
+  EER: 6.96
+  Cllr (min/act): 0.242226 0.972492
+  linkability: 0.831399
+  
+ASV-vctk_test_enrolls-vctk_test_trials_f_anon
+  EER: 49.44
+  Cllr (min/act): 0.996390 1.011551
+  linkability: 0.054842
+  
+ASV-vctk_test_enrolls-vctk_test_trials_f_common
+  EER: 4.96
+  Cllr (min/act): 0.181360 0.959565
+  linkability: 0.822340
+  
+ASV-vctk_test_enrolls-vctk_test_trials_f_common_anon
+  EER: 46.82
+  Cllr (min/act): 0.983256 1.006123
+  linkability: 0.112463
+  
+ASV-vctk_test_enrolls-vctk_test_trials_m
+  EER: 6.04
+  Cllr (min/act): 0.222857 0.930819
+  linkability: 0.838681
+  
+ASV-vctk_test_enrolls-vctk_test_trials_m_anon
+  EER: 48.96
+  Cllr (min/act): 0.995814 1.003651
+  linkability: 0.060932
+  
+ASV-vctk_test_enrolls-vctk_test_trials_m_common
+  EER: 6.02
+  Cllr (min/act): 0.231743 0.935889
+  linkability: 0.808855
+  
+ASV-vctk_test_enrolls-vctk_test_trials_m_common_anon
+  EER: 49.99
+  Cllr (min/act): 0.999899 1.017469
+  linkability: 0.106670
+  
