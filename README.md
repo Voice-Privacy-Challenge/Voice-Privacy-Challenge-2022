@@ -22,7 +22,7 @@ For more details about the baseline and data, please see [The VoicePrivacy 2022 
 
 For the latest updates in the baseline and evaluation scripts, please visit [News and updates page](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/wiki/News-and-Updates)
 
-To participate in the **VoicePrivacy 2022 Challenge** and get access to evaluation datasets and models, please send an email to organisers@lists.voiceprivacychallenge.org with “VoicePrivacy-2022 registration" as the subject line. The mail body should include: 
+The **VoicePrivacy 2022 Challenge** is over. To get access to evaluation datasets and models, please send an email to organisers@lists.voiceprivacychallenge.org with “VoicePrivacy-2022 registration" as the subject line. The mail body should include: 
 
 * (i) the name of the team; 
 * (ii) the name of the contact person; 
