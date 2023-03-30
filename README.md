@@ -16,6 +16,10 @@ The recipe uses the pre-trained models of anonymization. To run the baseline sys
 1. `cd baseline`
 2. run `./run.sh`. In run.sh, to download models and data the user will be requested the password which is provided during the Challenge registration.
 
+#### Re-running the scripts for anonymization / evaluation
+Use [cleanup.sh](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/cleanup.sh) to remove old data.
+Check [Evaluation](https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2020/wiki/Evaluation) for more details.
+
 ## General information
 
 For more details about the baseline and data, please see [The VoicePrivacy 2022 Challenge Evaluation Plan](https://www.voiceprivacychallenge.org/vp2020/docs/VoicePrivacy_2022_Eval_Plan_v1.0.pdf)
