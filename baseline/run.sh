@@ -135,9 +135,12 @@ if [ $stage -le 14 ]; then
 fi
 
 
+# Warning: To re-run anonymization and/or ASV/ASR evaluation with different paprameters, models, etc. make sure the corresponding old directorictores are removed.
+# The following clean-up script can be used to delete data: https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2022/blob/master/baseline/cleanup.sh
 # ASV evaluation
 if [ $stage -le 15 ]; then
   printf "${GREEN}\n Stage 15: Evaluate datasets using speaker verification...${NC}\n"
+  printf "${GREEN}\n WARNING: To re-run anonymization and/or ASV/ASR evaluation with different paprameters, models, etc. make sure the corresponding old directorictores are remove (i.e. using cleanup.sh) ${NC}\n"
   local/main_eval_asv.sh || exit 1
 fi
 
