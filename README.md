@@ -36,7 +36,7 @@ The **VoicePrivacy 2022 Challenge** is over. To get access to evaluation dataset
 ## Data
 
 #### Training data
-The dataset for anonymization system traing consists of subsets from the following corpora*:
+The dataset for anonymization system training consists of subsets from the following corpora*:
 * [LibriSpeech](http://www.openslr.org/12/) - train-clean-100, train-other-500
 * [LibriTTS](http://www.openslr.org/60/) - train-clean-100, train-other-500
 * [VoxCeleb 1 & 2](http://www.robots.ox.ac.uk/~vgg/data/voxceleb/) - all
