@@ -114,20 +114,18 @@ Please see
 for the evalation and development data sets.
 
 
-## Organizers (in alphabetical order)
+## Organizers
 
-- **Jean-François Bonastre** - University of Avignon - LIA, France
-- **Nicholas Evans** - EURECOM, France
-- **Pierre Champion** - Inria, France
+- **Natalia Tomashenko** - University of Avignon - LIA, France
+- **Xin Wang** - NII, Japan
 - **Xiaoxiao Miao** - NII, Japan
 - **Hubert Nourtel** - Inria, France
-- **Natalia Tomashenko** - University of Avignon - LIA, France
+- **Pierre Champion** - Inria, France
 - **Massimiliano Todisco** - EURECOM, France
 - **Emmanuel Vincent** - Inria, France
-- **Xin Wang** - NII, Japan
+- **Nicholas Evans** - EURECOM, France
 - **Junichi Yamagishi** - NII, Japan and University of Edinburgh, UK
-
-Contact: organisers@lists.voiceprivacychallenge.org
+- **Jean-François Bonastre** - University of Avignon - LIA, France
 
 
 ## Acknowledgements
